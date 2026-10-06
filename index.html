@@ -6,16 +6,6 @@
 
     <title>Steam Advisor — Во что играть?</title>
 
-    <meta
-        name="description"
-        content="Steam Advisor анализирует твою библиотеку Steam и подбирает игры по твоему вкусу."
-    >
-
-    <link
-        rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%230b0d10' stroke='%23ff7a00' stroke-width='6'/%3E%3Cellipse cx='50' cy='50' rx='27' ry='17' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23ff7a00'/%3E%3C/svg%3E"
-    >
-
     <style>
         * {
             box-sizing: border-box;
@@ -25,22 +15,19 @@
 
         :root {
             --bg: #080a0f;
-            --bg-2: #0d1017;
-            --panel: rgba(17, 21, 30, 0.88);
-            --panel-2: rgba(21, 26, 37, 0.94);
-            --panel-hover: rgba(29, 35, 49, 0.96);
-            --border: rgba(255, 255, 255, 0.08);
-            --border-light: rgba(255, 255, 255, 0.13);
+            --bg2: #0d1017;
+            --card: rgba(18, 22, 31, 0.82);
+            --card2: rgba(24, 29, 40, 0.9);
+            --border: rgba(255,255,255,0.08);
+            --border2: rgba(255,255,255,0.13);
             --text: #f5f7fb;
-            --text-2: #b5bdca;
-            --text-3: #737d8e;
-            --orange: #ff7a00;
-            --orange-2: #ff9b3d;
-            --blue: #4f8cff;
-            --green: #39d98a;
-            --red: #ff5d73;
-            --shadow: 0 25px 80px rgba(0, 0, 0, 0.42);
-            --radius: 24px;
+            --muted: #9aa3b3;
+            --muted2: #6e7787;
+            --orange: #ff6a00;
+            --orange2: #ff8a2a;
+            --blue: #4d8dff;
+            --green: #48d597;
+            --red: #ff6262;
         }
 
         html {
@@ -49,32 +36,12 @@
 
         body {
             min-height: 100vh;
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-            background:
-                radial-gradient(
-                    circle at 10% 0%,
-                    rgba(79, 140, 255, 0.13),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 90% 5%,
-                    rgba(255, 122, 0, 0.12),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    180deg,
-                    #080a0f 0%,
-                    #0a0d13 45%,
-                    #080a0f 100%
-                );
+            font-family: Inter, Arial, Helvetica, sans-serif;
             color: var(--text);
+            background:
+                radial-gradient(circle at 15% 10%, rgba(255,106,0,.12), transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(77,141,255,.10), transparent 28%),
+                linear-gradient(135deg, #07090d, #0b0e14 55%, #080a0f);
             overflow-x: hidden;
         }
 
@@ -83,32 +50,16 @@
             position: fixed;
             inset: 0;
             pointer-events: none;
-            opacity: 0.18;
             background-image:
-                linear-gradient(
-                    rgba(255,255,255,0.025) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.025) 1px,
-                    transparent 1px
-                );
+                linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
             background-size: 42px 42px;
-            mask-image: linear-gradient(
-                to bottom,
-                black,
-                transparent 75%
-            );
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
         }
 
         button,
-        input {
+        input,
+        select {
             font: inherit;
         }
 
@@ -117,92 +68,55 @@
         }
 
         .page {
-            width: min(1440px, calc(100% - 42px));
+            width: min(1420px, calc(100% - 40px));
             margin: 0 auto;
         }
 
-        /* =========================
-           HEADER
-        ========================= */
+        /* HEADER */
 
-        .header {
-            height: 86px;
+        header {
+            height: 82px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 10;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 13px;
-            font-size: 20px;
-            font-weight: 850;
-            letter-spacing: -0.5px;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -.5px;
         }
 
         .logo-eye {
-            width: 43px;
-            height: 43px;
-            display: grid;
-            place-items: center;
-            position: relative;
-            border-radius: 14px;
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,122,0,0.18),
-                    rgba(79,140,255,0.12)
-                );
-            border: 1px solid rgba(255,255,255,0.09);
-            box-shadow:
-                inset 0 0 20px rgba(255,122,0,0.05),
-                0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .eye {
-            width: 25px;
-            height: 15px;
-            border: 3px solid #fff;
-            border-radius: 70% 15%;
-            transform: rotate(45deg);
-            position: relative;
-        }
-
-        .eye::after {
-            content: "";
-            position: absolute;
-            width: 7px;
-            height: 7px;
-            background: var(--orange);
-            border-radius: 50%;
-            left: 6px;
-            top: 1px;
-        }
-
-        .brand-orange {
-            color: var(--orange);
+            width: 40px;
+            height: 40px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--orange), #ff9a42);
+            box-shadow: 0 0 35px rgba(255,106,0,.25);
+            font-size: 20px;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 13px;
+            gap: 14px;
         }
 
         .online {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(57,217,138,0.15);
-            background: rgba(57,217,138,0.06);
-            color: #9af0c3;
+            color: #a9b3c3;
             font-size: 14px;
-            font-weight: 700;
         }
 
         .online-dot {
@@ -210,495 +124,328 @@
             height: 8px;
             border-radius: 50%;
             background: var(--green);
-            box-shadow: 0 0 14px rgba(57,217,138,0.75);
+            box-shadow: 0 0 12px rgba(72,213,151,.7);
         }
 
-        .github-btn {
-            padding: 11px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.035);
-            color: var(--text-2);
+        .github {
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border: 1px solid var(--border2);
+            border-radius: 11px;
+            background: rgba(255,255,255,.035);
+            transition: .2s;
             font-size: 14px;
-            font-weight: 750;
-            transition: 0.2s ease;
         }
 
-        .github-btn:hover {
-            color: #fff;
-            border-color: var(--border-light);
-            background: rgba(255,255,255,0.07);
-            transform: translateY(-1px);
+        .github:hover {
+            border-color: rgba(255,255,255,.25);
+            background: rgba(255,255,255,.07);
         }
 
-        /* =========================
-           HERO
-        ========================= */
+        /* HERO */
 
         .hero {
+            padding: 90px 0 55px;
             position: relative;
-            padding: 90px 0 64px;
-            max-width: 1040px;
         }
 
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            right: 30px;
-            top: 40px;
-            border-radius: 50%;
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(255,122,0,0.12),
-                    transparent 68%
-                );
-            pointer-events: none;
-            filter: blur(10px);
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr .65fr;
+            gap: 40px;
+            align-items: center;
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            padding: 8px 13px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,122,0,0.16);
-            border-radius: 999px;
-            background: rgba(255,122,0,0.055);
-            color: var(--orange-2);
+            color: var(--orange2);
             font-size: 14px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.8px;
+            margin-bottom: 22px;
         }
 
-        .eyebrow-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
+        .eyebrow::before {
+            content: "";
+            width: 27px;
+            height: 2px;
             background: var(--orange);
-            box-shadow: 0 0 12px rgba(255,122,0,0.8);
+            box-shadow: 0 0 12px var(--orange);
         }
 
-        .hero h1 {
+        h1 {
             max-width: 900px;
-            font-size: clamp(46px, 6vw, 78px);
-            line-height: 0.98;
+            font-size: clamp(42px, 6vw, 78px);
+            line-height: .98;
             letter-spacing: -4px;
-            font-weight: 900;
+            font-weight: 850;
         }
 
-        .hero h1 span {
+        h1 span {
             color: var(--orange);
         }
 
         .hero-description {
-            max-width: 780px;
-            margin-top: 28px;
-            color: var(--text-2);
-            font-size: 21px;
+            margin-top: 25px;
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 19px;
             line-height: 1.65;
         }
 
-        .hero-meta {
-            margin-top: 28px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .meta-chip {
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.025);
-            color: var(--text-2);
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        /* =========================
-           MAIN GRID
-        ========================= */
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.65fr) minmax(310px, 0.72fr);
-            gap: 24px;
-            align-items: start;
-        }
-
-        .panel {
-            border: 1px solid var(--border);
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(19,24,34,0.92),
-                    rgba(12,15,22,0.92)
-                );
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(22px);
-        }
-
-        /* =========================
-           FORM
-        ========================= */
-
-        .form-panel {
-            padding: 34px;
-        }
-
-        .panel-title {
-            font-size: 26px;
-            line-height: 1.2;
-            font-weight: 850;
-            letter-spacing: -0.7px;
-        }
-
-        .panel-subtitle {
-            margin-top: 10px;
-            color: var(--text-2);
-            font-size: 16px;
-            line-height: 1.55;
-        }
-
-        .form {
-            margin-top: 30px;
-        }
-
-        .field {
-            margin-bottom: 23px;
-        }
-
-        .field-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #e9edf5;
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .field-hint {
-            color: var(--text-3);
-            font-size: 13px;
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-
-        .input-wrap {
+        .hero-orb {
+            width: 280px;
+            height: 280px;
+            margin-left: auto;
+            border-radius: 50%;
             position: relative;
-        }
-
-        .text-input {
-            width: 100%;
-            height: 58px;
-            padding: 0 18px;
-            border-radius: 15px;
-            border: 1px solid var(--border-light);
-            outline: none;
-            background: rgba(5,8,13,0.7);
-            color: #fff;
-            font-size: 17px;
-            transition: 0.2s ease;
-        }
-
-        .text-input::placeholder {
-            color: #667082;
-        }
-
-        .text-input:focus {
-            border-color: rgba(255,122,0,0.58);
-            box-shadow:
-                0 0 0 4px rgba(255,122,0,0.08),
-                0 12px 30px rgba(0,0,0,0.18);
-        }
-
-        /* =========================
-           CUSTOM SELECT
-        ========================= */
-
-        .select {
-            position: relative;
-            width: 100%;
-            user-select: none;
-        }
-
-        .select-button {
-            width: 100%;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 0 17px;
-            border-radius: 15px;
-            border: 1px solid var(--border-light);
             background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,0.035),
-                    rgba(255,255,255,0.015)
-                );
-            color: #fff;
-            transition: 0.2s ease;
-            text-align: left;
-        }
-
-        .select-button:hover {
-            background: rgba(255,255,255,0.055);
-            border-color: rgba(255,255,255,0.18);
-        }
-
-        .select.open .select-button {
-            border-color: rgba(255,122,0,0.55);
+                radial-gradient(circle at 50% 45%, rgba(255,106,0,.30), transparent 28%),
+                radial-gradient(circle, rgba(77,141,255,.10), transparent 60%);
+            border: 1px solid rgba(255,255,255,.06);
             box-shadow:
-                0 0 0 4px rgba(255,122,0,0.07);
+                inset 0 0 80px rgba(255,106,0,.06),
+                0 0 100px rgba(255,106,0,.08);
         }
 
-        .select-current {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
-        }
-
-        .select-icon {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            flex: 0 0 36px;
-            border-radius: 10px;
-            background: rgba(255,122,0,0.1);
-            font-size: 19px;
-        }
-
-        .select-text {
-            min-width: 0;
-        }
-
-        .select-main {
-            font-size: 16px;
-            font-weight: 800;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .select-small {
-            margin-top: 2px;
-            color: var(--text-3);
-            font-size: 12px;
-        }
-
-        .select-arrow {
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid #aeb7c6;
-            border-bottom: 2px solid #aeb7c6;
-            transform: rotate(45deg) translateY(-3px);
-            transition: 0.2s ease;
-            margin-right: 5px;
-        }
-
-        .select.open .select-arrow {
-            transform: rotate(225deg) translateY(-1px);
-        }
-
-        .select-menu {
+        .hero-orb::before {
+            content: "◉";
             position: absolute;
-            z-index: 100;
-            left: 0;
-            right: 0;
-            top: calc(100% + 8px);
-            max-height: 360px;
-            overflow-y: auto;
-            padding: 8px;
-            border-radius: 17px;
-            border: 1px solid rgba(255,255,255,0.11);
-            background:
-                linear-gradient(
-                    150deg,
-                    rgba(22,27,38,0.98),
-                    rgba(11,14,21,0.99)
-                );
-            box-shadow:
-                0 28px 70px rgba(0,0,0,0.55),
-                0 0 0 1px rgba(255,255,255,0.025);
-            backdrop-filter: blur(22px);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-6px) scale(0.985);
-            transform-origin: top;
-            transition:
-                opacity 0.16s ease,
-                transform 0.16s ease,
-                visibility 0.16s ease;
-        }
-
-        .select.open .select-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .select-option {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 53px;
-            padding: 8px 10px;
-            border: 0;
-            border-radius: 12px;
-            background: transparent;
-            color: #dfe4ec;
-            text-align: left;
-            transition: 0.16s ease;
-        }
-
-        .select-option:hover {
-            background: rgba(255,255,255,0.065);
-            color: #fff;
-        }
-
-        .select-option.selected {
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(255,122,0,0.14),
-                    rgba(255,122,0,0.04)
-                );
-            color: #fff;
-        }
-
-        .option-icon {
-            width: 34px;
-            height: 34px;
-            display: grid;
-            place-items: center;
-            flex: 0 0 34px;
-            border-radius: 9px;
-            background: rgba(255,255,255,0.045);
-            font-size: 17px;
-        }
-
-        .option-info {
-            min-width: 0;
-        }
-
-        .option-title {
-            font-size: 15px;
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .option-description {
-            margin-top: 3px;
-            color: #788394;
-            font-size: 12px;
-            line-height: 1.2;
-        }
-
-        .select-menu::-webkit-scrollbar {
-            width: 7px;
-        }
-
-        .select-menu::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .select-menu::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.12);
-            border-radius: 20px;
-        }
-
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0,1fr));
-            gap: 18px;
-        }
-
-        /* =========================
-           MODE
-        ========================= */
-
-        .mode-box {
-            margin-bottom: 26px;
-            padding: 18px;
-            border-radius: 18px;
-            border: 1px solid rgba(255,122,0,0.12);
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,122,0,0.055),
-                    rgba(79,140,255,0.035)
-                );
-        }
-
-        .mode-box-title {
-            font-size: 13px;
-            color: #ffb066;
-            font-weight: 850;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 11px;
-        }
-
-        /* =========================
-           SUBMIT
-        ========================= */
-
-        .submit-btn {
-            width: 100%;
-            height: 62px;
-            margin-top: 5px;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 11px;
+            font-size: 92px;
+            color: rgba(255,255,255,.08);
+        }
+
+        .hero-orb::after {
+            content: "";
+            position: absolute;
+            inset: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,106,0,.18);
+            animation: rotateOrb 14s linear infinite;
+        }
+
+        @keyframes rotateOrb {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* MAIN */
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 24px;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(20,24,34,.9), rgba(12,15,22,.88));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.2);
+        }
+
+        .form-card {
+            padding: 34px;
+        }
+
+        .card-title {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .card-subtitle {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            color: #dce1ea;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .field-hint {
+            color: var(--muted2);
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 58px;
+            border: 1px solid var(--border2);
+            border-radius: 15px;
+            background: rgba(255,255,255,.045);
+            color: white;
+            outline: none;
+            padding: 0 17px;
+            font-size: 17px;
+            transition: .2s;
+        }
+
+        input::placeholder {
+            color: #737c8b;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(255,106,0,.65);
+            box-shadow: 0 0 0 4px rgba(255,106,0,.08);
+            background: rgba(255,255,255,.065);
+        }
+
+        /* BEAUTIFUL SELECTS */
+
+        .select-wrap {
+            position: relative;
+        }
+
+        .select-wrap::after {
+            content: "⌄";
+            position: absolute;
+            right: 17px;
+            top: 50%;
+            transform: translateY(-55%);
+            color: #b8c0ce;
+            font-size: 23px;
+            pointer-events: none;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 48px;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #151922;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .mode-box {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mode-option {
+            position: relative;
+        }
+
+        .mode-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .mode-label {
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 18px;
+            border: 1px solid var(--border2);
+            border-radius: 16px;
+            background: rgba(255,255,255,.035);
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .mode-label:hover {
+            background: rgba(255,255,255,.065);
+            border-color: rgba(255,255,255,.2);
+        }
+
+        .mode-option input:checked + .mode-label {
+            border-color: rgba(255,106,0,.7);
+            background: linear-gradient(135deg, rgba(255,106,0,.13), rgba(255,106,0,.04));
+            box-shadow: 0 0 25px rgba(255,106,0,.08);
+        }
+
+        .mode-icon {
+            width: 45px;
+            height: 45px;
+            flex: 0 0 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: rgba(255,255,255,.07);
+            font-size: 22px;
+        }
+
+        .mode-text strong {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .mode-text small {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .submit-button {
+            grid-column: 1 / -1;
+            height: 62px;
             border: 0;
             border-radius: 16px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff8b20,
-                    #ff6b00
-                );
-            color: #fff;
-            font-size: 17px;
-            font-weight: 900;
-            letter-spacing: -0.2px;
-            box-shadow:
-                0 14px 35px rgba(255,122,0,0.2);
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                filter 0.2s ease;
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6200, #ff8a2b);
+            box-shadow: 0 12px 35px rgba(255,106,0,.2);
+            transition: .2s;
+            margin-top: 3px;
         }
 
-        .submit-btn:hover {
+        .submit-button:hover {
             transform: translateY(-2px);
-            filter: brightness(1.07);
-            box-shadow:
-                0 18px 42px rgba(255,122,0,0.3);
+            box-shadow: 0 17px 40px rgba(255,106,0,.3);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
+        .submit-button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .submit-arrow {
-            font-size: 20px;
-        }
-
-        /* =========================
-           SIDEBAR
-        ========================= */
+        /* SIDEBAR */
 
         .sidebar {
             display: flex;
@@ -707,585 +454,470 @@
         }
 
         .side-card {
-            padding: 25px;
-            border-radius: 21px;
-            border: 1px solid var(--border);
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(17,21,30,0.9),
-                    rgba(11,14,21,0.9)
-                );
-            box-shadow:
-                0 18px 50px rgba(0,0,0,0.24);
+            padding: 24px;
         }
 
-        .side-icon {
-            width: 43px;
-            height: 43px;
-            display: grid;
-            place-items: center;
-            margin-bottom: 17px;
-            border-radius: 13px;
-            background: rgba(79,140,255,0.09);
-            border: 1px solid rgba(79,140,255,0.12);
-            font-size: 20px;
+        .side-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 10px;
         }
 
-        .side-card h3 {
-            font-size: 18px;
-            font-weight: 850;
-            margin-bottom: 9px;
+        .side-text {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 15px;
         }
 
-        .side-card p {
-            color: var(--text-2);
-            font-size: 14px;
-            line-height: 1.65;
-        }
-
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 17px;
-        }
-
-        .step {
-            display: flex;
-            gap: 12px;
-        }
-
-        .step-num {
-            width: 28px;
-            height: 28px;
-            flex: 0 0 28px;
-            display: grid;
-            place-items: center;
-            border-radius: 9px;
-            background: rgba(255,122,0,0.1);
-            color: var(--orange);
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .step-text {
-            padding-top: 3px;
-            color: #c5ccd7;
-            font-size: 13px;
-            line-height: 1.45;
-        }
-
-        .status-card {
-            border-color: rgba(57,217,138,0.13);
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(22,37,31,0.7),
-                    rgba(11,18,17,0.8)
-                );
-        }
-
-        .status-line {
+        .side-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
+            justify-content: center;
+            background: rgba(255,106,0,.12);
+            color: var(--orange2);
+            font-weight: 800;
+            margin-bottom: 14px;
         }
 
-        .status-label {
+        .system-status {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(72,213,151,.06);
+            color: #b8dccc;
             font-size: 14px;
-            font-weight: 800;
         }
 
-        .status-value {
-            color: #8eeeb9;
-            font-size: 13px;
-            font-weight: 800;
+        .system-status span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(72,213,151,.7);
         }
 
-        /* =========================
-           LOADING
-        ========================= */
+        /* LOADING */
 
-        .loading {
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
             display: none;
-            margin-top: 26px;
-            padding: 28px;
-            border-radius: 22px;
-            border: 1px solid var(--border);
-            background: rgba(15,19,27,0.9);
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background: rgba(4,6,10,.86);
+            backdrop-filter: blur(18px);
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-card {
+            width: min(520px, 100%);
+            padding: 38px;
+            border-radius: 26px;
+            border: 1px solid rgba(255,255,255,.1);
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255,106,0,.12), transparent 45%),
+                #10141c;
+            box-shadow: 0 30px 100px rgba(0,0,0,.55);
             text-align: center;
         }
 
-        .loading.active {
-            display: block;
-        }
-
         .loading-eye {
-            width: 54px;
-            height: 34px;
-            margin: 0 auto 17px;
-            border: 4px solid rgba(255,255,255,0.85);
-            border-radius: 70% 15%;
-            transform: rotate(45deg);
-            position: relative;
-            animation: eyePulse 1.1s infinite ease-in-out;
+            width: 86px;
+            height: 86px;
+            margin: 0 auto 25px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,106,0,.12);
+            border: 1px solid rgba(255,106,0,.22);
+            font-size: 42px;
+            animation: pulseEye 1.3s ease-in-out infinite;
         }
 
-        .loading-eye::after {
-            content: "";
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            left: 14px;
-            top: 5px;
-            border-radius: 50%;
-            background: var(--orange);
-            box-shadow: 0 0 18px rgba(255,122,0,0.75);
-        }
-
-        @keyframes eyePulse {
+        @keyframes pulseEye {
             0%, 100% {
-                transform: rotate(45deg) scale(0.92);
-                opacity: 0.55;
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(255,106,0,0);
             }
-
             50% {
-                transform: rotate(45deg) scale(1.08);
-                opacity: 1;
+                transform: scale(1.06);
+                box-shadow: 0 0 45px rgba(255,106,0,.16);
             }
         }
 
         .loading-title {
-            font-size: 18px;
+            font-size: 26px;
             font-weight: 850;
+            margin-bottom: 10px;
         }
 
         .loading-text {
-            margin-top: 7px;
-            color: var(--text-2);
-            font-size: 14px;
+            min-height: 25px;
+            color: var(--muted);
+            font-size: 16px;
+            margin-bottom: 25px;
         }
 
         .loading-bar {
-            width: min(420px, 100%);
-            height: 4px;
-            margin: 18px auto 0;
+            width: 100%;
+            height: 7px;
+            border-radius: 20px;
             overflow: hidden;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.07);
+            background: rgba(255,255,255,.07);
         }
 
-        .loading-bar::after {
-            content: "";
-            display: block;
-            width: 35%;
+        .loading-progress {
+            width: 12%;
             height: 100%;
             border-radius: inherit;
+            background: linear-gradient(90deg, var(--orange), #ffad62);
+            box-shadow: 0 0 18px rgba(255,106,0,.45);
+            transition: width .5s ease;
+        }
+
+        .loading-steps {
+            display: grid;
+            gap: 9px;
+            margin-top: 22px;
+            text-align: left;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #626b7b;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .loading-step.active {
+            color: #e5e8ee;
+        }
+
+        .loading-step.done {
+            color: #73d9aa;
+        }
+
+        .step-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #3a404c;
+            flex: 0 0 9px;
+        }
+
+        .loading-step.active .step-dot {
             background: var(--orange);
-            animation: loadingMove 1.2s infinite ease-in-out;
+            box-shadow: 0 0 12px rgba(255,106,0,.7);
         }
 
-        @keyframes loadingMove {
-            0% {
-                transform: translateX(-130%);
-            }
-
-            100% {
-                transform: translateX(400%);
-            }
+        .loading-step.done .step-dot {
+            background: var(--green);
         }
 
-        /* =========================
-           RESULT
-        ========================= */
+        /* RESULT */
 
-        .result {
+        #resultSection {
             display: none;
-            margin-top: 32px;
-            padding-bottom: 50px;
+            padding-bottom: 90px;
         }
 
-        .result.active {
-            display: block;
-        }
-
-        .result-heading {
-            margin-bottom: 18px;
+        .result-header {
+            margin-bottom: 20px;
         }
 
         .result-eyebrow {
-            color: var(--orange);
-            font-size: 13px;
-            font-weight: 900;
+            color: var(--orange2);
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 7px;
         }
 
-        .result-heading h2 {
-            margin-top: 6px;
-            font-size: 31px;
-            font-weight: 900;
-            letter-spacing: -1px;
+        .result-title {
+            font-size: 34px;
+            font-weight: 850;
         }
 
         .recommendation {
+            overflow: hidden;
+        }
+
+        .recommendation-main {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 230px;
+        }
+
+        .game-image {
+            min-height: 230px;
+            background: #151922;
             position: relative;
             overflow: hidden;
-            min-height: 350px;
-            border-radius: 26px;
-            border: 1px solid var(--border-light);
-            background: #10151e;
-            box-shadow: var(--shadow);
         }
 
-        .recommendation-image {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.3;
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
-        .recommendation-image::after {
+        .game-image::after {
             content: "";
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(8,11,16,0.98) 0%,
-                    rgba(8,11,16,0.86) 38%,
-                    rgba(8,11,16,0.52) 72%,
-                    rgba(8,11,16,0.74) 100%
-                ),
-                linear-gradient(
-                    0deg,
-                    rgba(8,11,16,0.92),
-                    transparent 45%
-                );
+            background: linear-gradient(90deg, transparent 60%, rgba(13,16,23,.7));
+            pointer-events: none;
         }
 
-        .recommendation-content {
-            position: relative;
-            z-index: 2;
-            min-height: 350px;
-            padding: 38px;
+        .recommendation-info {
+            padding: 29px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
         }
 
-        .recommendation-label {
-            display: inline-flex;
-            width: fit-content;
-            padding: 7px 11px;
-            border-radius: 8px;
-            background: rgba(255,122,0,0.12);
-            border: 1px solid rgba(255,122,0,0.17);
-            color: #ffad63;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 13px;
+        .recommendation-info h3 {
+            font-size: 29px;
+            margin-bottom: 11px;
         }
 
-        .recommendation-title {
-            max-width: 820px;
-            font-size: clamp(32px, 4vw, 51px);
-            line-height: 1;
-            letter-spacing: -1.8px;
-            font-weight: 950;
+        .recommendation-info p {
+            color: #b6bfce;
+            line-height: 1.7;
+            font-size: 16px;
+            white-space: pre-line;
         }
 
-        .recommendation-advice {
-            max-width: 800px;
-            margin-top: 17px;
-            color: #d4dae4;
-            font-size: 17px;
-            line-height: 1.65;
-        }
-
-        .recommendation-actions {
+        .game-meta {
             display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 11px;
-            margin-top: 23px;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .meta {
+            padding: 8px 11px;
+            border-radius: 9px;
+            background: rgba(255,255,255,.055);
+            color: #aeb7c6;
+            font-size: 13px;
         }
 
         .steam-button {
             display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 47px;
-            padding: 0 17px;
-            border-radius: 12px;
-            background: #fff;
-            color: #10131a;
-            font-size: 14px;
-            font-weight: 900;
-            transition: 0.2s ease;
+            width: fit-content;
+            margin-top: 18px;
+            padding: 12px 17px;
+            border-radius: 11px;
+            background: rgba(255,106,0,.12);
+            border: 1px solid rgba(255,106,0,.28);
+            color: #ffb77e;
+            text-decoration: none;
+            font-weight: 700;
+            transition: .2s;
         }
 
         .steam-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+            background: rgba(255,106,0,.2);
+            border-color: rgba(255,106,0,.45);
         }
-
-        .hours-badge {
-            display: inline-flex;
-            align-items: center;
-            min-height: 47px;
-            padding: 0 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.06);
-            color: #d9dee7;
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        /* =========================
-           GAMES
-        ========================= */
 
         .games-section {
-            margin-top: 28px;
+            margin-top: 30px;
         }
 
-        .games-heading {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .games-heading h3 {
-            font-size: 23px;
-            font-weight: 900;
-        }
-
-        .games-heading span {
-            color: var(--text-3);
-            font-size: 13px;
+        .games-section h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
         }
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
         }
 
         .game-card {
             overflow: hidden;
-            border-radius: 18px;
+            border-radius: 16px;
             border: 1px solid var(--border);
-            background: rgba(15,19,27,0.9);
-            transition: 0.2s ease;
+            background: #11151d;
+            transition: .2s;
         }
 
         .game-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,255,255,0.14);
-            background: rgba(24,29,40,0.95);
-            box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,.18);
         }
 
-        .game-image {
+        .game-card img {
             width: 100%;
             aspect-ratio: 460 / 215;
             object-fit: cover;
             display: block;
-            background: #11151d;
+            background: #181c25;
         }
 
-        .game-info {
-            padding: 15px;
+        .game-card-info {
+            padding: 13px;
         }
 
-        .game-name {
-            min-height: 42px;
-            color: #f2f5fa;
+        .game-card-name {
             font-size: 15px;
-            line-height: 1.4;
-            font-weight: 850;
+            font-weight: 750;
+            line-height: 1.35;
+            min-height: 40px;
         }
 
-        .game-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 11px;
-            color: var(--text-3);
-            font-size: 12px;
+        .game-card-hours {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
         }
-
-        .game-hours {
-            color: #aeb8c8;
-        }
-
-        .game-link {
-            color: var(--orange-2);
-            font-weight: 800;
-        }
-
-        /* =========================
-           ERROR
-        ========================= */
 
         .error-box {
             display: none;
-            margin-top: 20px;
-            padding: 17px 18px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,93,115,0.2);
-            background: rgba(255,93,115,0.07);
-            color: #ffb2be;
-            font-size: 14px;
-            line-height: 1.55;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 13px;
+            border: 1px solid rgba(255,98,98,.25);
+            background: rgba(255,98,98,.06);
+            color: #ffabab;
+            line-height: 1.5;
         }
-
-        .error-box.active {
-            display: block;
-        }
-
-        /* =========================
-           FOOTER
-        ========================= */
 
         footer {
-            padding: 35px 0 45px;
-            color: #626d7d;
-            font-size: 13px;
+            padding: 35px 0 50px;
+            color: #687180;
             text-align: center;
+            border-top: 1px solid var(--border);
+            font-size: 14px;
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
+        /* MOBILE */
 
         @media (max-width: 1050px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-orb {
+                display: none;
+            }
+
             .main-grid {
                 grid-template-columns: 1fr;
             }
 
             .sidebar {
                 display: grid;
-                grid-template-columns: repeat(2, minmax(0,1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .hero {
-                max-width: 900px;
+            .games-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 720px) {
             .page {
-                width: min(100% - 24px, 1440px);
+                width: min(100% - 24px, 1420px);
             }
 
-            .header {
-                height: 72px;
+            header {
+                height: 70px;
             }
 
             .online {
                 display: none;
             }
 
-            .github-btn {
-                padding: 9px 12px;
-                font-size: 12px;
-            }
-
-            .logo {
-                font-size: 17px;
-            }
-
-            .logo-eye {
-                width: 37px;
-                height: 37px;
-            }
-
             .hero {
-                padding: 58px 0 42px;
+                padding: 55px 0 35px;
             }
 
-            .hero h1 {
-                font-size: 46px;
-                letter-spacing: -2.7px;
+            h1 {
+                font-size: 43px;
+                letter-spacing: -2.5px;
             }
 
             .hero-description {
-                font-size: 17px;
+                font-size: 16px;
             }
 
-            .form-panel {
+            .form-card {
                 padding: 22px;
             }
 
-            .filters-grid {
+            .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .mode-box {
+                grid-column: auto;
+                grid-template-columns: 1fr;
+            }
+
+            .submit-button {
+                grid-column: auto;
             }
 
             .sidebar {
                 grid-template-columns: 1fr;
             }
 
+            .recommendation-main {
+                grid-template-columns: 1fr;
+            }
+
+            .game-image {
+                min-height: 190px;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .loading-card {
+                padding: 27px 20px;
+            }
+        }
+
+        @media (max-width: 460px) {
             .games-grid {
                 grid-template-columns: 1fr;
             }
 
-            .recommendation-content {
-                padding: 26px;
+            .header-right .github {
+                display: none;
             }
 
-            .recommendation {
-                min-height: 390px;
+            h1 {
+                font-size: 38px;
             }
 
-            .recommendation-content {
-                min-height: 390px;
-            }
-
-            .recommendation-title {
-                font-size: 34px;
-            }
-
-            .select-menu {
-                max-height: 310px;
-            }
-        }
-
-        @media (max-width: 430px) {
-            .hero h1 {
-                font-size: 39px;
-            }
-
-            .hero-description {
-                font-size: 16px;
-            }
-
-            .panel-title {
-                font-size: 23px;
-            }
-
-            .text-input {
-                font-size: 16px;
-            }
-
-            .select-main {
-                font-size: 15px;
-            }
-
-            .recommendation-title {
-                font-size: 30px;
+            .card-title {
+                font-size: 22px;
             }
         }
     </style>
@@ -1295,1166 +927,429 @@
 
 <div class="page">
 
-    <!-- HEADER -->
-    <header class="header">
-
-        <a href="#" class="logo">
-            <span class="logo-eye">
-                <span class="eye"></span>
-            </span>
-
-            <span>
-                Steam <span class="brand-orange">Advisor</span>
-            </span>
-        </a>
+    <header>
+        <div class="logo">
+            <div class="logo-eye">◉</div>
+            <span>Steam Advisor</span>
+        </div>
 
         <div class="header-right">
-
             <div class="online">
                 <span class="online-dot"></span>
                 Система активна
             </div>
 
             <a
-                class="github-btn"
+                class="github"
                 href="https://github.com/shadyf315/steam-advisor"
                 target="_blank"
                 rel="noopener noreferrer"
             >
                 GitHub
             </a>
-
         </div>
-
     </header>
 
-    <!-- HERO -->
     <section class="hero">
+        <div class="hero-grid">
 
-        <div class="eyebrow">
-            <span class="eyebrow-dot"></span>
-            Steam Game Intelligence
+            <div>
+                <div class="eyebrow">Steam Game Intelligence</div>
+
+                <h1>
+                    Мы смотрим на игры,<br>
+                    чтобы ты играл в <span>лучшее.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Steam Advisor анализирует твою библиотеку, часы игры,
+                    любимые жанры и настроение, а затем подбирает игру,
+                    которая действительно может тебе понравиться.
+                </p>
+            </div>
+
+            <div class="hero-orb"></div>
+
         </div>
-
-        <h1>
-            Мы смотрим на игры,
-            чтобы ты играл в
-            <span>лучшее.</span>
-        </h1>
-
-        <p class="hero-description">
-            Steam Advisor анализирует твою игровую историю,
-            часы в играх и предпочтения, чтобы найти то,
-            во что тебе действительно захочется играть.
-        </p>
-
-        <div class="hero-meta">
-            <div class="meta-chip">🎮 Анализ библиотеки</div>
-            <div class="meta-chip">🌍 Поиск по Steam</div>
-            <div class="meta-chip">🤖 AI-рекомендации</div>
-            <div class="meta-chip">🚫 Без невышедших игр</div>
-        </div>
-
     </section>
 
-    <!-- MAIN -->
     <main class="main-grid">
 
-        <!-- FORM -->
-        <section>
+        <section class="card form-card">
 
-            <div class="panel form-panel">
+            <div class="card-title">
+                Найти игру
+            </div>
 
-                <h2 class="panel-title">
-                    Найдём твою следующую игру
-                </h2>
+            <div class="card-subtitle">
+                Заполни несколько параметров — остальное сделает система.
+            </div>
 
-                <p class="panel-subtitle">
-                    Укажи Steam-профиль и настрой поиск.
-                    Advisor сам определит, что тебе подходит.
-                </p>
+            <form id="recommendForm">
 
-                <form
-                    class="form"
-                    id="recommendForm"
-                >
+                <div class="form-grid">
 
-                    <!-- PROFILE -->
-                    <div class="field">
-
-                        <label
-                            class="field-label"
-                            for="steamProfile"
-                        >
-                            Steam профиль
+                    <div class="field full">
+                        <label for="steamProfile">
+                            Steam-профиль
                         </label>
 
-                        <div class="input-wrap">
-                            <input
-                                class="text-input"
-                                id="steamProfile"
-                                type="text"
-                                placeholder="https://steamcommunity.com/id/username"
-                                autocomplete="off"
-                                required
-                            >
-                        </div>
-
-                        <div class="field-hint">
-                            Профиль и список игр должны быть открыты.
-                        </div>
-
-                    </div>
-
-                    <!-- MODE -->
-                    <div class="mode-box">
-
-                        <div class="mode-box-title">
-                            Режим поиска
-                        </div>
-
-                        <div
-                            class="select"
-                            id="modeSelect"
+                        <input
+                            id="steamProfile"
+                            type="text"
+                            placeholder="https://steamcommunity.com/id/username"
+                            autocomplete="off"
+                            required
                         >
 
-                            <button
-                                type="button"
-                                class="select-button"
-                                aria-haspopup="listbox"
-                                aria-expanded="false"
-                            >
-
-                                <span class="select-current">
-
-                                    <span
-                                        class="select-icon"
-                                        id="modeIcon"
-                                    >
-                                        🎮
-                                    </span>
-
-                                    <span class="select-text">
-
-                                        <span
-                                            class="select-main"
-                                            id="modeText"
-                                        >
-                                            Из моей библиотеки
-                                        </span>
-
-                                        <span
-                                            class="select-small"
-                                            id="modeSmall"
-                                        >
-                                            Рекомендации среди твоих игр
-                                        </span>
-
-                                    </span>
-
-                                </span>
-
-                                <span class="select-arrow"></span>
-
-                            </button>
-
-                            <div
-                                class="select-menu"
-                                role="listbox"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="select-option selected"
-                                    data-value="library"
-                                    data-icon="🎮"
-                                    data-small="Рекомендации среди твоих игр"
-                                >
-
-                                    <span class="option-icon">🎮</span>
-
-                                    <span class="option-info">
-                                        <span class="option-title">
-                                            Из моей библиотеки
-                                        </span>
-
-                                        <span class="option-description">
-                                            Найти лучшее среди уже имеющихся игр
-                                        </span>
-                                    </span>
-
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="select-option"
-                                    data-value="global"
-                                    data-icon="🌍"
-                                    data-small="Ищем новые игры во всём Steam"
-                                >
-
-                                    <span class="option-icon">🌍</span>
-
-                                    <span class="option-info">
-                                        <span class="option-title">
-                                            Из всего Steam
-                                        </span>
-
-                                        <span class="option-description">
-                                            Найти новые игры вне твоей библиотеки
-                                        </span>
-                                    </span>
-
-                                </button>
-
-                            </div>
-
+                        <div class="field-hint">
+                            Профиль должен быть открытым.
                         </div>
-
                     </div>
 
-                    <input
-                        type="hidden"
-                        id="mode"
-                        value="library"
-                    >
+                    <div class="field full">
+                        <label>
+                            Откуда искать игру?
+                        </label>
 
-                    <!-- FILTERS -->
-                    <div class="filters-grid">
+                        <div class="mode-box">
 
-                        <!-- MOOD -->
-                        <div class="field">
-
-                            <label class="field-label">
-                                Настроение
-                            </label>
-
-                            <div
-                                class="select"
-                                data-select="mood"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="select-button"
+                            <div class="mode-option">
+                                <input
+                                    type="radio"
+                                    name="mode"
+                                    id="modeLibrary"
+                                    value="library"
                                 >
 
-                                    <span class="select-current">
+                                <label
+                                    class="mode-label"
+                                    for="modeLibrary"
+                                >
+                                    <div class="mode-icon">🎮</div>
 
-                                        <span
-                                            class="select-icon"
-                                            data-current-icon
-                                        >
-                                            😌
-                                        </span>
-
-                                        <span class="select-text">
-
-                                            <span
-                                                class="select-main"
-                                                data-current-text
-                                            >
-                                                Расслабиться
-                                            </span>
-
-                                            <span
-                                                class="select-small"
-                                                data-current-small
-                                            >
-                                                Спокойный игровой вечер
-                                            </span>
-
-                                        </span>
-
-                                    </span>
-
-                                    <span class="select-arrow"></span>
-
-                                </button>
-
-                                <div class="select-menu">
-
-                                    <button
-                                        type="button"
-                                        class="select-option selected"
-                                        data-value="расслабиться"
-                                        data-icon="😌"
-                                        data-small="Спокойный игровой вечер"
-                                    >
-                                        <span class="option-icon">😌</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Расслабиться
-                                            </span>
-                                            <span class="option-description">
-                                                Спокойные и ненапряжные игры
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="подумать"
-                                        data-icon="🧠"
-                                        data-small="Стратегия и мозговой челлендж"
-                                    >
-                                        <span class="option-icon">🧠</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Подумать
-                                            </span>
-                                            <span class="option-description">
-                                                Стратегии, тактика, логика
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="побеситься"
-                                        data-icon="🔥"
-                                        data-small="Экшен и много движухи"
-                                    >
-                                        <span class="option-icon">🔥</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Побеситься
-                                            </span>
-                                            <span class="option-description">
-                                                Экшен, шутеры, гонки и драйв
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="попугаться"
-                                        data-icon="👻"
-                                        data-small="Хорроры и напряжение"
-                                    >
-                                        <span class="option-icon">👻</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Попугаться
-                                            </span>
-                                            <span class="option-description">
-                                                Хоррор, выживание и мистика
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="любое"
-                                        data-icon="✨"
-                                        data-small="Без ограничения по настроению"
-                                    >
-                                        <span class="option-icon">✨</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Любое
-                                            </span>
-                                            <span class="option-description">
-                                                Пусть Advisor решает сам
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                </div>
-
+                                    <div class="mode-text">
+                                        <strong>Из моей библиотеки</strong>
+                                        <small>
+                                            Выбрать то, во что ты ещё почти не играл
+                                        </small>
+                                    </div>
+                                </label>
                             </div>
 
-                            <input
-                                type="hidden"
-                                id="mood"
-                                value="расслабиться"
-                            >
-
-                        </div>
-
-                        <!-- LENGTH -->
-                        <div class="field">
-
-                            <label class="field-label">
-                                Продолжительность
-                            </label>
-
-                            <div
-                                class="select"
-                                data-select="length"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="select-button"
+                            <div class="mode-option">
+                                <input
+                                    type="radio"
+                                    name="mode"
+                                    id="modeGlobal"
+                                    value="global"
+                                    checked
                                 >
 
-                                    <span class="select-current">
-
-                                        <span
-                                            class="select-icon"
-                                            data-current-icon
-                                        >
-                                            ⏱️
-                                        </span>
-
-                                        <span class="select-text">
-
-                                            <span
-                                                class="select-main"
-                                                data-current-text
-                                            >
-                                                Средняя
-                                            </span>
-
-                                            <span
-                                                class="select-small"
-                                                data-current-small
-                                            >
-                                                Не слишком короткая и не бесконечная
-                                            </span>
-
-                                        </span>
-
-                                    </span>
-
-                                    <span class="select-arrow"></span>
-
-                                </button>
-
-                                <div class="select-menu">
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="короткая"
-                                        data-icon="⚡"
-                                        data-small="Быстро пройти или поиграть немного"
-                                    >
-                                        <span class="option-icon">⚡</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Короткая
-                                            </span>
-                                            <span class="option-description">
-                                                Быстрые игровые сессии
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option selected"
-                                        data-value="средняя"
-                                        data-icon="⏱️"
-                                        data-small="Не слишком короткая и не бесконечная"
-                                    >
-                                        <span class="option-icon">⏱️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Средняя
-                                            </span>
-                                            <span class="option-description">
-                                                Оптимальный баланс
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="длинная"
-                                        data-icon="🏆"
-                                        data-small="Большая игра на много часов"
-                                    >
-                                        <span class="option-icon">🏆</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Длинная
-                                            </span>
-                                            <span class="option-description">
-                                                Большие кампании и долгие проекты
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="любая"
-                                        data-icon="✨"
-                                        data-small="Продолжительность не важна"
-                                    >
-                                        <span class="option-icon">✨</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Любая
-                                            </span>
-                                            <span class="option-description">
-                                                Без ограничения по длине
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                            <input
-                                type="hidden"
-                                id="length"
-                                value="средняя"
-                            >
-
-                        </div>
-
-                        <!-- GENRE -->
-                        <div class="field">
-
-                            <label class="field-label">
-                                Категория
-                            </label>
-
-                            <div
-                                class="select"
-                                data-select="genre"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="select-button"
+                                <label
+                                    class="mode-label"
+                                    for="modeGlobal"
                                 >
+                                    <div class="mode-icon">🌎</div>
 
-                                    <span class="select-current">
-
-                                        <span
-                                            class="select-icon"
-                                            data-current-icon
-                                        >
-                                            ✨
-                                        </span>
-
-                                        <span class="select-text">
-
-                                            <span
-                                                class="select-main"
-                                                data-current-text
-                                            >
-                                                Любой жанр
-                                            </span>
-
-                                            <span
-                                                class="select-small"
-                                                data-current-small
-                                            >
-                                                Все подходящие категории
-                                            </span>
-
-                                        </span>
-
-                                    </span>
-
-                                    <span class="select-arrow"></span>
-
-                                </button>
-
-                                <div class="select-menu">
-
-                                    <button type="button" class="select-option selected" data-value="любой" data-icon="✨" data-small="Все подходящие категории">
-                                        <span class="option-icon">✨</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Любой жанр</span>
-                                            <span class="option-description">Без ограничения</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Экшен" data-icon="🎯" data-small="Динамичные игры">
-                                        <span class="option-icon">🎯</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Экшен</span>
-                                            <span class="option-description">Динамика и сражения</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Шутеры" data-icon="🔫" data-small="FPS и стрельба">
-                                        <span class="option-icon">🔫</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Шутеры</span>
-                                            <span class="option-description">FPS, TPS и тактические шутеры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Хоррор" data-icon="👻" data-small="Страх и напряжение">
-                                        <span class="option-icon">👻</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Хоррор</span>
-                                            <span class="option-description">Ужасы и психологический хоррор</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Выживание" data-icon="🧟" data-small="Собирай ресурсы и выживай">
-                                        <span class="option-icon">🧟</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Выживание</span>
-                                            <span class="option-description">Survival и крафтинг</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="RPG" data-icon="⚔️" data-small="Персонажи, прокачка и приключения">
-                                        <span class="option-icon">⚔️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">RPG</span>
-                                            <span class="option-description">Прокачка и большие приключения</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="MMORPG" data-icon="🧙" data-small="Большие онлайн-миры">
-                                        <span class="option-icon">🧙</span>
-                                        <span class="option-info">
-                                            <span class="option-title">MMORPG</span>
-                                            <span class="option-description">Онлайн-миры и персонажи</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Стратегии" data-icon="🧠" data-small="Планирование и тактика">
-                                        <span class="option-icon">🧠</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Стратегии</span>
-                                            <span class="option-description">RTS, пошаговые и глобальные стратегии</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Тактика" data-icon="♟️" data-small="Тактические решения">
-                                        <span class="option-icon">♟️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Тактика</span>
-                                            <span class="option-description">Тактические и пошаговые игры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Головоломки" data-icon="🧩" data-small="Логика и задачи">
-                                        <span class="option-icon">🧩</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Головоломки</span>
-                                            <span class="option-description">Puzzle и логические игры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Гонки" data-icon="🏎️" data-small="Скорость и машины">
-                                        <span class="option-icon">🏎️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Гонки</span>
-                                            <span class="option-description">Автомобили и скорость</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Спорт" data-icon="⚽" data-small="Спортивные игры">
-                                        <span class="option-icon">⚽</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Спорт</span>
-                                            <span class="option-description">Футбол, баскетбол и другое</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Строительство" data-icon="🏗️" data-small="Создавай и строй">
-                                        <span class="option-icon">🏗️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Строительство</span>
-                                            <span class="option-description">Базы, здания и конструирование</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Градостроительство" data-icon="🏙️" data-small="Создавай собственный город">
-                                        <span class="option-icon">🏙️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Градостроительство</span>
-                                            <span class="option-description">City Builder и управление городами</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Симуляторы" data-icon="🎮" data-small="Реалистичные и необычные симуляторы">
-                                        <span class="option-icon">🎮</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Симуляторы</span>
-                                            <span class="option-description">Разные виды симуляторов</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Авиация" data-icon="✈️" data-small="Самолёты и полёты">
-                                        <span class="option-icon">✈️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Авиация</span>
-                                            <span class="option-description">Полёты и авиационные симуляторы</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Грузовики" data-icon="🚛" data-small="Дальние поездки">
-                                        <span class="option-icon">🚛</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Грузовики</span>
-                                            <span class="option-description">Truck Simulator и перевозки</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Поезда" data-icon="🚂" data-small="Железные дороги">
-                                        <span class="option-icon">🚂</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Поезда</span>
-                                            <span class="option-description">Поезда и железнодорожные симуляторы</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Фермы" data-icon="🌾" data-small="Фермерство и хозяйство">
-                                        <span class="option-icon">🌾</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Фермы</span>
-                                            <span class="option-description">Фермы, растения и животные</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Автоматизация" data-icon="🤖" data-small="Фабрики и автоматизация">
-                                        <span class="option-icon">🤖</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Автоматизация</span>
-                                            <span class="option-description">Фабрики, производство и логистика</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Менеджмент" data-icon="📊" data-small="Управление и развитие">
-                                        <span class="option-icon">📊</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Менеджмент</span>
-                                            <span class="option-description">Бизнес и управление</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Экономика" data-icon="💰" data-small="Торговля и экономика">
-                                        <span class="option-icon">💰</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Экономика</span>
-                                            <span class="option-description">Торговля, бизнес и деньги</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Приключения" data-icon="🗺️" data-small="Исследование и путешествия">
-                                        <span class="option-icon">🗺️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Приключения</span>
-                                            <span class="option-description">Adventure и исследование</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Инди" data-icon="🎭" data-small="Необычные авторские игры">
-                                        <span class="option-icon">🎭</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Инди</span>
-                                            <span class="option-description">Независимые проекты</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Стелс" data-icon="🥷" data-small="Скрытность и проникновение">
-                                        <span class="option-icon">🥷</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Стелс</span>
-                                            <span class="option-description">Скрытность и тактика</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Файтинг" data-icon="🥊" data-small="Сражения один на один">
-                                        <span class="option-icon">🥊</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Файтинг</span>
-                                            <span class="option-description">Боевые игры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Карточные" data-icon="🃏" data-small="Карты и колоды">
-                                        <span class="option-icon">🃏</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Карточные</span>
-                                            <span class="option-description">Card Game и Deckbuilder</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Roguelike" data-icon="🎲" data-small="Забеги и случайные события">
-                                        <span class="option-icon">🎲</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Roguelike</span>
-                                            <span class="option-description">Roguelike и Roguelite</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Песочницы" data-icon="🧱" data-small="Играй как хочешь">
-                                        <span class="option-icon">🧱</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Песочницы</span>
-                                            <span class="option-description">Sandbox и свободная игра</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Открытый мир" data-icon="🌎" data-small="Большие свободные миры">
-                                        <span class="option-icon">🌎</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Открытый мир</span>
-                                            <span class="option-description">Open World</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Платформеры" data-icon="🏃" data-small="Прыжки и платформы">
-                                        <span class="option-icon">🏃</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Платформеры</span>
-                                            <span class="option-description">Platformer</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Музыка и ритм" data-icon="🎵" data-small="Музыка и ритм">
-                                        <span class="option-icon">🎵</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Музыка и ритм</span>
-                                            <span class="option-description">Rhythm и музыкальные игры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Детективы" data-icon="🕵️" data-small="Расследования и загадки">
-                                        <span class="option-icon">🕵️</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Детективы</span>
-                                            <span class="option-description">Mystery и расследования</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Sci-Fi" data-icon="🧪" data-small="Космос и технологии">
-                                        <span class="option-icon">🧪</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Sci-Fi</span>
-                                            <span class="option-description">Научная фантастика</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Фэнтези" data-icon="🏰" data-small="Магия и фантастические миры">
-                                        <span class="option-icon">🏰</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Фэнтези</span>
-                                            <span class="option-description">Магия и фантастические миры</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Кооператив" data-icon="🧑‍🤝‍🧑" data-small="Игры с друзьями">
-                                        <span class="option-icon">🧑‍🤝‍🧑</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Кооператив</span>
-                                            <span class="option-description">Co-op</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Мультиплеер" data-icon="👥" data-small="Онлайн-игры">
-                                        <span class="option-icon">👥</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Мультиплеер</span>
-                                            <span class="option-description">Онлайн и multiplayer</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" class="select-option" data-value="Крафтинг" data-icon="🔨" data-small="Создание предметов">
-                                        <span class="option-icon">🔨</span>
-                                        <span class="option-info">
-                                            <span class="option-title">Крафтинг</span>
-                                            <span class="option-description">Создание и сбор ресурсов</span>
-                                        </span>
-                                    </button>
-
-                                </div>
-
+                                    <div class="mode-text">
+                                        <strong>Из всего Steam</strong>
+                                        <small>
+                                            Найти новую игру вне твоей библиотеки
+                                        </small>
+                                    </div>
+                                </label>
                             </div>
 
-                            <input
-                                type="hidden"
-                                id="genre"
-                                value="любой"
-                            >
-
                         </div>
+                    </div>
 
-                        <!-- PLAYERS -->
-                        <div class="field">
+                    <div class="field">
+                        <label for="mood">
+                            Настроение
+                        </label>
 
-                            <label class="field-label">
-                                Игроки
-                            </label>
-
-                            <div
-                                class="select"
-                                data-select="players"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="select-button"
-                                >
-
-                                    <span class="select-current">
-
-                                        <span
-                                            class="select-icon"
-                                            data-current-icon
-                                        >
-                                            👤
-                                        </span>
-
-                                        <span class="select-text">
-
-                                            <span
-                                                class="select-main"
-                                                data-current-text
-                                            >
-                                                Не важно
-                                            </span>
-
-                                            <span
-                                                class="select-small"
-                                                data-current-small
-                                            >
-                                                Подойдёт любой режим
-                                            </span>
-
-                                        </span>
-
-                                    </span>
-
-                                    <span class="select-arrow"></span>
-
-                                </button>
-
-                                <div class="select-menu">
-
-                                    <button
-                                        type="button"
-                                        class="select-option selected"
-                                        data-value="не важно"
-                                        data-icon="👤"
-                                        data-small="Подойдёт любой режим"
-                                    >
-                                        <span class="option-icon">👤</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Не важно
-                                            </span>
-                                            <span class="option-description">
-                                                Любой тип игры
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="одиночная"
-                                        data-icon="🎮"
-                                        data-small="Только для одного игрока"
-                                    >
-                                        <span class="option-icon">🎮</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Одиночная
-                                            </span>
-                                            <span class="option-description">
-                                                Single-player
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="кооператив"
-                                        data-icon="🤝"
-                                        data-small="Для игры вместе с друзьями"
-                                    >
-                                        <span class="option-icon">🤝</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Кооператив
-                                            </span>
-                                            <span class="option-description">
-                                                Co-op
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="select-option"
-                                        data-value="мультиплеер"
-                                        data-icon="👥"
-                                        data-small="Онлайн и соревновательные игры"
-                                    >
-                                        <span class="option-icon">👥</span>
-                                        <span class="option-info">
-                                            <span class="option-title">
-                                                Мультиплеер
-                                            </span>
-                                            <span class="option-description">
-                                                Multiplayer / Online
-                                            </span>
-                                        </span>
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                            <input
-                                type="hidden"
-                                id="players"
-                                value="не важно"
-                            >
-
+                        <div class="select-wrap">
+                            <select id="mood">
+                                <option value="расслабиться">😌 Расслабиться</option>
+                                <option value="подумать">🧠 Подумать</option>
+                                <option value="побеситься">🔥 Побеситься</option>
+                                <option value="попугаться">👻 Попугаться</option>
+                                <option value="посоревноваться">🏆 Посоревноваться</option>
+                                <option value="погрузиться в историю">📖 Погрузиться в историю</option>
+                                <option value="исследовать">🗺️ Исследовать мир</option>
+                                <option value="построить что-нибудь">🏗️ Построить что-нибудь</option>
+                                <option value="поиграть с друзьями">👥 Поиграть с друзьями</option>
+                                <option value="почувствовать себя героем">⚔️ Почувствовать себя героем</option>
+                                <option value="поиграть недолго">⏱️ Поиграть недолго</option>
+                                <option value="что-нибудь необычное">✨ Что-нибудь необычное</option>
+                            </select>
                         </div>
+                    </div>
 
+                    <div class="field">
+                        <label for="length">
+                            Сколько времени?
+                        </label>
+
+                        <div class="select-wrap">
+                            <select id="length">
+                                <option value="короткая">⚡ Короткая</option>
+                                <option value="средняя" selected>🎮 Средняя</option>
+                                <option value="длинная">🕐 Длинная</option>
+                                <option value="очень длинная">📅 Очень длинная</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="genre">
+                            Жанр
+                        </label>
+
+                        <div class="select-wrap">
+                            <select id="genre">
+
+                                <option value="любой">
+                                    🎲 Любой жанр
+                                </option>
+
+                                <option value="action">
+                                    💥 Экшен
+                                </option>
+
+                                <option value="shooter">
+                                    🔫 Шутер
+                                </option>
+
+                                <option value="fps">
+                                    🎯 FPS
+                                </option>
+
+                                <option value="rpg">
+                                    ⚔️ RPG
+                                </option>
+
+                                <option value="open world">
+                                    🌎 Открытый мир
+                                </option>
+
+                                <option value="adventure">
+                                    🧭 Приключение
+                                </option>
+
+                                <option value="story">
+                                    📖 Сюжетные
+                                </option>
+
+                                <option value="horror">
+                                    👻 Хоррор
+                                </option>
+
+                                <option value="survival">
+                                    🏕️ Выживание
+                                </option>
+
+                                <option value="strategy">
+                                    🧠 Стратегия
+                                </option>
+
+                                <option value="tactical">
+                                    ♟️ Тактика
+                                </option>
+
+                                <option value="simulation">
+                                    🛠️ Симулятор
+                                </option>
+
+                                <option value="management">
+                                    📊 Менеджмент
+                                </option>
+
+                                <option value="city builder">
+                                    🏙️ Градостроительство
+                                </option>
+
+                                <option value="building">
+                                    🧱 Строительство
+                                </option>
+
+                                <option value="sandbox">
+                                    🪐 Песочница
+                                </option>
+
+                                <option value="automation">
+                                    ⚙️ Автоматизация
+                                </option>
+
+                                <option value="racing">
+                                    🏎️ Гонки
+                                </option>
+
+                                <option value="sports">
+                                    ⚽ Спорт
+                                </option>
+
+                                <option value="fighting">
+                                    🥊 Файтинг
+                                </option>
+
+                                <option value="platformer">
+                                    🕹️ Платформер
+                                </option>
+
+                                <option value="puzzle">
+                                    🧩 Головоломки
+                                </option>
+
+                                <option value="roguelike">
+                                    🎰 Roguelike
+                                </option>
+
+                                <option value="co-op">
+                                    🤝 Кооператив
+                                </option>
+
+                                <option value="multiplayer">
+                                    🌐 Мультиплеер
+                                </option>
+
+                                <option value="survival horror">
+                                    🧟 Survival Horror
+                                </option>
+
+                                <option value="stealth">
+                                    🥷 Стелс
+                                </option>
+
+                                <option value="indie">
+                                    💎 Инди
+                                </option>
+
+                                <option value="relaxing">
+                                    😌 Спокойные
+                                </option>
+
+                                <option value="exploration">
+                                    🔭 Исследование
+                                </option>
+
+                                <option value="flight">
+                                    ✈️ Полёты
+                                </option>
+
+                                <option value="driving">
+                                    🚗 Вождение
+                                </option>
+
+                                <option value="farming">
+                                    🌾 Ферма
+                                </option>
+
+                                <option value="card">
+                                    🃏 Карточные
+                                </option>
+
+                                <option value="turn based">
+                                    🔄 Пошаговые
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="players">
+                            Игроки
+                        </label>
+
+                        <div class="select-wrap">
+                            <select id="players">
+                                <option value="не важно">🎮 Не важно</option>
+                                <option value="один игрок">👤 Один игрок</option>
+                                <option value="кооператив">🤝 Кооператив</option>
+                                <option value="мультиплеер">🌐 Мультиплеер</option>
+                                <option value="с друзьями">👥 С друзьями</option>
+                                <option value="соревновательная">🏆 Соревновательная</option>
+                            </select>
+                        </div>
                     </div>
 
                     <button
-                        class="submit-btn"
-                        id="submitBtn"
                         type="submit"
+                        class="submit-button"
+                        id="submitButton"
                     >
-                        <span>Найти игру</span>
-                        <span class="submit-arrow">→</span>
+                        ✨ Найти мою следующую игру
                     </button>
 
-                </form>
+                </div>
 
-                <div
-                    class="error-box"
-                    id="errorBox"
-                ></div>
+            </form>
 
-            </div>
-
-            <!-- LOADING -->
             <div
-                class="loading"
-                id="loading"
-            >
-
-                <div class="loading-eye"></div>
-
-                <div class="loading-title">
-                    Анализируем Steam...
-                </div>
-
-                <div class="loading-text">
-                    Смотрим библиотеку, часы, жанры и ищем подходящие игры.
-                </div>
-
-                <div class="loading-bar"></div>
-
-            </div>
+                class="error-box"
+                id="errorBox"
+            ></div>
 
         </section>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
 
-            <div class="side-card">
+            <div class="card side-card">
+                <div class="side-number">01</div>
 
-                <div class="side-icon">🔗</div>
-
-                <h3>
+                <div class="side-title">
                     Просто вставь ссылку
-                </h3>
-
-                <p>
-                    Не нужно вручную вводить SteamID.
-                    Advisor сам определит профиль по обычной
-                    ссылке Steam.
-                </p>
-
-            </div>
-
-            <div class="side-card">
-
-                <div class="side-icon">🧠</div>
-
-                <h3>
-                    Как это работает
-                </h3>
-
-                <div class="steps">
-
-                    <div class="step">
-                        <span class="step-num">1</span>
-                        <span class="step-text">
-                            Получаем твою библиотеку Steam.
-                        </span>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-num">2</span>
-                        <span class="step-text">
-                            Анализируем игры и количество часов.
-                        </span>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-num">3</span>
-                        <span class="step-text">
-                            Определяем твои игровые предпочтения.
-                        </span>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-num">4</span>
-                        <span class="step-text">
-                            AI выбирает наиболее подходящий вариант.
-                        </span>
-                    </div>
-
                 </div>
 
+                <div class="side-text">
+                    Можно использовать обычную ссылку на Steam-профиль
+                    или прямой SteamID64.
+                </div>
             </div>
 
-            <div class="side-card">
+            <div class="card side-card">
+                <div class="side-number">02</div>
 
-                <div class="side-icon">💡</div>
-
-                <h3>
-                    Совет
-                </h3>
-
-                <p>
-                    В режиме «Из всего Steam» Advisor
-                    специально исключает игры, которые уже
-                    находятся в твоей библиотеке.
-                </p>
-
-            </div>
-
-            <div class="side-card status-card">
-
-                <div class="status-line">
-
-                    <div class="status-label">
-                        <span class="online-dot"></span>
-                        Анализ Steam
-                    </div>
-
-                    <div class="status-value">
-                        ONLINE
-                    </div>
-
+                <div class="side-title">
+                    Профиль должен быть открыт
                 </div>
 
-                <p style="margin-top: 13px;">
-                    Каталог проверяется перед рекомендацией,
-                    поэтому невышедшие игры не должны попадать
-                    в результат.
-                </p>
+                <div class="side-text">
+                    Steam Advisor должен иметь возможность увидеть
+                    твою библиотеку и игровую статистику.
+                </div>
+            </div>
+
+            <div class="card side-card">
+                <div class="side-number">03</div>
+
+                <div class="side-title">
+                    Чем больше играешь — тем лучше
+                </div>
+
+                <div class="side-text">
+                    Система использует игровые часы и названия игр,
+                    чтобы понять твои предпочтения.
+                </div>
+            </div>
+
+            <div class="card side-card">
+
+                <div class="side-title">
+                    Система анализа
+                </div>
+
+                <div class="side-text">
+                    Steam → библиотека → вкусы → поиск кандидатов →
+                    AI-анализ → рекомендация.
+                </div>
+
+                <div class="system-status">
+                    <span></span>
+                    Анализатор работает
+                </div>
 
             </div>
 
@@ -2462,69 +1357,64 @@
 
     </main>
 
-    <!-- RESULT -->
-    <section
-        class="result"
-        id="result"
-    >
+    <section id="resultSection">
 
-        <div class="result-heading">
-
+        <div class="result-header">
             <div class="result-eyebrow">
                 Recommendation
             </div>
 
-            <h2>
-                Вот что стоит попробовать
-            </h2>
-
+            <div class="result-title">
+                Твоя следующая игра
+            </div>
         </div>
 
-        <div class="recommendation">
+        <div class="card recommendation">
 
-            <div
-                class="recommendation-image"
-                id="recommendationImage"
-            ></div>
+            <div class="recommendation-main">
 
-            <div class="recommendation-content">
+                <div
+                    class="game-image"
+                    id="recommendedImage"
+                ></div>
 
-                <div class="recommendation-label">
-                    AI choice
-                </div>
+                <div class="recommendation-info">
 
-                <h3
-                    class="recommendation-title"
-                    id="recommendationTitle"
-                >
-                    —
-                </h3>
+                    <h3 id="recommendedName">
+                        —
+                    </h3>
 
-                <p
-                    class="recommendation-advice"
-                    id="recommendationAdvice"
-                >
-                    —
-                </p>
+                    <p id="adviceText">
+                        —
+                    </p>
 
-                <div class="recommendation-actions">
+                    <div class="game-meta">
+
+                        <div
+                            class="meta"
+                            id="recommendedHours"
+                        >
+                            🎮 Часы: —
+                        </div>
+
+                        <div
+                            class="meta"
+                            id="recommendedMode"
+                        >
+                            🌎 Режим: —
+                        </div>
+
+                    </div>
 
                     <a
-                        class="steam-button"
-                        id="steamButton"
                         href="#"
                         target="_blank"
                         rel="noopener noreferrer"
+                        class="steam-button"
+                        id="steamButton"
                     >
                         Открыть в Steam →
                     </a>
-
-                    <div
-                        class="hours-badge"
-                        id="hoursBadge"
-                    >
-                        —
-                    </div>
 
                 </div>
 
@@ -2534,17 +1424,9 @@
 
         <div class="games-section">
 
-            <div class="games-heading">
-
-                <h3>
-                    Ещё варианты
-                </h3>
-
-                <span id="gamesCount">
-                    Подобрано Advisor
-                </span>
-
-            </div>
+            <h3>
+                Другие подходящие игры
+            </h3>
 
             <div
                 class="games-grid"
@@ -2556,1005 +1438,861 @@
     </section>
 
     <footer>
-        Steam Advisor · Анализ игрового вкуса ·
-        Сделано для поиска хороших игр
+        Steam Advisor · Анализ игровой библиотеки
     </footer>
 
 </div>
 
+
+<!-- LOADING OVERLAY -->
+
+<div
+    class="loading-overlay"
+    id="loadingOverlay"
+>
+
+    <div class="loading-card">
+
+        <div class="loading-eye">
+            ◉
+        </div>
+
+        <div class="loading-title">
+            Анализируем Steam
+        </div>
+
+        <div
+            class="loading-text"
+            id="loadingText"
+        >
+            Подключаемся к Steam...
+        </div>
+
+        <div class="loading-bar">
+            <div
+                class="loading-progress"
+                id="loadingProgress"
+            ></div>
+        </div>
+
+        <div class="loading-steps">
+
+            <div
+                class="loading-step active"
+                id="step1"
+            >
+                <span class="step-dot"></span>
+                Получаем Steam-профиль
+            </div>
+
+            <div
+                class="loading-step"
+                id="step2"
+            >
+                <span class="step-dot"></span>
+                Анализируем библиотеку
+            </div>
+
+            <div
+                class="loading-step"
+                id="step3"
+            >
+                <span class="step-dot"></span>
+                Определяем игровой вкус
+            </div>
+
+            <div
+                class="loading-step"
+                id="step4"
+            >
+                <span class="step-dot"></span>
+                Ищем подходящие игры
+            </div>
+
+            <div
+                class="loading-step"
+                id="step5"
+            >
+                <span class="step-dot"></span>
+                Выбираем лучший вариант
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
-    const WORKER_URL =
-        "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
 
-    const form =
-        document.getElementById("recommendForm");
+const WORKER_URL =
+    "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
 
-    const loading =
-        document.getElementById("loading");
 
-    const result =
-        document.getElementById("result");
+const form = document.getElementById("recommendForm");
+const submitButton = document.getElementById("submitButton");
+const errorBox = document.getElementById("errorBox");
 
-    const errorBox =
-        document.getElementById("errorBox");
+const loadingOverlay =
+    document.getElementById("loadingOverlay");
 
-    const submitBtn =
-        document.getElementById("submitBtn");
+const loadingText =
+    document.getElementById("loadingText");
 
-    const recommendationTitle =
-        document.getElementById("recommendationTitle");
+const loadingProgress =
+    document.getElementById("loadingProgress");
 
-    const recommendationAdvice =
-        document.getElementById("recommendationAdvice");
+const resultSection =
+    document.getElementById("resultSection");
 
-    const recommendationImage =
-        document.getElementById("recommendationImage");
 
-    const steamButton =
-        document.getElementById("steamButton");
+let loadingTimer = null;
+let loadingStage = 0;
 
-    const hoursBadge =
-        document.getElementById("hoursBadge");
 
-    const gamesGrid =
-        document.getElementById("gamesGrid");
+function setLoadingStage(stage, text, progress) {
 
-    const gamesCount =
-        document.getElementById("gamesCount");
+    loadingStage = stage;
 
-    /*
-     * ============================================
-     * CUSTOM SELECTS
-     * ============================================
-     */
+    loadingText.textContent = text;
+    loadingProgress.style.width = progress + "%";
 
-    let openedSelect = null;
+    for (let i = 1; i <= 5; i++) {
 
-    function closeAllSelects(except = null) {
-        document
-            .querySelectorAll(".select.open")
-            .forEach(select => {
-                if (select !== except) {
-                    select.classList.remove("open");
+        const step =
+            document.getElementById("step" + i);
 
-                    const button =
-                        select.querySelector(
-                            ".select-button"
-                        );
+        step.classList.remove("active");
+        step.classList.remove("done");
 
-                    if (button) {
-                        button.setAttribute(
-                            "aria-expanded",
-                            "false"
-                        );
-                    }
-                }
-            });
+        if (i < stage) {
+            step.classList.add("done");
+        }
 
-        if (openedSelect !== except) {
-            openedSelect = null;
+        if (i === stage) {
+            step.classList.add("active");
         }
     }
+}
 
-    function setupSelect(select) {
-        const button =
-            select.querySelector(
-                ".select-button"
-            );
 
-        const menu =
-            select.querySelector(
-                ".select-menu"
-            );
+function startLoading() {
 
-        const options =
-            select.querySelectorAll(
-                ".select-option"
-            );
+    loadingOverlay.classList.add("show");
 
-        const isMode =
-            select.id ===
-            "modeSelect";
-
-        button.addEventListener(
-            "click",
-            event => {
-                event.stopPropagation();
-
-                const isOpen =
-                    select.classList.contains(
-                        "open"
-                    );
-
-                closeAllSelects();
-
-                if (!isOpen) {
-                    select.classList.add(
-                        "open"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "true"
-                    );
-
-                    openedSelect =
-                        select;
-                }
-            }
-        );
-
-        options.forEach(option => {
-
-            option.addEventListener(
-                "click",
-                event => {
-                    event.stopPropagation();
-
-                    const value =
-                        option.dataset.value ||
-                        "";
-
-                    const icon =
-                        option.dataset.icon ||
-                        "✨";
-
-                    const small =
-                        option.dataset.small ||
-                        "";
-
-                    options.forEach(
-                        item =>
-                            item.classList.remove(
-                                "selected"
-                            )
-                    );
-
-                    option.classList.add(
-                        "selected"
-                    );
-
-                    const currentIcon =
-                        select.querySelector(
-                            "[data-current-icon]"
-                        );
-
-                    const currentText =
-                        select.querySelector(
-                            "[data-current-text]"
-                        );
-
-                    const currentSmall =
-                        select.querySelector(
-                            "[data-current-small]"
-                        );
-
-                    if (
-                        currentIcon
-                    ) {
-                        currentIcon.textContent =
-                            icon;
-                    }
-
-                    if (
-                        currentText
-                    ) {
-                        currentText.textContent =
-                            option
-                                .querySelector(
-                                    ".option-title"
-                                )
-                                .textContent;
-                    }
-
-                    if (
-                        currentSmall
-                    ) {
-                        currentSmall.textContent =
-                            small;
-                    }
-
-                    if (isMode) {
-
-                        const modeIcon =
-                            document.getElementById(
-                                "modeIcon"
-                            );
-
-                        const modeText =
-                            document.getElementById(
-                                "modeText"
-                            );
-
-                        const modeSmall =
-                            document.getElementById(
-                                "modeSmall"
-                            );
-
-                        modeIcon.textContent =
-                            icon;
-
-                        modeText.textContent =
-                            option
-                                .querySelector(
-                                    ".option-title"
-                                )
-                                .textContent;
-
-                        modeSmall.textContent =
-                            small;
-
-                        document.getElementById(
-                            "mode"
-                        ).value =
-                            value;
-                    } else {
-
-                        const hidden =
-                            document.getElementById(
-                                select.dataset.select
-                            );
-
-                        if (hidden) {
-                            hidden.value =
-                                value;
-                        }
-                    }
-
-                    select.classList.remove(
-                        "open"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                    openedSelect =
-                        null;
-                }
-            }
-        });
-
-        menu.addEventListener(
-            "click",
-            event => {
-                event.stopPropagation();
-            }
-        );
-    }
-
-    document
-        .querySelectorAll(
-            ".select"
-        )
-        .forEach(
-            setupSelect
-        );
-
-    document.addEventListener(
-        "click",
-        () => {
-            closeAllSelects();
-        }
+    setLoadingStage(
+        1,
+        "Подключаемся к Steam...",
+        12
     );
 
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (
-                event.key ===
-                "Escape"
-            ) {
-                closeAllSelects();
-            }
+    clearInterval(loadingTimer);
+
+    let stage = 1;
+
+    loadingTimer = setInterval(() => {
+
+        stage++;
+
+        if (stage === 2) {
+
+            setLoadingStage(
+                2,
+                "Получаем игровую библиотеку...",
+                32
+            );
+
+        } else if (stage === 3) {
+
+            setLoadingStage(
+                3,
+                "Определяем, какие игры тебе нравятся...",
+                52
+            );
+
+        } else if (stage === 4) {
+
+            setLoadingStage(
+                4,
+                "Ищем подходящие игры в Steam...",
+                73
+            );
+
+        } else if (stage === 5) {
+
+            setLoadingStage(
+                5,
+                "AI выбирает лучший вариант...",
+                90
+            );
+
+            clearInterval(loadingTimer);
         }
+
+    }, 1800);
+}
+
+
+function stopLoading() {
+
+    clearInterval(loadingTimer);
+
+    setLoadingStage(
+        5,
+        "Готово!",
+        100
     );
 
-    /*
-     * ============================================
-     * HELPERS
-     * ============================================
-     */
+    setTimeout(() => {
+        loadingOverlay.classList.remove("show");
+    }, 450);
+}
 
-    function escapeHtml(value) {
-        return String(value ?? "")
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-    }
 
-    function getGameHours(game) {
+function showError(message) {
 
-        if (!game) {
-            return null;
-        }
+    errorBox.textContent = message;
+    errorBox.style.display = "block";
 
-        if (
-            game.hours !== null &&
-            game.hours !== undefined &&
-            Number.isFinite(
-                Number(game.hours)
-            )
-        ) {
-            return Number(game.hours);
-        }
+    resultSection.style.display = "none";
+}
 
-        if (
-            game.playtime_forever !==
-                null &&
-            game.playtime_forever !==
-                undefined
-        ) {
-            const minutes =
-                Number(
-                    game.playtime_forever
-                );
 
-            if (
-                Number.isFinite(
-                    minutes
-                ) &&
-                minutes > 0
-            ) {
-                return Math.round(
-                    (
-                        minutes / 60
-                    ) * 10
-                ) / 10;
-            }
-        }
+function hideError() {
 
-        return null;
-    }
+    errorBox.textContent = "";
+    errorBox.style.display = "none";
+}
 
-    function formatHours(game) {
 
-        const hours =
-            getGameHours(game);
+function getMode() {
 
-        if (
-            hours === null ||
-            hours === undefined
-        ) {
-            return "Нет данных";
-        }
+    const selected =
+        document.querySelector(
+            'input[name="mode"]:checked'
+        );
 
-        if (
-            hours < 1
-        ) {
-            return `${Math.round(
-                hours * 60
-            )} мин`;
-        }
+    return selected
+        ? selected.value
+        : "global";
+}
 
-        return `${hours} ч`;
-    }
 
-    function getHeaderImage(game) {
+function escapeHTML(value) {
 
-        if (
-            game &&
-            game.header
-        ) {
-            return game.header;
-        }
-
-        if (
-            game &&
-            game.appid
-        ) {
-            return (
-                "https://cdn.cloudflare.steamstatic.com/steam/apps/" +
-                encodeURIComponent(
-                    game.appid
-                ) +
-                "/header.jpg"
-            );
-        }
-
+    if (value === null || value === undefined) {
         return "";
     }
 
-    function getStoreUrl(game) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-        if (
-            game &&
-            game.store_url
-        ) {
-            return game.store_url;
-        }
 
-        if (
-            game &&
-            game.appid
-        ) {
-            return (
-                "https://store.steampowered.com/app/" +
-                encodeURIComponent(
-                    game.appid
-                )
-            );
-        }
+function getAppId(game) {
 
-        return "#";
-    }
-
-    function findSuggestedGame(
-        gameList,
-        suggested
-    ) {
-
-        if (
-            !Array.isArray(
-                gameList
-            )
-        ) {
-            return null;
-        }
-
-        if (
-            suggested &&
-            typeof suggested ===
-                "object"
-        ) {
-
-            const appid =
-                Number(
-                    suggested.appid
-                );
-
-            if (
-                Number.isFinite(
-                    appid
-                )
-            ) {
-                const found =
-                    gameList.find(
-                        game =>
-                            Number(
-                                game.appid
-                            ) === appid
-                    );
-
-                if (found) {
-                    return found;
-                }
-            }
-
-            if (
-                suggested.name
-            ) {
-                const found =
-                    gameList.find(
-                        game =>
-                            String(
-                                game.name
-                            ).toLowerCase() ===
-                            String(
-                                suggested.name
-                            ).toLowerCase()
-                    );
-
-                if (found) {
-                    return found;
-                }
-            }
-        }
-
-        if (
-            typeof suggested ===
-            "string"
-        ) {
-            const found =
-                gameList.find(
-                    game =>
-                        String(
-                            game.name
-                        ).toLowerCase() ===
-                        suggested.toLowerCase()
-                );
-
-            if (found) {
-                return found;
-            }
-        }
-
+    if (!game) {
         return null;
     }
 
-    /*
-     * ============================================
-     * GAME CARD
-     * ============================================
-     */
-
-    function createGameCard(
-        game
-    ) {
-
-        const name =
-            escapeHtml(
-                game.name ||
-                "Без названия"
-            );
-
-        const image =
-            escapeHtml(
-                getHeaderImage(
-                    game
-                )
-            );
-
-        const url =
-            escapeHtml(
-                getStoreUrl(
-                    game
-                )
-            );
-
-        const hours =
-            formatHours(
-                game
-            );
-
-        const ownership =
-            game.is_owned
-                ? "В библиотеке"
-                : "Новая игра";
-
-        return `
-            <a
-                class="game-card"
-                href="${url}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <img
-                    class="game-image"
-                    src="${image}"
-                    alt="${name}"
-                    loading="lazy"
-                    onerror="
-                        this.style.opacity='0.2';
-                    "
-                >
-
-                <div class="game-info">
-
-                    <div class="game-name">
-                        ${name}
-                    </div>
-
-                    <div class="game-meta">
-
-                        <span class="game-hours">
-                            ${game.is_owned
-                                ? `🕒 ${escapeHtml(hours)}`
-                                : `✨ ${ownership}`}
-                        </span>
-
-                        <span class="game-link">
-                            Steam →
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </a>
-        `;
+    if (typeof game === "number") {
+        return game;
     }
 
-    /*
-     * ============================================
-     * SHOW ERROR
-     * ============================================
-     */
+    if (typeof game === "string") {
 
-    function showError(
-        message
+        const match =
+            game.match(/\d{2,}/);
+
+        return match
+            ? match[0]
+            : null;
+    }
+
+    return (
+        game.appid ||
+        game.appId ||
+        game.steam_appid ||
+        null
+    );
+}
+
+
+function getGameName(game) {
+
+    if (!game) {
+        return "Неизвестная игра";
+    }
+
+    if (typeof game === "string") {
+        return game;
+    }
+
+    return (
+        game.name ||
+        game.title ||
+        "Неизвестная игра"
+    );
+}
+
+
+function getGameHours(game) {
+
+    if (!game) {
+        return null;
+    }
+
+    if (
+        typeof game.hours === "number" &&
+        game.hours > 0
     ) {
+        return game.hours;
+    }
 
-        errorBox.textContent =
-            message ||
-            "Произошла ошибка.";
+    if (
+        typeof game.playtime_hours === "number" &&
+        game.playtime_hours > 0
+    ) {
+        return game.playtime_hours;
+    }
 
-        errorBox.classList.add(
-            "active"
+    if (
+        typeof game.playtime_forever === "number" &&
+        game.playtime_forever > 0
+    ) {
+        return Math.round(
+            game.playtime_forever / 60
         );
     }
 
-    function hideError() {
-        errorBox.classList.remove(
-            "active"
+    return null;
+}
+
+
+function steamHeader(appid) {
+
+    if (!appid) {
+        return "";
+    }
+
+    return (
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/" +
+        appid +
+        "/header.jpg"
+    );
+}
+
+
+function steamStore(appid) {
+
+    if (!appid) {
+        return "#";
+    }
+
+    return (
+        "https://store.steampowered.com/app/" +
+        appid
+    );
+}
+
+
+function findSuggestedGame(data) {
+
+    if (!data) {
+        return null;
+    }
+
+    if (data.suggested_game) {
+        return data.suggested_game;
+    }
+
+    if (data.recommended_game) {
+        return data.recommended_game;
+    }
+
+    if (data.games && data.games.length) {
+        return data.games[0];
+    }
+
+    return null;
+}
+
+
+function createGameCard(game) {
+
+    const appid =
+        getAppId(game);
+
+    const name =
+        getGameName(game);
+
+    const hours =
+        getGameHours(game);
+
+    const image =
+        steamHeader(appid);
+
+    const url =
+        steamStore(appid);
+
+    const card =
+        document.createElement("div");
+
+    card.className = "game-card";
+
+    const imageElement =
+        document.createElement("img");
+
+    imageElement.loading = "lazy";
+
+    imageElement.src =
+        image ||
+        "";
+
+    imageElement.alt =
+        name;
+
+    imageElement.onerror = () => {
+        imageElement.style.visibility =
+            "hidden";
+    };
+
+    const info =
+        document.createElement("div");
+
+    info.className =
+        "game-card-info";
+
+    const nameElement =
+        document.createElement("div");
+
+    nameElement.className =
+        "game-card-name";
+
+    nameElement.textContent =
+        name;
+
+    const hoursElement =
+        document.createElement("div");
+
+    hoursElement.className =
+        "game-card-hours";
+
+    if (hours !== null) {
+
+        hoursElement.textContent =
+            "🎮 " + hours + " ч. в библиотеке";
+
+    } else {
+
+        hoursElement.textContent =
+            "✨ Не в библиотеке";
+
+    }
+
+    info.appendChild(nameElement);
+    info.appendChild(hoursElement);
+
+    card.appendChild(imageElement);
+    card.appendChild(info);
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            if (url !== "#") {
+
+                window.open(
+                    url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            }
+        }
+    );
+
+    card.style.cursor =
+        url !== "#"
+            ? "pointer"
+            : "default";
+
+    return card;
+}
+
+
+function renderRecommendation(data) {
+
+    const suggested =
+        findSuggestedGame(data);
+
+    if (!suggested) {
+
+        throw new Error(
+            "Worker не вернул игру для рекомендации."
+        );
+    }
+
+    const appid =
+        getAppId(suggested);
+
+    const name =
+        getGameName(suggested);
+
+    const hours =
+        getGameHours(suggested);
+
+    const advice =
+        data.advice ||
+        data.reason ||
+        "Эта игра хорошо подходит под выбранные параметры.";
+
+    document.getElementById(
+        "recommendedName"
+    ).textContent = name;
+
+    document.getElementById(
+        "adviceText"
+    ).textContent = advice;
+
+    document.getElementById(
+        "recommendedHours"
+    ).textContent =
+        hours !== null
+            ? "🎮 Часы: " + hours
+            : "✨ Не в библиотеке";
+
+    const mode =
+        getMode();
+
+    document.getElementById(
+        "recommendedMode"
+    ).textContent =
+        mode === "library"
+            ? "🎮 Из библиотеки"
+            : "🌎 Из всего Steam";
+
+    const imageContainer =
+        document.getElementById(
+            "recommendedImage"
         );
 
-        errorBox.textContent =
-            "";
-    }
+    imageContainer.innerHTML = "";
 
-    /*
-     * ============================================
-     * LOADING
-     * ============================================
-     */
-
-    function setLoading(
-        state
-    ) {
-
-        if (state) {
-
-            loading.classList.add(
-                "active"
-            );
-
-            submitBtn.disabled =
-                true;
-
-            submitBtn.style.opacity =
-                "0.65";
-
-            submitBtn.querySelector(
-                "span:first-child"
-            ).textContent =
-                "Анализируем...";
-
-        } else {
-
-            loading.classList.remove(
-                "active"
-            );
-
-            submitBtn.disabled =
-                false;
-
-            submitBtn.style.opacity =
-                "1";
-
-            submitBtn.querySelector(
-                "span:first-child"
-            ).textContent =
-                "Найти игру";
-        }
-    }
-
-    /*
-     * ============================================
-     * RENDER RESULT
-     * ============================================
-     */
-
-    function renderResult(
-        data
-    ) {
-
-        let games =
-            Array.isArray(
-                data.games
-            )
-                ? data.games
-                : [];
-
-        let suggested =
-            findSuggestedGame(
-                games,
-                data.suggested_game
-            );
-
-        if (
-            !suggested &&
-            data.suggested_game &&
-            typeof data.suggested_game ===
-                "object"
-        ) {
-            suggested =
-                data.suggested_game;
-        }
-
-        if (!suggested) {
-            suggested =
-                games[0] ||
-                null;
-        }
-
-        if (!suggested) {
-            throw new Error(
-                "Worker не вернул игру."
-            );
-        }
-
-        const title =
-            suggested.name ||
-            "Игра без названия";
-
-        const advice =
-            data.advice ||
-            "Advisor выбрал эту игру как наиболее подходящую.";
+    if (appid) {
 
         const image =
-            getHeaderImage(
-                suggested
-            );
+            document.createElement("img");
 
-        recommendationTitle.textContent =
-            title;
+        image.src =
+            steamHeader(appid);
 
-        recommendationAdvice.textContent =
-            advice;
+        image.alt =
+            name;
 
-        if (image) {
-            recommendationImage.style.backgroundImage =
-                `url("${image}")`;
-        } else {
-            recommendationImage.style.backgroundImage =
-                "";
-        }
+        image.onerror = () => {
+            imageContainer.innerHTML = "";
+        };
+
+        imageContainer.appendChild(
+            image
+        );
+    }
+
+    const steamButton =
+        document.getElementById(
+            "steamButton"
+        );
+
+    if (appid) {
 
         steamButton.href =
-            getStoreUrl(
-                suggested
-            );
+            steamStore(appid);
 
-        if (
-            suggested.is_owned
-        ) {
-            const hours =
-                getGameHours(
-                    suggested
-                );
+        steamButton.style.display =
+            "inline-flex";
 
-            hoursBadge.textContent =
-                hours === null
-                    ? "🕒 Нет данных по часам"
-                    : `🕒 ${formatHours(suggested)} в библиотеке`;
-        } else {
-            hoursBadge.textContent =
-                "✨ Нет в библиотеке";
-        }
+    } else {
 
-        games =
-            games.filter(
-                game =>
-                    Number(
-                        game.appid
-                    ) !==
-                    Number(
-                        suggested.appid
-                    )
-            );
-
-        gamesGrid.innerHTML =
-            games
-                .slice(0, 12)
-                .map(
-                    createGameCard
-                )
-                .join("");
-
-        gamesCount.textContent =
-            `${Math.min(
-                games.length,
-                12
-            )} дополнительных вариантов`;
-
-        result.classList.add(
-            "active"
-        );
+        steamButton.style.display =
+            "none";
     }
 
-    /*
-     * ============================================
-     * FORM SUBMIT
-     * ============================================
-     */
 
-    form.addEventListener(
-        "submit",
-        async event => {
+    const gamesGrid =
+        document.getElementById(
+            "gamesGrid"
+        );
 
-            event.preventDefault();
+    gamesGrid.innerHTML = "";
 
-            hideError();
+    let games =
+        Array.isArray(data.games)
+            ? [...data.games]
+            : [];
 
-            result.classList.remove(
-                "active"
+    games = games.filter(game => {
+
+        const gameId =
+            getAppId(game);
+
+        const suggestedId =
+            getAppId(suggested);
+
+        return !(
+            gameId &&
+            suggestedId &&
+            String(gameId) === String(suggestedId)
+        );
+
+    });
+
+    games =
+        games.slice(0, 12);
+
+    games.forEach(game => {
+
+        gamesGrid.appendChild(
+            createGameCard(game)
+        );
+
+    });
+
+    resultSection.style.display =
+        "block";
+
+    setTimeout(() => {
+
+        resultSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 100);
+}
+
+
+form.addEventListener(
+    "submit",
+    async (event) => {
+
+        event.preventDefault();
+
+        hideError();
+
+        const steamProfile =
+            document
+                .getElementById("steamProfile")
+                .value
+                .trim();
+
+        if (!steamProfile) {
+
+            showError(
+                "Укажи ссылку на Steam-профиль."
             );
 
-            const steamProfile =
-                document
-                    .getElementById(
-                        "steamProfile"
-                    )
-                    .value
-                    .trim();
+            return;
+        }
 
-            const mode =
-                document
-                    .getElementById(
-                        "mode"
-                    )
-                    .value;
 
-            const mood =
-                document
-                    .getElementById(
-                        "mood"
-                    )
-                    .value;
+        const mood =
+            document
+                .getElementById("mood")
+                .value;
 
-            const length =
-                document
-                    .getElementById(
-                        "length"
-                    )
-                    .value;
+        const length =
+            document
+                .getElementById("length")
+                .value;
 
-            const genre =
-                document
-                    .getElementById(
-                        "genre"
-                    )
-                    .value;
+        const genre =
+            document
+                .getElementById("genre")
+                .value;
 
-            const players =
-                document
-                    .getElementById(
-                        "players"
-                    )
-                    .value;
+        const players =
+            document
+                .getElementById("players")
+                .value;
 
-            if (!steamProfile) {
-                showError(
-                    "Вставь ссылку на свой Steam профиль."
+        const mode =
+            getMode();
+
+
+        const payload = {
+
+            steam_profile:
+                steamProfile,
+
+            mood:
+                mood,
+
+            length:
+                length,
+
+            genre:
+                genre,
+
+            players:
+                players,
+
+            mode:
+                mode
+
+        };
+
+
+        submitButton.disabled =
+            true;
+
+        submitButton.textContent =
+            "Анализируем Steam...";
+
+        resultSection.style.display =
+            "none";
+
+        startLoading();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    WORKER_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(payload)
+                    }
                 );
 
-                return;
-            }
 
-            setLoading(
-                true
-            );
+            const rawText =
+                await response.text();
+
+            let data;
 
             try {
 
-                const response =
-                    await fetch(
-                        WORKER_URL,
-                        {
-                            method:
-                                "POST",
+                data =
+                    JSON.parse(rawText);
 
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
+            } catch {
 
-                            body:
-                                JSON.stringify({
-                                    steam_profile:
-                                        steamProfile,
-
-                                    mode:
-                                        mode,
-
-                                    mood:
-                                        mood,
-
-                                    length:
-                                        length,
-
-                                    genre:
-                                        genre,
-
-                                    players:
-                                        players
-                                })
-                        }
-                    );
-
-                const raw =
-                    await response.text();
-
-                let data;
-
-                try {
-                    data =
-                        JSON.parse(
-                            raw
-                        );
-                } catch {
-                    throw new Error(
-                        "Worker вернул некорректный ответ."
-                    );
-                }
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-                    throw new Error(
-                        data.error ||
-                        `Ошибка Worker: HTTP ${response.status}`
-                    );
-                }
-
-                renderResult(
-                    data
+                throw new Error(
+                    "Worker вернул некорректный ответ."
                 );
 
-                setTimeout(
-                    () => {
-                        result.scrollIntoView({
-                            behavior:
-                                "smooth",
-                            block:
-                                "start"
-                        });
-                    },
-                    100
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Ошибка Worker: HTTP " +
+                    response.status
                 );
 
-            } catch (error) {
+            }
 
-                console.error(
-                    error
-                );
 
-                showError(
-                    error.message ||
+            if (
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
                     "Не удалось получить рекомендацию."
                 );
 
-            } finally {
-
-                setLoading(
-                    false
-                );
-            }
-        }
-    );
-
-    /*
-     * ============================================
-     * INITIAL MODE TEXT
-     * ============================================
-     */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        () => {
-
-            const profile =
-                document.getElementById(
-                    "steamProfile"
-                );
-
-            if (profile) {
-                profile.focus();
             }
 
+
+            renderRecommendation(
+                data
+            );
+
+
+            stopLoading();
+
+
+        } catch (error) {
+
+            console.error(
+                "Steam Advisor error:",
+                error
+            );
+
+            stopLoading();
+
+            setTimeout(() => {
+
+                showError(
+                    error.message ||
+                    "Произошла неизвестная ошибка."
+                );
+
+            }, 500);
+
+        } finally {
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "✨ Найти мою следующую игру";
+
         }
-    );
+
+    }
+);
+
+
+/* Проверка Worker при открытии */
+
+fetch(
+    WORKER_URL,
+    {
+        method: "GET"
+    }
+)
+.then(response => {
+
+    if (response.ok) {
+
+        document.querySelector(
+            ".online"
+        ).innerHTML =
+            '<span class="online-dot"></span> Система активна';
+
+    }
+
+})
+.catch(() => {
+
+    document.querySelector(
+        ".online"
+    ).innerHTML =
+        '<span class="online-dot" style="background:#ff6262;box-shadow:0 0 10px rgba(255,98,98,.6)"></span> Worker недоступен';
+
+});
+
+
 </script>
 
 </body>
