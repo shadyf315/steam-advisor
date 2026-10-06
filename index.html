@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -69,11 +70,6 @@
         a {
             color: inherit;
         }
-
-
-        /* =========================
-           HEADER
-        ========================= */
 
         header {
             height: 62px;
@@ -175,11 +171,6 @@
             color: var(--text);
         }
 
-
-        /* =========================
-           PAGE
-        ========================= */
-
         .page {
             width: min(1080px, calc(100% - 36px));
 
@@ -187,11 +178,6 @@
 
             padding: 55px 0 70px;
         }
-
-
-        /* =========================
-           TOP
-        ========================= */
 
         .top {
             display: flex;
@@ -254,11 +240,6 @@
             user-select: none;
         }
 
-
-        /* =========================
-           CONTENT
-        ========================= */
-
         .content {
             display: grid;
 
@@ -268,11 +249,6 @@
 
             align-items: start;
         }
-
-
-        /* =========================
-           FORM
-        ========================= */
 
         .form {
             padding: 25px;
@@ -367,9 +343,6 @@
             cursor: pointer;
         }
 
-
-        /* PROFILE HELP */
-
         .profile-help {
             margin-top: 9px;
         }
@@ -436,11 +409,6 @@
             overflow-x: auto;
         }
 
-
-        /* =========================
-           FORM ROW
-        ========================= */
-
         .row {
             display: grid;
 
@@ -448,11 +416,6 @@
 
             gap: 13px;
         }
-
-
-        /* =========================
-           SUBMIT
-        ========================= */
 
         .submit-area {
             display: flex;
@@ -506,11 +469,6 @@
             font-size: 10px;
         }
 
-
-        /* =========================
-           SIDEBAR
-        ========================= */
-
         .sidebar {
             display: flex;
 
@@ -554,11 +512,6 @@
             border-left: 2px solid var(--accent);
         }
 
-
-        /* =========================
-           ERROR
-        ========================= */
-
         .error {
             display: none;
 
@@ -582,11 +535,6 @@
         .error.show {
             display: block;
         }
-
-
-        /* =========================
-           LOADING
-        ========================= */
 
         .loading {
             display: none;
@@ -648,11 +596,6 @@
             }
         }
 
-
-        /* =========================
-           RESULT
-        ========================= */
-
         .result {
             display: none;
 
@@ -687,15 +630,12 @@
             font-size: 10px;
         }
 
-
-        /* =========================
-           ADVICE
-        ========================= */
+        /* RECOMMENDATION */
 
         .advice {
             display: grid;
 
-            grid-template-columns: 270px 1fr;
+            grid-template-columns: 330px minmax(0, 1fr);
 
             overflow: hidden;
 
@@ -703,28 +643,76 @@
 
             border: 1px solid var(--border);
 
-            border-radius: var(--radius);
+            border-radius: 9px;
 
             margin-bottom: 22px;
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.18);
+        }
+
+        .advice-image-wrap {
+            position: relative;
+
+            min-height: 185px;
+
+            background: #0c0c0b;
+
+            overflow: hidden;
         }
 
         .advice-image {
+            display: block;
+
             width: 100%;
             height: 100%;
 
-            min-height: 135px;
+            min-height: 185px;
 
             object-fit: cover;
+        }
 
-            background: #0c0c0b;
+        .advice-image-overlay {
+            position: absolute;
+
+            inset: auto 0 0 0;
+
+            height: 55%;
+
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(0, 0, 0, 0.5)
+            );
+
+            pointer-events: none;
         }
 
         .advice-content {
-            padding: 19px;
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            padding: 24px 25px;
         }
 
         .advice-label {
-            margin-bottom: 9px;
+            display: inline-flex;
+            align-items: center;
+
+            width: fit-content;
+
+            margin-bottom: 8px;
+
+            padding: 4px 7px;
+
+            border: 1px solid rgba(231, 139, 53, 0.25);
+
+            border-radius: 4px;
+
+            background: rgba(231, 139, 53, 0.08);
 
             color: var(--accent);
 
@@ -737,18 +725,83 @@
             letter-spacing: 1px;
         }
 
+        .advice-game-name {
+            margin-bottom: 12px;
+
+            color: var(--text);
+
+            font-size: 23px;
+
+            line-height: 1.15;
+
+            letter-spacing: -0.5px;
+
+            font-weight: 750;
+        }
+
         .advice-text {
             color: var(--text-soft);
 
             font-size: 13px;
 
             line-height: 1.7;
+
+            max-width: 650px;
         }
 
+        .advice-actions {
+            display: flex;
 
-        /* =========================
-           GAMES
-        ========================= */
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .steam-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 35px;
+
+            padding: 0 13px;
+
+            border: 1px solid var(--border-light);
+
+            border-radius: 5px;
+
+            background: #151411;
+
+            color: var(--text-soft);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 650;
+
+            transition:
+                background 0.15s,
+                border-color 0.15s,
+                color 0.15s;
+        }
+
+        .steam-button:hover {
+            background: var(--surface-hover);
+
+            border-color: var(--accent);
+
+            color: var(--text);
+        }
+
+        .recommended-hours {
+            color: #625e56;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
 
         .games-title {
             display: flex;
@@ -847,11 +900,6 @@
             font-size: 9px;
         }
 
-
-        /* =========================
-           FOOTER
-        ========================= */
-
         footer {
             display: flex;
 
@@ -880,11 +928,6 @@
             color: var(--accent);
         }
 
-
-        /* =========================
-           MOBILE
-        ========================= */
-
         @media (max-width: 820px) {
 
             .top {
@@ -908,8 +951,11 @@
             .tip {
                 grid-column: span 2;
             }
-        }
 
+            .advice {
+                grid-template-columns: 270px minmax(0, 1fr);
+            }
+        }
 
         @media (max-width: 580px) {
 
@@ -968,10 +1014,26 @@
                 grid-template-columns: 1fr;
             }
 
+            .advice-image-wrap {
+                min-height: 0;
+            }
+
             .advice-image {
                 aspect-ratio: 460 / 215;
 
                 min-height: 0;
+            }
+
+            .advice-content {
+                padding: 20px;
+            }
+
+            .advice-game-name {
+                font-size: 20px;
+            }
+
+            .advice-actions {
+                flex-wrap: wrap;
             }
 
             footer {
@@ -983,9 +1045,7 @@
     </style>
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -995,7 +1055,6 @@
             href="#"
             class="logo"
         >
-
             <div class="logo-symbol">
                 SA
             </div>
@@ -1003,24 +1062,18 @@
             <div class="logo-name">
                 steam<span>advisor</span>
             </div>
-
         </a>
-
 
         <div class="header-right">
 
             <div class="online">
-
                 <span class="online-dot"></span>
-
                 онлайн
-
             </div>
-
 
             <a
                 class="github"
-                href="https://github.com/Ketler42/steam-advisor"
+                href="https://github.com/shadyf315/steam-advisor"
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -1033,10 +1086,7 @@
 
 </header>
 
-
-
 <main class="page">
-
 
     <section class="top">
 
@@ -1058,30 +1108,22 @@
 
         </div>
 
-
         <div class="top-number">
             01
         </div>
 
     </section>
 
-
-
     <div
         class="error"
         id="error"
     ></div>
 
-
-
     <div class="content">
-
 
         <section>
 
-
             <div class="form">
-
 
                 <div class="form-top">
 
@@ -1095,10 +1137,7 @@
 
                 </div>
 
-
-
                 <form id="mainForm">
-
 
                     <div class="field">
 
@@ -1115,7 +1154,6 @@
                             required
                         >
 
-
                         <div class="profile-help">
 
                             <button
@@ -1125,7 +1163,6 @@
                             >
                                 Какую ссылку сюда вставлять?
                             </button>
-
 
                             <div
                                 class="help-content"
@@ -1157,10 +1194,7 @@
 
                     </div>
 
-
-
                     <div class="row">
-
 
                         <div class="field">
 
@@ -1190,7 +1224,6 @@
 
                         </div>
 
-
                         <div class="field">
 
                             <label for="length">
@@ -1217,10 +1250,7 @@
 
                     </div>
 
-
-
                     <div class="row">
-
 
                         <div class="field">
 
@@ -1262,7 +1292,6 @@
 
                         </div>
 
-
                         <div class="field">
 
                             <label for="players">
@@ -1289,8 +1318,6 @@
 
                     </div>
 
-
-
                     <div class="submit-area">
 
                         <button
@@ -1307,31 +1334,23 @@
 
                     </div>
 
-
                 </form>
 
             </div>
-
-
 
             <div
                 class="loading"
                 id="loading"
             >
-
                 Смотрим библиотеку Steam...
 
                 <div class="loading-bar"></div>
-
             </div>
-
-
 
             <section
                 class="result"
                 id="result"
             >
-
 
                 <div class="result-heading">
 
@@ -1345,23 +1364,35 @@
 
                 </div>
 
-
-
                 <div class="advice">
 
-
-                    <img
-                        id="adviceImage"
-                        class="advice-image"
-                        alt=""
+                    <div
+                        class="advice-image-wrap"
+                        id="adviceImageWrap"
                         style="display: none;"
                     >
 
+                        <img
+                            id="adviceImage"
+                            class="advice-image"
+                            alt=""
+                        >
+
+                        <div class="advice-image-overlay"></div>
+
+                    </div>
 
                     <div class="advice-content">
 
                         <div class="advice-label">
-                            совет
+                            рекомендация
+                        </div>
+
+                        <div
+                            class="advice-game-name"
+                            id="adviceGameName"
+                        >
+                            Выбранная игра
                         </div>
 
                         <div
@@ -1369,11 +1400,29 @@
                             id="adviceText"
                         ></div>
 
+                        <div class="advice-actions">
+
+                            <a
+                                class="steam-button"
+                                id="steamButton"
+                                href="#"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style="display: none;"
+                            >
+                                Открыть в Steam
+                            </a>
+
+                            <span
+                                class="recommended-hours"
+                                id="recommendedHours"
+                            ></span>
+
+                        </div>
+
                     </div>
 
                 </div>
-
-
 
                 <div class="games-title">
 
@@ -1390,22 +1439,16 @@
 
                 </div>
 
-
                 <div
                     class="games"
                     id="games"
                 ></div>
 
-
             </section>
-
 
         </section>
 
-
-
         <aside class="sidebar">
-
 
             <div class="side-card">
 
@@ -1414,16 +1457,13 @@
                 </div>
 
                 <div class="side-text">
-
                     Никакого SteamID64.
 
                     Просто вставь ссылку
                     на профиль Steam.
-
                 </div>
 
             </div>
-
 
             <div class="side-card">
 
@@ -1446,7 +1486,6 @@
 
             </div>
 
-
             <div class="side-card tip">
 
                 <div class="side-title">
@@ -1462,7 +1501,6 @@
                 </div>
 
             </div>
-
 
             <div class="side-card">
 
@@ -1499,13 +1537,9 @@
 
             </div>
 
-
         </aside>
 
-
     </div>
-
-
 
     <footer>
 
@@ -1519,7 +1553,7 @@
 
         <div>
             <a
-                href="https://github.com/Ketler42/steam-advisor"
+                href="https://github.com/shadyf315/steam-advisor"
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -1529,20 +1563,12 @@
 
     </footer>
 
-
 </main>
-
-
 
 <script>
 
-    /*
-        Cloudflare Worker
-    */
-
     const WORKER_URL =
         "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
-
 
     const form =
         document.getElementById("mainForm");
@@ -1565,16 +1591,23 @@
     const adviceImage =
         document.getElementById("adviceImage");
 
+    const adviceImageWrap =
+        document.getElementById("adviceImageWrap");
+
+    const adviceGameName =
+        document.getElementById("adviceGameName");
+
+    const steamButton =
+        document.getElementById("steamButton");
+
+    const recommendedHours =
+        document.getElementById("recommendedHours");
+
     const games =
         document.getElementById("games");
 
     const gamesCount =
         document.getElementById("gamesCount");
-
-
-    /*
-        HELP
-    */
 
     const helpButton =
         document.getElementById("helpButton");
@@ -1586,16 +1619,10 @@
     helpButton.addEventListener(
         "click",
         () => {
-
             helpContent.classList.toggle("open");
-
         }
     );
 
-
-    /*
-        ERROR
-    */
 
     function showError(message) {
 
@@ -1614,10 +1641,6 @@
 
     }
 
-
-    /*
-        LOADING
-    */
 
     function setLoading(state) {
 
@@ -1644,10 +1667,6 @@
     }
 
 
-    /*
-        ESCAPE HTML
-    */
-
     function escapeHTML(value) {
 
         return String(value ?? "")
@@ -1660,9 +1679,48 @@
     }
 
 
-    /*
-        FORM
-    */
+    function findSuggestedGame(gameList, suggestedName) {
+
+        if (!Array.isArray(gameList)) {
+            return null;
+        }
+
+        if (!suggestedName) {
+            return gameList[0] || null;
+        }
+
+        const normalized =
+            String(suggestedName)
+                .toLowerCase()
+                .trim();
+
+        return (
+            gameList.find(
+                game =>
+                    String(game.name || "")
+                        .toLowerCase()
+                        .trim() === normalized
+            ) ||
+            gameList.find(
+                game =>
+                    String(game.name || "")
+                        .toLowerCase()
+                        .includes(normalized)
+            ) ||
+            gameList.find(
+                game =>
+                    normalized.includes(
+                        String(game.name || "")
+                            .toLowerCase()
+                            .trim()
+                    )
+            ) ||
+            gameList[0] ||
+            null
+        );
+
+    }
+
 
     form.addEventListener(
         "submit",
@@ -1675,6 +1733,20 @@
             result.classList.remove("show");
 
             games.innerHTML = "";
+
+            adviceImageWrap.style.display = "none";
+
+            adviceImage.removeAttribute("src");
+
+            steamButton.style.display = "none";
+
+            steamButton.href = "#";
+
+            recommendedHours.textContent = "";
+
+            adviceGameName.textContent =
+                "Выбранная игра";
+
 
             const steamProfile =
                 document
@@ -1767,8 +1839,21 @@
                 }
 
 
+                const gameList =
+                    Array.isArray(data.games)
+                        ? data.games
+                        : [];
+
+
+                const suggested =
+                    findSuggestedGame(
+                        gameList,
+                        data.suggested_game
+                    );
+
+
                 /*
-                    ADVICE
+                    RECOMMENDATION
                 */
 
                 adviceText.textContent =
@@ -1776,56 +1861,54 @@
                     "Не удалось получить совет.";
 
 
-                /*
-                    RECOMMENDED IMAGE
-                */
+                if (suggested) {
 
-                if (data.suggested_game) {
-
-                    let suggested =
-                        data.suggested_game;
+                    adviceGameName.textContent =
+                        suggested.name ||
+                        data.suggested_game ||
+                        "Рекомендованная игра";
 
 
-                    if (
-                        typeof suggested === "string"
-                    ) {
+                    if (suggested.appid) {
 
-                        suggested =
-                            suggested.trim();
+                        const image =
+                            `https://cdn.cloudflare.steamstatic.com/steam/apps/${suggested.appid}/header.jpg`;
 
-                    }
+                        adviceImage.src =
+                            image;
+
+                        adviceImage.alt =
+                            suggested.name || "";
+
+                        adviceImageWrap.style.display =
+                            "block";
+
+                        adviceImage.onerror =
+                            () => {
+                                adviceImageWrap.style.display =
+                                    "none";
+                            };
 
 
-                    if (
-                        suggested &&
-                        Array.isArray(data.games)
-                    ) {
+                        steamButton.href =
+                            `https://store.steampowered.com/app/${suggested.appid}`;
 
-                        const found =
-                            data.games.find(
-                                game =>
-                                    game.name
-                                        ?.toLowerCase()
-                                        .trim() ===
-                                    suggested
-                                        .toLowerCase()
-                                        .trim()
+                        steamButton.style.display =
+                            "inline-flex";
+
+
+                        const hours =
+                            Math.round(
+                                Number(
+                                    suggested.playtime_forever || 0
+                                ) / 60
                             );
 
 
-                        if (found) {
+                        if (hours > 0) {
 
-                            adviceImage.src =
-                                `https://cdn.cloudflare.steamstatic.com/steam/apps/${found.appid}/header.jpg`;
-
-                            adviceImage.style.display =
-                                "block";
-
-                            adviceImage.onerror =
-                                () => {
-                                    adviceImage.style.display =
-                                        "none";
-                                };
+                            recommendedHours.textContent =
+                                `${hours} ч. сыграно`;
 
                         }
 
@@ -1837,12 +1920,6 @@
                 /*
                     GAMES
                 */
-
-                const gameList =
-                    Array.isArray(data.games)
-                        ? data.games
-                        : [];
-
 
                 gamesCount.textContent =
                     gameList.length;
@@ -1949,3 +2026,4 @@
 
 </body>
 </html>
+```
