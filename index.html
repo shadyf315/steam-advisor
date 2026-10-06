@@ -3,363 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steam Advisor — во что поиграть?</title>
+
+    <title>Steam Advisor — выбор игры</title>
 
     <style>
+        :root {
+            --bg: #0d1014;
+            --panel: #14181e;
+            --panel-2: #191e25;
+            --panel-3: #20262e;
+            --border: #2b333d;
+            --text: #e6e9ed;
+            --muted: #858e99;
+            --muted-2: #626b76;
+            --blue: #4da3ff;
+            --blue-dark: #2677c5;
+            --green: #6fce7b;
+            --yellow: #e2b85c;
+            --red: #ef6b6b;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: #16181d;
-            color: #c7d5e0;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 75% 0%,
+                    rgba(48, 105, 160, 0.12),
+                    transparent 32%
+                ),
+                var(--bg);
+
+            color: var(--text);
             min-height: 100vh;
-            line-height: 1.55;
-            padding-bottom: 60px;
+            line-height: 1.5;
         }
 
-        .topbar {
-            background: #171a21;
-            padding: 14px 0;
-            border-bottom: 1px solid #2a3f5a;
+        a {
+            color: inherit;
         }
 
-        .topbar-inner {
-            max-width: 960px;
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 64px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(13, 16, 20, 0.94);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            max-width: 1120px;
+            height: 100%;
             margin: 0 auto;
             padding: 0 24px;
+
             display: flex;
             align-items: center;
-            gap: 16px;
         }
 
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-
-        .logo span {
-            color: #66c0f4;
-        }
-
-        .version {
-            font-size: 11px;
-            color: #6b7a89;
-            font-family: Consolas, monospace;
-            background: #1b2838;
-            padding: 2px 8px;
-            border-radius: 3px;
-        }
-
-        .topbar-nav {
-            margin-left: auto;
-            font-size: 13px;
-            color: #8f98a0;
-        }
-
-        .topbar-nav a {
-            color: #66c0f4;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
-            margin-left: 16px;
         }
 
-        .topbar-nav a:hover {
-            color: #fff;
-        }
+        .brand-mark {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #3d4854;
+            background: #171c22;
 
-        .wrapper {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .hero {
-            padding: 40px 0 20px;
-        }
-
-        .hero h1 {
-            font-size: 32px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .hero h1 .accent {
-            color: #66c0f4;
-        }
-
-        .hero-sub {
-            color: #8f98a0;
-            font-size: 15px;
-            max-width: 640px;
-        }
-
-        .hero-meta {
-            margin-top: 12px;
-            font-size: 12px;
-            color: #6b7a89;
-            font-family: Consolas, monospace;
-        }
-
-        .hero-meta span {
-            color: #b8c5d1;
-        }
-
-        .grid {
             display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 28px;
-            margin-top: 24px;
+            place-items: center;
+
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--blue);
+
+            transform: rotate(-4deg);
         }
 
-        @media (max-width: 780px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero h1 {
-                font-size: 24px;
-            }
+        .brand-name {
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: -0.2px;
         }
 
-        .block {
-            margin-bottom: 28px;
+        .brand-name span {
+            color: var(--blue);
         }
 
-        .block-title {
+        .header-right {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: var(--muted);
             font-size: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(111, 206, 123, 0.5);
+        }
+
+        .header-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .header-link:hover {
+            color: var(--text);
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 58px 24px 70px;
+        }
+
+        .intro {
+            display: grid;
+            grid-template-columns: 1fr 310px;
+            gap: 60px;
+            align-items: end;
+            margin-bottom: 38px;
+        }
+
+        .eyebrow {
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 1.8px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #66c0f4;
+            margin-bottom: 14px;
+        }
+
+        .intro h1 {
+            max-width: 700px;
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 0.98;
+            letter-spacing: -2.8px;
+            font-weight: 780;
+            color: #f4f6f8;
+        }
+
+        .intro h1 em {
+            font-style: normal;
+            color: var(--blue);
+        }
+
+        .intro-text {
+            margin-top: 20px;
+            max-width: 610px;
+
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .intro-side {
+            border-left: 1px solid var(--border);
+            padding-left: 22px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .intro-side strong {
+            display: block;
+            color: #c9d0d8;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        /* =========================
+           MAIN GRID
+        ========================= */
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 310px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-panel {
+            padding: 25px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 15px;
+
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-heading h2 {
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #2a3f5a;
+            color: #eef1f4;
+        }
+
+        .panel-heading span {
+            font-family: Consolas, monospace;
+            color: var(--muted-2);
+            font-size: 11px;
         }
 
         .field {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .field label {
             display: block;
-            font-size: 13px;
-            color: #8f98a0;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+
+            color: #aab2bc;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .input-wrap {
+            position: relative;
         }
 
         .field input,
         .field select {
             width: 100%;
-            padding: 10px 12px;
-            background: #1b2838;
-            color: #c7d5e0;
-            border: 1px solid #2a3f5a;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: inherit;
+            height: 44px;
+
+            background: #101419;
+            color: var(--text);
+
+            border: 1px solid #303943;
+
+            border-radius: 3px;
+
+            padding: 0 13px;
+
+            outline: none;
+
+            transition:
+                border-color 0.15s,
+                background 0.15s;
+        }
+
+        .field input::placeholder {
+            color: #4f5964;
+        }
+
+        .field input:hover,
+        .field select:hover {
+            background: #12171c;
+            border-color: #3a4652;
         }
 
         .field input:focus,
         .field select:focus {
-            outline: none;
-            border-color: #66c0f4;
+            border-color: var(--blue);
+            background: #12171c;
         }
 
-        .field-hint {
-            font-size: 12px;
-            color: #6b7a89;
-            margin-top: 4px;
-        }
-
-        .field-hint a {
-            color: #66c0f4;
-        }
-
-        .row2 {
+        .row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 14px;
         }
 
-        @media (max-width: 500px) {
-            .row2 {
-                grid-template-columns: 1fr;
-            }
+        /* =========================
+           STEAM ID HELP
+        ========================= */
+
+        .steam-help {
+            margin-top: 9px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #66c0f4;
-            color: #171a21;
-            font-size: 15px;
-            font-weight: 700;
-            border: none;
-            border-radius: 4px;
+        .help-toggle {
+            border: 0;
+            background: transparent;
+            padding: 0;
+
+            color: var(--blue);
+            font-size: 12px;
             cursor: pointer;
-            transition: background 0.15s;
-            font-family: inherit;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
         }
 
-        .btn:hover {
-            background: #8fd0ff;
+        .help-toggle:hover {
+            color: #83c5ff;
         }
 
-        .btn:disabled {
-            background: #3d5a73;
-            color: #8f98a0;
-            cursor: wait;
+        .help-arrow {
+            font-size: 10px;
+            transition: transform 0.2s;
         }
 
-        .advice {
-            background: #1b2838;
-            border: 1px solid #2a3f5a;
-            border-left: 3px solid #66c0f4;
-            border-radius: 4px;
-            padding: 18px 20px;
-            margin-bottom: 24px;
+        .steam-help.open .help-arrow {
+            transform: rotate(90deg);
         }
 
-        .advice-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #66c0f4;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+        .help-content {
+            display: none;
 
-        .advice-cover {
-            width: 100%;
-            border-radius: 3px;
-            margin-bottom: 12px;
-            display: block;
-        }
+            margin-top: 12px;
+            padding: 15px 16px;
 
-        .advice-text {
-            color: #dbe4eb;
-            font-size: 15px;
+            background: #101419;
+            border: 1px solid #29313a;
+
+            font-size: 12px;
+            color: var(--muted);
+
             line-height: 1.65;
         }
 
-        .games {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
-
-        .game {
-            background: #1b2838;
-            border-radius: 3px;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            transition: background 0.15s;
-            border: 1px solid #223447;
-        }
-
-        .game:hover {
-            background: #223447;
-            border-color: #2a3f5a;
-        }
-
-        .game-cover {
-            width: 100%;
+        .steam-help.open .help-content {
             display: block;
-            aspect-ratio: 460 / 215;
-            object-fit: cover;
-            background: #0e1622;
         }
 
-        .game-body {
-            padding: 8px 10px;
+        .help-content strong {
+            color: #dce2e8;
         }
 
-        .game-title {
-            font-size: 13px;
-            color: #dbe4eb;
-            font-weight: 500;
-            margin-bottom: 2px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .game-hours {
-            font-size: 12px;
-            color: #6b7a89;
-            font-family: Consolas, monospace;
-        }
-
-        .sidebar-block {
-            background: #1b2838;
-            border: 1px solid #2a3f5a;
-            border-radius: 4px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .sidebar-block h3 {
-            font-size: 13px;
-            color: #66c0f4;
+        .help-step {
+            display: grid;
+            grid-template-columns: 24px 1fr;
+            gap: 9px;
             margin-bottom: 10px;
+        }
+
+        .help-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 22px;
+            height: 22px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid #35404c;
+            color: var(--blue);
+
+            font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
         }
 
-        .sidebar-block p {
-            font-size: 13px;
-            color: #8f98a0;
-            line-height: 1.6;
+        .profile-example {
+            margin-top: 6px;
+            padding: 8px 10px;
+
+            background: #181d23;
+            border: 1px solid #2b333d;
+
+            color: #9da8b3;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+
+            overflow-x: auto;
         }
 
-        .sidebar-block a {
-            color: #66c0f4;
+        .help-link {
+            color: var(--blue);
             text-decoration: none;
         }
 
-        .sidebar-block a:hover {
+        .help-link:hover {
             text-decoration: underline;
         }
 
-        .tip {
-            font-size: 13px;
-            color: #b8c5d1;
-            line-height: 1.6;
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .submit-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 7px;
         }
 
-        .tip strong {
-            color: #f0c674;
+        .submit-button {
+            height: 45px;
+
+            padding: 0 25px;
+
+            border: 1px solid #65b4ff;
+            border-radius: 3px;
+
+            background: var(--blue);
+            color: #07111c;
+
+            font-size: 13px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s,
+                transform 0.15s;
         }
+
+        .submit-button:hover {
+            background: #78bdff;
+        }
+
+        .submit-button:active {
+            transform: translateY(1px);
+        }
+
+        .submit-button:disabled {
+            cursor: wait;
+            background: #315473;
+            border-color: #315473;
+            color: #9db2c5;
+        }
+
+        .submit-note {
+            color: var(--muted-2);
+            font-size: 11px;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .side {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .side-box {
+            background: #11151a;
+            border: 1px solid var(--border);
+            padding: 18px;
+        }
+
+        .side-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 11px;
+
+            color: #d7dde3;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .side-number {
+            color: var(--blue);
+            font-family: Consolas, monospace;
+            font-size: 10px;
+        }
+
+        .side-box p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .side-box b {
+            color: #cbd2da;
+        }
+
+        .side-box a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .side-box a:hover {
+            text-decoration: underline;
+        }
+
+        .tip-box {
+            border-left: 2px solid var(--yellow);
+        }
+
+        .tip-box .side-label {
+            color: var(--yellow);
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
 
         .error {
-            background: rgba(200, 50, 50, 0.15);
-            border-left: 3px solid #e74c3c;
-            padding: 12px 16px;
-            border-radius: 3px;
-            color: #ffb3b3;
-            font-size: 14px;
-            margin-bottom: 20px;
             display: none;
+
+            margin-bottom: 20px;
+            padding: 13px 16px;
+
+            background: rgba(239, 107, 107, 0.08);
+            border: 1px solid rgba(239, 107, 107, 0.3);
+            border-left: 3px solid var(--red);
+
+            color: #ffb7b7;
+            font-size: 13px;
         }
 
         .error.show {
             display: block;
         }
 
+        /* =========================
+           LOADER
+        ========================= */
+
         .loader {
             display: none;
-            padding: 24px;
+
+            padding: 35px 10px;
+
             text-align: center;
-            color: #8f98a0;
-            font-size: 14px;
+
+            color: var(--muted);
+            font-size: 12px;
             font-family: Consolas, monospace;
         }
 
@@ -367,105 +591,419 @@
             display: block;
         }
 
-        .loader::after {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #66c0f4;
-            border-radius: 50%;
-            margin-left: 8px;
-            animation: pulse 1s ease-in-out infinite;
+        .loader-line {
+            width: 120px;
+            height: 2px;
+
+            margin: 10px auto 0;
+
+            overflow: hidden;
+            background: #242b33;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.3;
+        .loader-line::after {
+            content: "";
+
+            display: block;
+
+            width: 45%;
+            height: 100%;
+
+            background: var(--blue);
+
+            animation: loading 1.1s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateX(-100%);
             }
 
-            50% {
-                opacity: 1;
+            100% {
+                transform: translateX(230%);
             }
         }
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result {
+            margin-top: 22px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+
+            margin-bottom: 14px;
+        }
+
+        .result-header h2 {
+            font-size: 14px;
+            color: #e6eaf0;
+        }
+
+        .result-header span {
+            color: var(--muted-2);
+            font-family: Consolas, monospace;
+            font-size: 10px;
+        }
+
+        .recommendation {
+            background: #141a20;
+            border: 1px solid #303944;
+
+            margin-bottom: 25px;
+
+            display: grid;
+            grid-template-columns: 280px 1fr;
+        }
+
+        .recommendation-image {
+            width: 100%;
+            height: 100%;
+            min-height: 132px;
+
+            display: block;
+
+            object-fit: cover;
+
+            background: #0a0d10;
+        }
+
+        .recommendation-content {
+            padding: 20px;
+        }
+
+        .recommendation-tag {
+            color: var(--blue);
+            font-family: Consolas, monospace;
+            text-transform: uppercase;
+
+            font-size: 10px;
+            letter-spacing: 1.2px;
+
+            margin-bottom: 9px;
+        }
+
+        .recommendation-text {
+            color: #d6dce2;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .games-heading {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+
+            margin-bottom: 12px;
+        }
+
+        .games-heading h3 {
+            font-size: 13px;
+            color: #d9dfe5;
+        }
+
+        .games-heading span {
+            font-family: Consolas, monospace;
+            color: var(--muted-2);
+            font-size: 10px;
+        }
+
+        .games {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(190px, 1fr));
+            gap: 10px;
+        }
+
+        .game {
+            display: block;
+
+            background: #13181e;
+            border: 1px solid #29313a;
+
+            text-decoration: none;
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.15s,
+                transform 0.15s,
+                background 0.15s;
+        }
+
+        .game:hover {
+            border-color: #465462;
+            background: #181e25;
+            transform: translateY(-2px);
+        }
+
+        .game-cover {
+            width: 100%;
+            aspect-ratio: 460 / 215;
+
+            display: block;
+
+            object-fit: cover;
+
+            background: #0b0e11;
+        }
+
+        .game-body {
+            padding: 10px 11px;
+        }
+
+        .game-title {
+            color: #dce2e8;
+            font-size: 12px;
+            font-weight: 650;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            margin-bottom: 3px;
+        }
+
+        .game-hours {
+            color: var(--muted-2);
+            font-family: Consolas, monospace;
+            font-size: 10px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
-            margin-top: 60px;
-            padding-top: 24px;
-            border-top: 1px solid #2a3f5a;
-            font-size: 12px;
-            color: #6b7a89;
-            text-align: center;
-        }
+            margin-top: 70px;
 
-        footer .sign {
-            font-style: italic;
-            color: #8f98a0;
-            margin-bottom: 6px;
+            padding-top: 20px;
+
+            border-top: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+            color: var(--muted-2);
+            font-size: 11px;
         }
 
         footer a {
-            color: #66c0f4;
+            color: var(--muted);
             text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--blue);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .intro {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+
+            .intro-side {
+                border-left: 0;
+                border-top: 1px solid var(--border);
+                padding-left: 0;
+                padding-top: 15px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .side {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tip-box {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                height: 58px;
+            }
+
+            .header-inner {
+                padding: 0 16px;
+            }
+
+            .header-link {
+                display: none;
+            }
+
+            .status {
+                font-size: 10px;
+            }
+
+            .page {
+                padding: 38px 16px 50px;
+            }
+
+            .intro {
+                margin-bottom: 28px;
+            }
+
+            .intro h1 {
+                font-size: 39px;
+                letter-spacing: -2px;
+            }
+
+            .form-panel {
+                padding: 18px;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .submit-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .submit-button {
+                width: 100%;
+            }
+
+            .submit-note {
+                text-align: center;
+            }
+
+            .side {
+                display: flex;
+            }
+
+            .tip-box {
+                grid-column: auto;
+            }
+
+            .recommendation {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-image {
+                min-height: auto;
+                aspect-ratio: 460 / 215;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="topbar">
-    <div class="topbar-inner">
+<header class="header">
 
-        <div class="logo">
-            steam<span>advisor</span>
-        </div>
+    <div class="header-inner">
 
-        <div class="version">
-            v1.2
-        </div>
+        <a
+            class="brand"
+            href="#"
+        >
+            <div class="brand-mark">
+                SA
+            </div>
 
-        <div class="topbar-nav">
+            <div class="brand-name">
+                steam<span>advisor</span>
+            </div>
+        </a>
+
+        <div class="header-right">
+
+            <div class="status">
+                <span class="status-dot"></span>
+                сервис работает
+            </div>
+
             <a
+                class="header-link"
                 href="https://github.com/Ketler42/steam-advisor"
                 target="_blank"
+                rel="noopener noreferrer"
             >
-                github
+                GitHub
             </a>
 
             <a
+                class="header-link"
                 href="https://steamid.io"
                 target="_blank"
+                rel="noopener noreferrer"
             >
-                steamid
+                Steam ID
             </a>
+
         </div>
 
     </div>
-</div>
+
+</header>
 
 
-<div class="wrapper">
+<main class="page">
 
-    <div class="hero">
+    <section class="intro">
 
-        <h1>
-            Во что поиграть
-            <span class="accent">сегодня?</span>
-        </h1>
+        <div>
 
-        <p class="hero-sub">
-            Введи Steam ID — получишь совет от нейросети,
-            во что сыграть из своей библиотеки.
-            Без регистрации, без рекламы.
-        </p>
+            <div class="eyebrow">
+                Steam library / game picker
+            </div>
 
-        <p class="hero-meta">
-            <span>github pages</span> ·
-            <span>steam api</span> ·
-            <span>openai</span> ·
-            собрано <span>Ketler42</span>
-        </p>
+            <h1>
+                Найди игру,
+                <em>которая зайдёт.</em>
+            </h1>
 
-    </div>
+            <p class="intro-text">
+                Steam Advisor смотрит на твою библиотеку,
+                учитывает настроение, жанр и формат игры,
+                а затем выбирает один вариант, который
+                лучше всего подходит под сегодняшний вечер.
+            </p>
+
+        </div>
+
+        <div class="intro-side">
+
+            <strong>
+                Как это работает
+            </strong>
+
+            Указываешь SteamID64 → сервис получает
+            доступные игры → фильтры отбирают подходящие
+            варианты → AI выбирает лучший.
+
+        </div>
+
+    </section>
 
 
     <div
@@ -474,14 +1012,22 @@
     ></div>
 
 
-    <div class="grid">
+    <div class="main-grid">
 
-        <div>
+        <section>
 
-            <div class="block">
+            <div class="panel form-panel">
 
-                <div class="block-title">
-                    Параметры
+                <div class="panel-heading">
+
+                    <h2>
+                        Настройки поиска
+                    </h2>
+
+                    <span>
+                        STEP 01
+                    </span>
+
                 </div>
 
 
@@ -490,31 +1036,139 @@
                     <div class="field">
 
                         <label for="steam_id">
-                            Steam ID
+                            SteamID64
                         </label>
 
-                        <input
-                            type="text"
-                            name="steam_id"
-                            id="steam_id"
-                            placeholder="76561198..."
-                            required
+                        <div class="input-wrap">
+
+                            <input
+                                type="text"
+                                name="steam_id"
+                                id="steam_id"
+                                placeholder="76561198..."
+                                autocomplete="off"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div
+                            class="steam-help"
+                            id="steamHelp"
                         >
 
-                        <p class="field-hint">
-                            Не знаешь? —
-                            <a
-                                href="https://steamid.io"
-                                target="_blank"
+                            <button
+                                type="button"
+                                class="help-toggle"
+                                id="helpToggle"
                             >
-                                steamid.io
-                            </a>
-                        </p>
+                                <span class="help-arrow">
+                                    ▶
+                                </span>
+
+                                Где взять SteamID64?
+                            </button>
+
+
+                            <div class="help-content">
+
+                                <div class="help-step">
+
+                                    <div class="step-number">
+                                        1
+                                    </div>
+
+                                    <div>
+                                        Открой свой профиль
+                                        <strong>Steam</strong>
+                                        в браузере.
+                                    </div>
+
+                                </div>
+
+
+                                <div class="help-step">
+
+                                    <div class="step-number">
+                                        2
+                                    </div>
+
+                                    <div>
+                                        Скопируй адрес страницы
+                                        профиля из адресной строки.
+                                        Например:
+                                        
+                                        <div class="profile-example">
+                                            https://steamcommunity.com/profiles/76561198...
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="help-step">
+
+                                    <div class="step-number">
+                                        3
+                                    </div>
+
+                                    <div>
+                                        Открой
+                                        <a
+                                            class="help-link"
+                                            href="https://steamid.io"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            steamid.io
+                                        </a>
+                                        и вставь туда ссылку
+                                        на свой Steam-профиль.
+                                    </div>
+
+                                </div>
+
+
+                                <div class="help-step">
+
+                                    <div class="step-number">
+                                        4
+                                    </div>
+
+                                    <div>
+                                        Найди результат
+                                        <strong>SteamID64</strong>.
+                                        Это длинное число из
+                                        <strong>17 цифр</strong>.
+                                    </div>
+
+                                </div>
+
+
+                                <div class="help-step">
+
+                                    <div class="step-number">
+                                        5
+                                    </div>
+
+                                    <div>
+                                        Скопируй это число
+                                        и вставь его в поле
+                                        <strong>SteamID64</strong>
+                                        выше.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="row2">
+                    <div class="row">
 
                         <div class="field">
 
@@ -526,6 +1180,7 @@
                                 name="mood"
                                 id="mood"
                             >
+
                                 <option value="расслабиться">
                                     Расслабиться
                                 </option>
@@ -541,6 +1196,7 @@
                                 <option value="поплакать">
                                     Поплакать
                                 </option>
+
                             </select>
 
                         </div>
@@ -549,15 +1205,16 @@
                         <div class="field">
 
                             <label for="length">
-                                Длина
+                                Сколько времени
                             </label>
 
                             <select
                                 name="length"
                                 id="length"
                             >
+
                                 <option value="короткая">
-                                    до 10 часов
+                                    До 10 часов
                                 </option>
 
                                 <option value="средняя">
@@ -567,6 +1224,7 @@
                                 <option value="длинная">
                                     30+ часов
                                 </option>
+
                             </select>
 
                         </div>
@@ -574,7 +1232,7 @@
                     </div>
 
 
-                    <div class="row2">
+                    <div class="row">
 
                         <div class="field">
 
@@ -586,33 +1244,35 @@
                                 name="genre"
                                 id="genre"
                             >
+
                                 <option value="любой">
-                                    любой
+                                    Любой
                                 </option>
 
                                 <option value="экшн">
-                                    экшн
+                                    Экшн
                                 </option>
 
                                 <option value="rpg">
-                                    rpg
+                                    RPG
                                 </option>
 
                                 <option value="стратегия">
-                                    стратегия
+                                    Стратегия
                                 </option>
 
                                 <option value="инди">
-                                    инди
+                                    Инди
                                 </option>
 
                                 <option value="хоррор">
-                                    хоррор
+                                    Хоррор
                                 </option>
 
                                 <option value="казуал">
-                                    казуал
+                                    Казуал
                                 </option>
+
                             </select>
 
                         </div>
@@ -621,24 +1281,26 @@
                         <div class="field">
 
                             <label for="players">
-                                Играть
+                                Формат
                             </label>
 
                             <select
                                 name="players"
                                 id="players"
                             >
+
                                 <option value="не важно">
-                                    не важно
+                                    Не важно
                                 </option>
 
                                 <option value="один">
-                                    одному
+                                    Один
                                 </option>
 
                                 <option value="с друзьями">
-                                    с друзьями
+                                    С друзьями
                                 </option>
+
                             </select>
 
                         </div>
@@ -646,13 +1308,22 @@
                     </div>
 
 
-                    <button
-                        type="submit"
-                        class="btn"
-                        id="submitBtn"
-                    >
-                        Подобрать игру
-                    </button>
+                    <div class="submit-row">
+
+                        <button
+                            type="submit"
+                            class="submit-button"
+                            id="submitBtn"
+                        >
+                            Подобрать игру
+                        </button>
+
+                        <div class="submit-note">
+                            Данные профиля используются только
+                            для подбора.
+                        </div>
+
+                    </div>
 
                 </form>
 
@@ -663,176 +1334,215 @@
                 class="loader"
                 id="loader"
             >
-                нейросеть думает, подожди немного
+                Получаем библиотеку и ищем подходящий вариант...
+
+                <div class="loader-line"></div>
             </div>
 
 
-            <div
-                class="block"
+            <section
+                class="result"
                 id="resultBlock"
                 style="display: none;"
             >
 
-                <div
-                    class="advice"
-                    id="adviceBlock"
-                >
+                <div class="result-header">
 
-                    <div class="advice-label">
-                        совет от нейросети
-                    </div>
+                    <h2>
+                        Результат
+                    </h2>
+
+                    <span>
+                        STEP 02
+                    </span>
+
+                </div>
+
+
+                <div class="recommendation">
 
                     <img
                         id="adviceCover"
-                        class="advice-cover"
+                        class="recommendation-image"
                         alt=""
                         style="display: none;"
                     >
 
-                    <div
-                        class="advice-text"
-                        id="adviceText"
-                    ></div>
+                    <div class="recommendation-content">
 
-                </div>
+                        <div class="recommendation-tag">
+                            recommendation
+                        </div>
 
+                        <div
+                            class="recommendation-text"
+                            id="adviceText"
+                        ></div>
 
-                <div class="block">
-
-                    <div
-                        class="block-title"
-                        id="gamesTitle"
-                    >
-                        Подходящие игры
                     </div>
 
-                    <div
-                        class="games"
-                        id="games"
-                    ></div>
+                </div>
+
+
+                <div class="games-heading">
+
+                    <h3>
+                        Подходящие игры
+                    </h3>
+
+                    <span id="gamesTitle">
+                        0 вариантов
+                    </span>
 
                 </div>
+
+
+                <div
+                    class="games"
+                    id="games"
+                ></div>
+
+            </section>
+
+        </section>
+
+
+        <aside class="side">
+
+            <div class="side-box">
+
+                <div class="side-label">
+
+                    <span class="side-number">
+                        01
+                    </span>
+
+                    Профиль Steam
+
+                </div>
+
+                <p>
+                    Чтобы сервис увидел игры,
+                    <b>детали игр в профиле Steam
+                    должны быть открыты</b>.
+                </p>
+
+                <p style="margin-top: 9px;">
+                    Steam → профиль →
+                    «Редактировать профиль» →
+                    настройки приватности.
+                </p>
 
             </div>
 
-        </div>
 
+            <div class="side-box">
 
-        <div>
+                <div class="side-label">
 
-            <div class="sidebar-block">
+                    <span class="side-number">
+                        02
+                    </span>
 
-                <h3>
-                    как пользоваться
-                </h3>
+                    SteamID64
+
+                </div>
 
                 <p>
-                    1. Открой
+                    Если у тебя адрес профиля выглядит
+                    как <b>/id/ник</b>, это нормально.
+                    Просто вставь ссылку на профиль
+                    в
                     <a
                         href="https://steamid.io"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         steamid.io
-                    </a>,
-                    вставь ссылку на профиль —
-                    получишь свой <b>SteamID64</b>.
-                    <br><br>
-
-                    2. Вставь его в поле слева,
-                    выбери настроение и жанр.
-                    <br><br>
-
-                    3. Жми «Подобрать игру».
+                    </a>
+                    и получишь нужный номер.
                 </p>
 
             </div>
 
 
-            <div class="sidebar-block">
+            <div class="side-box tip-box">
 
-                <h3>
-                    профиль должен быть открыт
-                </h3>
+                <div class="side-label">
+
+                    <span class="side-number">
+                        TIP
+                    </span>
+
+                    Маленький совет
+
+                </div>
 
                 <p>
-                    Если у тебя закрыт профиль —
-                    игры не подтянутся.
-                    Зайди в
-                    <b>Настройки → Конфиденциальность</b>
-                    →
-                    «Детали игр» →
-                    <strong>Открыто</strong>.
+                    Не можешь выбрать игру?
+                    Попробуй поставить
+                    <b>«Не важно»</b> в жанре
+                    и формате. Так алгоритм получит
+                    больше вариантов.
                 </p>
 
             </div>
 
 
-            <div class="sidebar-block">
+            <div class="side-box">
 
-                <h3>
-                    совет дня
-                </h3>
+                <div class="side-label">
 
-                <p class="tip">
-                    Если совсем не знаешь,
-                    во что играть —
-                    <strong>
-                        открой любую игру,
-                        в которой меньше 2 часов
-                    </strong>.
-                    Скорее всего, ты её даже не запускал.
-                </p>
+                    <span class="side-number">
+                        03
+                    </span>
 
-            </div>
+                    О проекте
 
-
-            <div class="sidebar-block">
-
-                <h3>
-                    о проекте
-                </h3>
+                </div>
 
                 <p>
-                    Сделал студент для себя и друзей.
-                    Нейросеть —
-                    <b>OpenAI</b>,
-                    данные —
-                    <b>Steam API</b>.
-                    Исходники на
+                    Небольшой игровой инструмент,
+                    который помогает разобраться
+                    с огромной библиотекой Steam.
+                </p>
+
+                <p style="margin-top: 9px;">
                     <a
                         href="https://github.com/Ketler42/steam-advisor"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
-                        github
-                    </a>.
+                        Исходный код на GitHub →
+                    </a>
                 </p>
 
             </div>
 
-        </div>
+        </aside>
 
     </div>
 
 
     <footer>
 
-        <div class="sign">
-            — сделано с любовью к видеоиграм —
+        <div>
+            Steam Advisor · 2026
         </div>
 
         <div>
-            Steam Advisor v1.2 · 2026 ·
             <a
                 href="https://github.com/Ketler42/steam-advisor"
                 target="_blank"
+                rel="noopener noreferrer"
             >
-                исходники на GitHub
+                GitHub
             </a>
         </div>
 
     </footer>
 
-</div>
+</main>
 
 
 <script>
@@ -868,10 +1578,35 @@ const gamesContainer =
 const gamesTitle =
     document.getElementById("gamesTitle");
 
+const helpToggle =
+    document.getElementById("helpToggle");
+
+const steamHelp =
+    document.getElementById("steamHelp");
+
+
+/* =========================
+   STEAM ID HELP
+========================= */
+
+helpToggle.addEventListener(
+    "click",
+    function () {
+
+        steamHelp.classList.toggle("open");
+
+    }
+);
+
+
+/* =========================
+   ERRORS
+========================= */
 
 function showError(message) {
 
-    errorBox.textContent = message;
+    errorBox.textContent =
+        message;
 
     errorBox.classList.add("show");
 
@@ -880,12 +1615,17 @@ function showError(message) {
 
 function hideError() {
 
-    errorBox.textContent = "";
+    errorBox.textContent =
+        "";
 
     errorBox.classList.remove("show");
 
 }
 
+
+/* =========================
+   STEAM
+========================= */
 
 function steamImage(appid) {
 
@@ -908,17 +1648,27 @@ function steamLink(appid) {
 }
 
 
+/* =========================
+   GAME CARD
+========================= */
+
 function createGameCard(game) {
 
     const link =
         document.createElement("a");
 
-    link.className = "game";
+    link.className =
+        "game";
 
     link.href =
         steamLink(game.appid);
 
-    link.target = "_blank";
+    link.target =
+        "_blank";
+
+    link.rel =
+        "noopener noreferrer";
+
 
     const image =
         document.createElement("img");
@@ -935,11 +1685,13 @@ function createGameCard(game) {
     image.loading =
         "lazy";
 
+
     const body =
         document.createElement("div");
 
     body.className =
         "game-body";
+
 
     const title =
         document.createElement("div");
@@ -950,6 +1702,7 @@ function createGameCard(game) {
     title.textContent =
         game.name;
 
+
     const hours =
         document.createElement("div");
 
@@ -957,7 +1710,9 @@ function createGameCard(game) {
         "game-hours";
 
     hours.textContent =
-        game.hours + " ч.";
+        game.hours +
+        " ч. в библиотеке";
+
 
     body.appendChild(title);
 
@@ -967,18 +1722,25 @@ function createGameCard(game) {
 
     link.appendChild(body);
 
+
     return link;
 
 }
 
+
+/* =========================
+   RESULTS
+========================= */
 
 function showResults(data) {
 
     resultBlock.style.display =
         "block";
 
+
     adviceText.textContent =
         data.advice || "";
+
 
     if (
         data.suggested_game &&
@@ -1015,18 +1777,19 @@ function showResults(data) {
 
 
     gamesTitle.textContent =
-        "Подходящие игры (" +
         games.length +
-        ")";
+        " вариантов";
 
 
-    games.forEach(function(game) {
+    games.forEach(
+        function (game) {
 
-        gamesContainer.appendChild(
-            createGameCard(game)
-        );
+            gamesContainer.appendChild(
+                createGameCard(game)
+            );
 
-    });
+        }
+    );
 
 
     resultBlock.scrollIntoView({
@@ -1037,26 +1800,34 @@ function showResults(data) {
 }
 
 
+/* =========================
+   FORM
+========================= */
+
 form.addEventListener(
     "submit",
-    async function(event) {
+    async function (event) {
 
         event.preventDefault();
 
+
         hideError();
+
 
         resultBlock.style.display =
             "none";
+
 
         loader.classList.add(
             "active"
         );
 
+
         submitBtn.disabled =
             true;
 
         submitBtn.textContent =
-            "подбираю…";
+            "Подбираю...";
 
 
         const steamId =
@@ -1065,20 +1836,24 @@ form.addEventListener(
                 .value
                 .trim();
 
+
         const mood =
             document
                 .getElementById("mood")
                 .value;
+
 
         const length =
             document
                 .getElementById("length")
                 .value;
 
+
         const genre =
             document
                 .getElementById("genre")
                 .value;
+
 
         const players =
             document
@@ -1099,27 +1874,29 @@ form.addEventListener(
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            steam_id:
-                                steamId,
+                        body:
+                            JSON.stringify({
+                                steam_id:
+                                    steamId,
 
-                            mood:
-                                mood,
+                                mood:
+                                    mood,
 
-                            length:
-                                length,
+                                length:
+                                    length,
 
-                            genre:
-                                genre,
+                                genre:
+                                    genre,
 
-                            players:
-                                players
-                        })
+                                players:
+                                    players
+                            })
                     }
                 );
 
 
             let data;
+
 
             try {
 
@@ -1129,13 +1906,16 @@ form.addEventListener(
             } catch (jsonError) {
 
                 throw new Error(
-                    "Worker вернул некорректный ответ."
+                    "Сервер вернул некорректный ответ."
                 );
 
             }
 
 
-            if (!response.ok || !data.success) {
+            if (
+                !response.ok ||
+                !data.success
+            ) {
 
                 throw new Error(
                     data.error ||
@@ -1147,6 +1927,7 @@ form.addEventListener(
 
             showResults(data);
 
+
         } catch (error) {
 
             console.error(error);
@@ -1156,14 +1937,17 @@ form.addEventListener(
                 "Произошла неизвестная ошибка."
             );
 
+
         } finally {
 
             loader.classList.remove(
                 "active"
             );
 
+
             submitBtn.disabled =
                 false;
+
 
             submitBtn.textContent =
                 "Подобрать игру";
@@ -1176,4 +1960,3 @@ form.addEventListener(
 </script>
 
 </body>
-</html>
