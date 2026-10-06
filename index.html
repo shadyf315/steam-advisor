@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Advisor — во что поиграть?</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: #16181d;
+            color: #c7d5e0;
+            min-height: 100vh;
+            line-height: 1.55;
+            padding-bottom: 60px;
+        }
+
+        .topbar {
+            background: #171a21;
+            padding: 14px 0;
+            border-bottom: 1px solid #2a3f5a;
+        }
+
+        .topbar-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            color: #66c0f4;
+        }
+
+        .version {
+            font-size: 11px;
+            color: #6b7a89;
+            font-family: Consolas, monospace;
+            background: #1b2838;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        .topbar-nav {
+            margin-left: auto;
+            font-size: 13px;
+            color: #8f98a0;
+        }
+
+        .topbar-nav a {
+            color: #66c0f4;
+            text-decoration: none;
+            margin-left: 16px;
+        }
+
+        .topbar-nav a:hover {
+            color: #fff;
+        }
+
+        .wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .hero {
+            padding: 40px 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .hero h1 .accent {
+            color: #66c0f4;
+        }
+
+        .hero-sub {
+            color: #8f98a0;
+            font-size: 15px;
+            max-width: 640px;
+        }
+
+        .hero-meta {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #6b7a89;
+            font-family: Consolas, monospace;
+        }
+
+        .hero-meta span {
+            color: #b8c5d1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 780px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+        }
+
+        .block {
+            margin-bottom: 28px;
+        }
+
+        .block-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #66c0f4;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #2a3f5a;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            color: #8f98a0;
+            margin-bottom: 6px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 10px 12px;
+            background: #1b2838;
+            color: #c7d5e0;
+            border: 1px solid #2a3f5a;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #66c0f4;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: #6b7a89;
+            margin-top: 4px;
+        }
+
+        .field-hint a {
+            color: #66c0f4;
+        }
+
+        .row2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .row2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #66c0f4;
+            color: #171a21;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #8fd0ff;
+        }
+
+        .btn:disabled {
+            background: #3d5a73;
+            color: #8f98a0;
+            cursor: wait;
+        }
+
+        .advice {
+            background: #1b2838;
+            border: 1px solid #2a3f5a;
+            border-left: 3px solid #66c0f4;
+            border-radius: 4px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+        }
+
+        .advice-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #66c0f4;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .advice-cover {
+            width: 100%;
+            border-radius: 3px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .advice-text {
+            color: #dbe4eb;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        .games {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .game {
+            background: #1b2838;
+            border-radius: 3px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.15s;
+            border: 1px solid #223447;
+        }
+
+        .game:hover {
+            background: #223447;
+            border-color: #2a3f5a;
+        }
+
+        .game-cover {
+            width: 100%;
+            display: block;
+            aspect-ratio: 460 / 215;
+            object-fit: cover;
+            background: #0e1622;
+        }
+
+        .game-body {
+            padding: 8px 10px;
+        }
+
+        .game-title {
+            font-size: 13px;
+            color: #dbe4eb;
+            font-weight: 500;
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .game-hours {
+            font-size: 12px;
+            color: #6b7a89;
+            font-family: Consolas, monospace;
+        }
+
+        .sidebar-block {
+            background: #1b2838;
+            border: 1px solid #2a3f5a;
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-block h3 {
+            font-size: 13px;
+            color: #66c0f4;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .sidebar-block p {
+            font-size: 13px;
+            color: #8f98a0;
+            line-height: 1.6;
+        }
+
+        .sidebar-block a {
+            color: #66c0f4;
+            text-decoration: none;
+        }
+
+        .sidebar-block a:hover {
+            text-decoration: underline;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: #b8c5d1;
+            line-height: 1.6;
+        }
+
+        .tip strong {
+            color: #f0c674;
+        }
+
+        .error {
+            background: rgba(200, 50, 50, 0.15);
+            border-left: 3px solid #e74c3c;
+            padding: 12px 16px;
+            border-radius: 3px;
+            color: #ffb3b3;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .loader {
+            display: none;
+            padding: 24px;
+            text-align: center;
+            color: #8f98a0;
+            font-size: 14px;
+            font-family: Consolas, monospace;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .loader::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #66c0f4;
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid #2a3f5a;
+            font-size: 12px;
+            color: #6b7a89;
+            text-align: center;
+        }
+
+        footer .sign {
+            font-style: italic;
+            color: #8f98a0;
+            margin-bottom: 6px;
+        }
+
+        footer a {
+            color: #66c0f4;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+
+        <div class="logo">
+            steam<span>advisor</span>
+        </div>
+
+        <div class="version">
+            v1.2
+        </div>
+
+        <div class="topbar-nav">
+            <a
+                href="https://github.com/Ketler42/steam-advisor"
+                target="_blank"
+            >
+                github
+            </a>
+
+            <a
+                href="https://steamid.io"
+                target="_blank"
+            >
+                steamid
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="wrapper">
+
+    <div class="hero">
+
+        <h1>
+            Во что поиграть
+            <span class="accent">сегодня?</span>
+        </h1>
+
+        <p class="hero-sub">
+            Введи Steam ID — получишь совет от нейросети,
+            во что сыграть из своей библиотеки.
+            Без регистрации, без рекламы.
+        </p>
+
+        <p class="hero-meta">
+            <span>github pages</span> ·
+            <span>steam api</span> ·
+            <span>openai</span> ·
+            собрано <span>Ketler42</span>
+        </p>
+
+    </div>
+
+
+    <div
+        class="error"
+        id="error"
+    ></div>
+
+
+    <div class="grid">
+
+        <div>
+
+            <div class="block">
+
+                <div class="block-title">
+                    Параметры
+                </div>
+
+
+                <form id="mainForm">
+
+                    <div class="field">
+
+                        <label for="steam_id">
+                            Steam ID
+                        </label>
+
+                        <input
+                            type="text"
+                            name="steam_id"
+                            id="steam_id"
+                            placeholder="76561198..."
+                            required
+                        >
+
+                        <p class="field-hint">
+                            Не знаешь? —
+                            <a
+                                href="https://steamid.io"
+                                target="_blank"
+                            >
+                                steamid.io
+                            </a>
+                        </p>
+
+                    </div>
+
+
+                    <div class="row2">
+
+                        <div class="field">
+
+                            <label for="mood">
+                                Настроение
+                            </label>
+
+                            <select
+                                name="mood"
+                                id="mood"
+                            >
+                                <option value="расслабиться">
+                                    Расслабиться
+                                </option>
+
+                                <option value="подумать">
+                                    Подумать
+                                </option>
+
+                                <option value="побесить">
+                                    Побесить
+                                </option>
+
+                                <option value="поплакать">
+                                    Поплакать
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="length">
+                                Длина
+                            </label>
+
+                            <select
+                                name="length"
+                                id="length"
+                            >
+                                <option value="короткая">
+                                    до 10 часов
+                                </option>
+
+                                <option value="средняя">
+                                    10–30 часов
+                                </option>
+
+                                <option value="длинная">
+                                    30+ часов
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row2">
+
+                        <div class="field">
+
+                            <label for="genre">
+                                Жанр
+                            </label>
+
+                            <select
+                                name="genre"
+                                id="genre"
+                            >
+                                <option value="любой">
+                                    любой
+                                </option>
+
+                                <option value="экшн">
+                                    экшн
+                                </option>
+
+                                <option value="rpg">
+                                    rpg
+                                </option>
+
+                                <option value="стратегия">
+                                    стратегия
+                                </option>
+
+                                <option value="инди">
+                                    инди
+                                </option>
+
+                                <option value="хоррор">
+                                    хоррор
+                                </option>
+
+                                <option value="казуал">
+                                    казуал
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="players">
+                                Играть
+                            </label>
+
+                            <select
+                                name="players"
+                                id="players"
+                            >
+                                <option value="не важно">
+                                    не важно
+                                </option>
+
+                                <option value="один">
+                                    одному
+                                </option>
+
+                                <option value="с друзьями">
+                                    с друзьями
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn"
+                        id="submitBtn"
+                    >
+                        Подобрать игру
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div
+                class="loader"
+                id="loader"
+            >
+                нейросеть думает, подожди немного
+            </div>
+
+
+            <div
+                class="block"
+                id="resultBlock"
+                style="display: none;"
+            >
+
+                <div
+                    class="advice"
+                    id="adviceBlock"
+                >
+
+                    <div class="advice-label">
+                        совет от нейросети
+                    </div>
+
+                    <img
+                        id="adviceCover"
+                        class="advice-cover"
+                        alt=""
+                        style="display: none;"
+                    >
+
+                    <div
+                        class="advice-text"
+                        id="adviceText"
+                    ></div>
+
+                </div>
+
+
+                <div class="block">
+
+                    <div
+                        class="block-title"
+                        id="gamesTitle"
+                    >
+                        Подходящие игры
+                    </div>
+
+                    <div
+                        class="games"
+                        id="games"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="sidebar-block">
+
+                <h3>
+                    как пользоваться
+                </h3>
+
+                <p>
+                    1. Открой
+                    <a
+                        href="https://steamid.io"
+                        target="_blank"
+                    >
+                        steamid.io
+                    </a>,
+                    вставь ссылку на профиль —
+                    получишь свой <b>SteamID64</b>.
+                    <br><br>
+
+                    2. Вставь его в поле слева,
+                    выбери настроение и жанр.
+                    <br><br>
+
+                    3. Жми «Подобрать игру».
+                </p>
+
+            </div>
+
+
+            <div class="sidebar-block">
+
+                <h3>
+                    профиль должен быть открыт
+                </h3>
+
+                <p>
+                    Если у тебя закрыт профиль —
+                    игры не подтянутся.
+                    Зайди в
+                    <b>Настройки → Конфиденциальность</b>
+                    →
+                    «Детали игр» →
+                    <strong>Открыто</strong>.
+                </p>
+
+            </div>
+
+
+            <div class="sidebar-block">
+
+                <h3>
+                    совет дня
+                </h3>
+
+                <p class="tip">
+                    Если совсем не знаешь,
+                    во что играть —
+                    <strong>
+                        открой любую игру,
+                        в которой меньше 2 часов
+                    </strong>.
+                    Скорее всего, ты её даже не запускал.
+                </p>
+
+            </div>
+
+
+            <div class="sidebar-block">
+
+                <h3>
+                    о проекте
+                </h3>
+
+                <p>
+                    Сделал студент для себя и друзей.
+                    Нейросеть —
+                    <b>OpenAI</b>,
+                    данные —
+                    <b>Steam API</b>.
+                    Исходники на
+                    <a
+                        href="https://github.com/Ketler42/steam-advisor"
+                        target="_blank"
+                    >
+                        github
+                    </a>.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        <div class="sign">
+            — сделано с любовью к видеоиграм —
+        </div>
+
+        <div>
+            Steam Advisor v1.2 · 2026 ·
+            <a
+                href="https://github.com/Ketler42/steam-advisor"
+                target="_blank"
+            >
+                исходники на GitHub
+            </a>
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+const WORKER_URL =
+    "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
+
+
+const form =
+    document.getElementById("mainForm");
+
+const loader =
+    document.getElementById("loader");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const errorBox =
+    document.getElementById("error");
+
+const resultBlock =
+    document.getElementById("resultBlock");
+
+const adviceText =
+    document.getElementById("adviceText");
+
+const adviceCover =
+    document.getElementById("adviceCover");
+
+const gamesContainer =
+    document.getElementById("games");
+
+const gamesTitle =
+    document.getElementById("gamesTitle");
+
+
+function showError(message) {
+
+    errorBox.textContent = message;
+
+    errorBox.classList.add("show");
+
+}
+
+
+function hideError() {
+
+    errorBox.textContent = "";
+
+    errorBox.classList.remove("show");
+
+}
+
+
+function steamImage(appid) {
+
+    return (
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/" +
+        appid +
+        "/header.jpg"
+    );
+
+}
+
+
+function steamLink(appid) {
+
+    return (
+        "https://store.steampowered.com/app/" +
+        appid
+    );
+
+}
+
+
+function createGameCard(game) {
+
+    const link =
+        document.createElement("a");
+
+    link.className = "game";
+
+    link.href =
+        steamLink(game.appid);
+
+    link.target = "_blank";
+
+    const image =
+        document.createElement("img");
+
+    image.className =
+        "game-cover";
+
+    image.src =
+        steamImage(game.appid);
+
+    image.alt =
+        game.name;
+
+    image.loading =
+        "lazy";
+
+    const body =
+        document.createElement("div");
+
+    body.className =
+        "game-body";
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "game-title";
+
+    title.textContent =
+        game.name;
+
+    const hours =
+        document.createElement("div");
+
+    hours.className =
+        "game-hours";
+
+    hours.textContent =
+        game.hours + " ч.";
+
+    body.appendChild(title);
+
+    body.appendChild(hours);
+
+    link.appendChild(image);
+
+    link.appendChild(body);
+
+    return link;
+
+}
+
+
+function showResults(data) {
+
+    resultBlock.style.display =
+        "block";
+
+    adviceText.textContent =
+        data.advice || "";
+
+    if (
+        data.suggested_game &&
+        data.suggested_game.appid
+    ) {
+
+        adviceCover.src =
+            steamImage(
+                data.suggested_game.appid
+            );
+
+        adviceCover.alt =
+            data.suggested_game.name;
+
+        adviceCover.style.display =
+            "block";
+
+    } else {
+
+        adviceCover.style.display =
+            "none";
+
+    }
+
+
+    gamesContainer.innerHTML =
+        "";
+
+
+    const games =
+        Array.isArray(data.filtered)
+            ? data.filtered
+            : [];
+
+
+    gamesTitle.textContent =
+        "Подходящие игры (" +
+        games.length +
+        ")";
+
+
+    games.forEach(function(game) {
+
+        gamesContainer.appendChild(
+            createGameCard(game)
+        );
+
+    });
+
+
+    resultBlock.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        hideError();
+
+        resultBlock.style.display =
+            "none";
+
+        loader.classList.add(
+            "active"
+        );
+
+        submitBtn.disabled =
+            true;
+
+        submitBtn.textContent =
+            "подбираю…";
+
+
+        const steamId =
+            document
+                .getElementById("steam_id")
+                .value
+                .trim();
+
+        const mood =
+            document
+                .getElementById("mood")
+                .value;
+
+        const length =
+            document
+                .getElementById("length")
+                .value;
+
+        const genre =
+            document
+                .getElementById("genre")
+                .value;
+
+        const players =
+            document
+                .getElementById("players")
+                .value;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    WORKER_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            steam_id:
+                                steamId,
+
+                            mood:
+                                mood,
+
+                            length:
+                                length,
+
+                            genre:
+                                genre,
+
+                            players:
+                                players
+                        })
+                    }
+                );
+
+
+            let data;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch (jsonError) {
+
+                throw new Error(
+                    "Worker вернул некорректный ответ."
+                );
+
+            }
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Не удалось получить рекомендацию."
+                );
+
+            }
+
+
+            showResults(data);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                error.message ||
+                "Произошла неизвестная ошибка."
+            );
+
+        } finally {
+
+            loader.classList.remove(
+                "active"
+            );
+
+            submitBtn.disabled =
+                false;
+
+            submitBtn.textContent =
+                "Подобрать игру";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
