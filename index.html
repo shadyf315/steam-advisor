@@ -45,16 +45,330 @@
             overflow-x: hidden;
         }
 
+        /* =========================================================
+           HALLOWEEN BACKGROUND
+           Только фон — интерфейс Steam Advisor не изменён.
+        ========================================================= */
+
+        .halloween-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .halloween-moon {
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: 8%;
+            top: 90px;
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 32%,
+                    rgba(255,255,255,.10) 0 4px,
+                    transparent 5px
+                ),
+                radial-gradient(
+                    circle at 65% 55%,
+                    rgba(255,255,255,.07) 0 7px,
+                    transparent 8px
+                ),
+                radial-gradient(
+                    circle at 48% 72%,
+                    rgba(255,255,255,.06) 0 5px,
+                    transparent 6px
+                ),
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.095),
+                    rgba(255,255,255,.035) 58%,
+                    transparent 72%
+                );
+
+            box-shadow:
+                0 0 70px rgba(255,255,255,.035),
+                0 0 160px rgba(255,106,0,.035);
+
+            opacity: .75;
+        }
+
+        .halloween-moon::after {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            border-radius: 50%;
+            left: 32px;
+            top: -12px;
+            background: #080a0f;
+            opacity: .94;
+        }
+
+        .halloween-fog {
+            position: absolute;
+            left: -10%;
+            bottom: 2%;
+            width: 120%;
+            height: 220px;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    rgba(255,255,255,.025),
+                    transparent 65%
+                );
+
+            filter: blur(20px);
+            opacity: .8;
+            animation: fogMove 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes fogMove {
+            from {
+                transform: translateX(-35px);
+            }
+
+            to {
+                transform: translateX(35px);
+            }
+        }
+
+        /* Дальние деревья */
+
+        .halloween-trees {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -5px;
+            height: 260px;
+            opacity: .42;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+
+            border-left: 55px solid transparent;
+            border-right: 55px solid transparent;
+            border-bottom: 150px solid rgba(3,5,8,.9);
+        }
+
+        .tree::before {
+            content: "";
+            position: absolute;
+            left: -43px;
+            top: 45px;
+
+            width: 0;
+            height: 0;
+
+            border-left: 43px solid transparent;
+            border-right: 43px solid transparent;
+            border-bottom: 120px solid rgba(3,5,8,.9);
+        }
+
+        .tree::after {
+            content: "";
+            position: absolute;
+            left: -31px;
+            top: 82px;
+
+            width: 0;
+            height: 0;
+
+            border-left: 31px solid transparent;
+            border-right: 31px solid transparent;
+            border-bottom: 90px solid rgba(3,5,8,.9);
+        }
+
+        .tree-1 {
+            left: 2%;
+            transform: scale(.8);
+        }
+
+        .tree-2 {
+            left: 12%;
+            transform: scale(1.25);
+        }
+
+        .tree-3 {
+            left: 25%;
+            transform: scale(.65);
+        }
+
+        .tree-4 {
+            right: 23%;
+            transform: scale(.9);
+        }
+
+        .tree-5 {
+            right: 10%;
+            transform: scale(1.3);
+        }
+
+        .tree-6 {
+            right: 1%;
+            transform: scale(.75);
+        }
+
+        /* Земля */
+
+        .halloween-ground {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 75px;
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(2,3,5,.82),
+                    transparent
+                );
+        }
+
+        /* Летучие мыши */
+
+        .bat {
+            position: absolute;
+            color: rgba(255,255,255,.17);
+            font-size: 25px;
+            filter: blur(.1px);
+            animation: batFloat 7s ease-in-out infinite;
+        }
+
+        .bat-1 {
+            top: 17%;
+            left: 12%;
+            font-size: 20px;
+            animation-delay: -1s;
+        }
+
+        .bat-2 {
+            top: 12%;
+            left: 42%;
+            font-size: 15px;
+            animation-delay: -3s;
+        }
+
+        .bat-3 {
+            top: 29%;
+            right: 18%;
+            font-size: 24px;
+            animation-delay: -5s;
+        }
+
+        .bat-4 {
+            top: 38%;
+            right: 39%;
+            font-size: 16px;
+            animation-delay: -2s;
+        }
+
+        @keyframes batFloat {
+            0%, 100% {
+                transform: translate(0, 0) rotate(-4deg);
+            }
+
+            50% {
+                transform: translate(18px, -10px) rotate(5deg);
+            }
+        }
+
+        /* Тыквы внизу */
+
+        .pumpkin {
+            position: absolute;
+            bottom: 25px;
+            font-size: 30px;
+            opacity: .55;
+            filter:
+                drop-shadow(0 0 12px rgba(255,106,0,.18));
+            animation: pumpkinGlow 3s ease-in-out infinite;
+        }
+
+        .pumpkin-1 {
+            left: 7%;
+        }
+
+        .pumpkin-2 {
+            left: 18%;
+            font-size: 22px;
+            animation-delay: -1s;
+        }
+
+        .pumpkin-3 {
+            right: 15%;
+            font-size: 25px;
+            animation-delay: -2s;
+        }
+
+        .pumpkin-4 {
+            right: 5%;
+            animation-delay: -1.5s;
+        }
+
+        @keyframes pumpkinGlow {
+            0%, 100% {
+                opacity: .42;
+                filter:
+                    drop-shadow(0 0 8px rgba(255,106,0,.12));
+            }
+
+            50% {
+                opacity: .65;
+                filter:
+                    drop-shadow(0 0 18px rgba(255,106,0,.22));
+            }
+        }
+
+        /* Лёгкая атмосферная дымка сверху */
+
+        .halloween-atmosphere {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(
+                    ellipse at 50% 100%,
+                    rgba(255,106,0,.035),
+                    transparent 48%
+                ),
+                radial-gradient(
+                    ellipse at 20% 55%,
+                    rgba(77,141,255,.025),
+                    transparent 45%
+                );
+        }
+
+        /* =========================================================
+           ОСНОВНОЙ ФОН САЙТА
+        ========================================================= */
+
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             pointer-events: none;
+            z-index: 1;
+
             background-image:
                 linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+
             background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, black, transparent 85%);
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 85%
+                );
         }
 
         button,
@@ -70,6 +384,8 @@
         .page {
             width: min(1420px, calc(100% - 40px));
             margin: 0 auto;
+            position: relative;
+            z-index: 5;
         }
 
         /* HEADER */
@@ -833,6 +1149,18 @@
             .games-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .halloween-moon {
+                width: 250px;
+                height: 250px;
+                right: -40px;
+                top: 100px;
+            }
+
+            .halloween-moon::after {
+                width: 250px;
+                height: 250px;
+            }
         }
 
         @media (max-width: 720px) {
@@ -901,6 +1229,35 @@
             .loading-card {
                 padding: 27px 20px;
             }
+
+            .halloween-moon {
+                width: 190px;
+                height: 190px;
+                right: -65px;
+                top: 105px;
+            }
+
+            .halloween-moon::after {
+                width: 190px;
+                height: 190px;
+            }
+
+            .tree {
+                transform: scale(.55);
+            }
+
+            .tree-2,
+            .tree-5 {
+                transform: scale(.75);
+            }
+
+            .pumpkin {
+                font-size: 23px;
+            }
+
+            .bat {
+                opacity: .6;
+            }
         }
 
         @media (max-width: 460px) {
@@ -919,11 +1276,56 @@
             .card-title {
                 font-size: 22px;
             }
+
+            .halloween-moon {
+                opacity: .5;
+            }
+
+            .halloween-trees {
+                opacity: .25;
+            }
         }
     </style>
 </head>
 
 <body>
+
+<!-- =========================================================
+     HALLOWEEN BACKGROUND
+========================================================= -->
+
+<div class="halloween-background">
+
+    <div class="halloween-atmosphere"></div>
+
+    <div class="halloween-moon"></div>
+
+    <div class="bat bat-1">🦇</div>
+    <div class="bat bat-2">🦇</div>
+    <div class="bat bat-3">🦇</div>
+    <div class="bat bat-4">🦇</div>
+
+    <div class="halloween-trees">
+
+        <div class="tree tree-1"></div>
+        <div class="tree tree-2"></div>
+        <div class="tree tree-3"></div>
+        <div class="tree tree-4"></div>
+        <div class="tree tree-5"></div>
+        <div class="tree tree-6"></div>
+
+    </div>
+
+    <div class="pumpkin pumpkin-1">🎃</div>
+    <div class="pumpkin pumpkin-2">🎃</div>
+    <div class="pumpkin pumpkin-3">🎃</div>
+    <div class="pumpkin pumpkin-4">🎃</div>
+
+    <div class="halloween-fog"></div>
+    <div class="halloween-ground"></div>
+
+</div>
+
 
 <div class="page">
 
@@ -1914,6 +2316,7 @@ function createGameCard(game) {
                 );
 
             }
+
         }
     );
 
