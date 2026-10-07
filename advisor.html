@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Steam Advisor — Персональный подбор игр</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #07111c;
+    --bg2: #0a1724;
+    --panel: rgba(13, 28, 43, .82);
+    --panel2: rgba(17, 36, 54, .9);
+    --line: rgba(148, 190, 220, .14);
+
+    --text: #f2f7fb;
+    --muted: #8fa5b8;
+    --muted2: #62798d;
+
+    --blue: #38a8ff;
+    --blue2: #63c5ff;
+    --cyan: #52e0ff;
+    --green: #49d89b;
+    --red: #ff6575;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(56,168,255,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(82,224,255,.07),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            #050c14 0%,
+            #07111c 48%,
+            #081522 100%
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .35;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        );
+
+    background-size: 46px 46px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 85%
+        );
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: .18;
+}
+
+.glow.one {
+    width: 400px;
+    height: 400px;
+    background: #148cff;
+    top: -180px;
+    left: -120px;
+}
+
+.glow.two {
+    width: 340px;
+    height: 340px;
+    background: #32d5ff;
+    right: -120px;
+    top: 40%;
+}
+
+.glow.three {
+    width: 300px;
+    height: 300px;
+    background: #2868ff;
+    left: 35%;
+    bottom: -180px;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+    width: min(1280px, calc(100% - 32px));
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--line);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.logo-mark {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(99,197,255,.24),
+            rgba(56,168,255,.06)
+        );
+
+    border: 1px solid rgba(99,197,255,.25);
+
+    color: var(--blue2);
+
+    box-shadow:
+        0 0 30px rgba(56,168,255,.12);
+
+    font-size: 21px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 12px rgba(73,216,155,.7);
+}
+
+.back-button {
+    text-decoration: none;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--line);
+
+    background: rgba(255,255,255,.025);
+
+    color: #cbd8e4;
+
+    font-size: 13px;
+
+    transition: .2s;
+}
+
+.back-button:hover {
+    border-color: rgba(99,197,255,.35);
+    background: rgba(99,197,255,.07);
+    color: white;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    padding: 75px 0 42px;
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: var(--blue2);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 1.7px;
+
+    margin-bottom: 20px;
+}
+
+.hero-label::before {
+    content: "";
+
+    width: 25px;
+    height: 1px;
+
+    background: var(--blue2);
+
+    box-shadow:
+        0 0 12px rgba(99,197,255,.8);
+}
+
+.hero h1 {
+    max-width: 850px;
+
+    font-size: clamp(42px, 6vw, 76px);
+    line-height: .98;
+
+    letter-spacing: -4px;
+    font-weight: 850;
+}
+
+.hero h1 span {
+    color: var(--blue2);
+}
+
+.hero-description {
+    max-width: 690px;
+
+    margin-top: 23px;
+
+    color: var(--muted);
+
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 22px;
+
+    padding-bottom: 70px;
+}
+
+/* =========================
+   PANEL
+========================= */
+
+.panel {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,34,51,.92),
+            rgba(8,20,32,.88)
+        );
+
+    border: 1px solid var(--line);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.25);
+}
+
+.form-panel {
+    padding: 30px;
+}
+
+.panel-header {
+    margin-bottom: 27px;
+}
+
+.panel-title {
+    font-size: 24px;
+    font-weight: 800;
+
+    margin-bottom: 7px;
+}
+
+.panel-subtitle {
+    color: var(--muted);
+
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 19px;
+}
+
+.field {
+    min-width: 0;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #d9e4ec;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.field-hint {
+    margin-top: 7px;
+
+    color: var(--muted2);
+
+    font-size: 12px;
+}
+
+input,
+select {
+    width: 100%;
+    height: 56px;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--line);
+
+    outline: none;
+
+    background: rgba(3,12,20,.55);
+
+    color: white;
+
+    padding: 0 16px;
+
+    font-size: 15px;
+
+    transition: .2s;
+}
+
+input::placeholder {
+    color: #566d80;
+}
+
+input:focus,
+select:focus {
+    border-color: rgba(82,196,255,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(56,168,255,.08),
+        0 0 25px rgba(56,168,255,.06);
+
+    background: rgba(7,21,34,.8);
+}
+
+.select-wrap {
+    position: relative;
+}
+
+.select-wrap::after {
+    content: "⌄";
+
+    position: absolute;
+
+    right: 16px;
+    top: 50%;
+
+    transform: translateY(-55%);
+
+    color: #8299aa;
+
+    pointer-events: none;
+}
+
+select {
+    appearance: none;
+    padding-right: 45px;
+    cursor: pointer;
+}
+
+select option {
+    background: #102031;
+    color: white;
+}
+
+/* =========================
+   MODE
+========================= */
+
+.mode-box {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+.mode-option {
+    position: relative;
+}
+
+.mode-option input {
+    position: absolute;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mode-label {
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--line);
+
+    background: rgba(255,255,255,.025);
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.mode-label:hover {
+    background: rgba(99,197,255,.045);
+    border-color: rgba(99,197,255,.2);
+}
+
+.mode-option input:checked + .mode-label {
+    border-color: rgba(82,196,255,.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(56,168,255,.13),
+            rgba(56,168,255,.025)
+        );
+
+    box-shadow:
+        inset 0 0 30px rgba(56,168,255,.025),
+        0 0 25px rgba(56,168,255,.06);
+}
+
+.mode-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255,255,255,.045);
+
+    font-size: 20px;
+}
+
+.mode-text strong {
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.mode-text small {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.35;
+}
+
+/* =========================
+   SUBMIT
+========================= */
+
+.submit-button {
+    grid-column: 1 / -1;
+
+    height: 59px;
+
+    border: 1px solid rgba(99,197,255,.35);
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            135deg,
+            #147ed0,
+            #249bd9
+        );
+
+    box-shadow:
+        0 14px 35px rgba(20,126,208,.2);
+
+    transition: .2s;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 18px 45px rgba(20,126,208,.3);
+
+    border-color: rgba(150,225,255,.55);
+}
+
+.submit-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.side-card {
+    padding: 21px;
+}
+
+.side-number {
+    color: var(--blue2);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 11px;
+}
+
+.side-title {
+    font-size: 15px;
+    font-weight: 800;
+
+    margin-bottom: 7px;
+}
+
+.side-text {
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 14px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: rgba(73,216,155,.045);
+
+    color: #9fd4bc;
+
+    font-size: 12px;
+}
+
+.system-status span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 10px rgba(73,216,155,.7);
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(2,8,14,.84);
+
+    backdrop-filter: blur(15px);
+}
+
+.loading-overlay.show {
+    display: flex;
+}
+
+.loading-card {
+    width: min(500px, 100%);
+
+    padding: 35px;
+
+    border-radius: 22px;
+
+    border: 1px solid var(--line);
+
+    background:
+        linear-gradient(
+            145deg,
+            #102337,
+            #081522
+        );
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.55);
+
+    text-align: center;
+}
+
+.loading-icon {
+    width: 74px;
+    height: 74px;
+
+    margin: 0 auto 22px;
+
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--blue2);
+
+    font-size: 31px;
+
+    border: 1px solid rgba(99,197,255,.22);
+
+    background: rgba(56,168,255,.07);
+
+    animation: loadingPulse 1.4s infinite;
+}
+
+@keyframes loadingPulse {
+    0%,100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(56,168,255,0);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 35px rgba(56,168,255,.15);
+    }
+}
+
+.loading-title {
+    font-size: 23px;
+    font-weight: 800;
+
+    margin-bottom: 8px;
+}
+
+.loading-text {
+    min-height: 23px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    margin-bottom: 22px;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.06);
+}
+
+.loading-progress {
+    width: 10%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 15px rgba(56,168,255,.5);
+
+    transition: width .5s ease;
+}
+
+.loading-steps {
+    display: grid;
+    gap: 8px;
+
+    margin-top: 20px;
+
+    text-align: left;
+}
+
+.loading-step {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #53697c;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.loading-step.active {
+    color: #dce8f0;
+}
+
+.loading-step.done {
+    color: #75cba7;
+}
+
+.step-dot {
+    width: 7px;
+    height: 7px;
+
+    flex: 0 0 7px;
+
+    border-radius: 50%;
+
+    background: #34495a;
+}
+
+.loading-step.active .step-dot {
+    background: var(--blue2);
+
+    box-shadow:
+        0 0 10px rgba(99,197,255,.8);
+}
+
+.loading-step.done .step-dot {
+    background: var(--green);
+}
+
+/* =========================
+   RESULT
+========================= */
+
+#resultSection {
+    display: none;
+    padding-bottom: 80px;
+}
+
+.result-header {
+    margin-bottom: 17px;
+}
+
+.result-eyebrow {
+    color: var(--blue2);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 6px;
+}
+
+.result-title {
+    font-size: 30px;
+    font-weight: 850;
+}
+
+.recommendation {
+    overflow: hidden;
+}
+
+.recommendation-main {
+    display: grid;
+
+    grid-template-columns: 330px 1fr;
+
+    min-height: 250px;
+}
+
+.game-image {
+    min-height: 250px;
+
+    background: #0d1a27;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.game-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.game-image::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 45%,
+            rgba(7,17,28,.85)
+        );
+}
+
+.recommendation-info {
+    padding: 28px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.recommendation-info h3 {
+    font-size: 27px;
+
+    margin-bottom: 10px;
+}
+
+.recommendation-info p {
+    color: #a9bac8;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    white-space: pre-line;
+}
+
+.game-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: auto;
+
+    padding-top: 20px;
+}
+
+.meta {
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(255,255,255,.045);
+
+    color: #91a7b9;
+
+    font-size: 12px;
+}
+
+.steam-button {
+    display: inline-flex;
+
+    width: fit-content;
+
+    margin-top: 16px;
+
+    padding: 10px 14px;
+
+    border-radius: 9px;
+
+    background: rgba(56,168,255,.09);
+
+    border: 1px solid rgba(56,168,255,.23);
+
+    color: var(--blue2);
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: .2s;
+}
+
+.steam-button:hover {
+    background: rgba(56,168,255,.16);
+
+    border-color: rgba(56,168,255,.4);
+}
+
+.games-section {
+    margin-top: 28px;
+}
+
+.games-section h3 {
+    font-size: 20px;
+
+    margin-bottom: 14px;
+}
+
+.games-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 13px;
+}
+
+.game-card {
+    overflow: hidden;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--line);
+
+    background: #0b1824;
+
+    transition: .2s;
+}
+
+.game-card:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(99,197,255,.28);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.2);
+}
+
+.game-card img {
+    width: 100%;
+
+    aspect-ratio: 460 / 215;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #10202e;
+}
+
+.game-card-info {
+    padding: 11px;
+}
+
+.game-card-name {
+    min-height: 38px;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    line-height: 1.4;
+}
+
+.game-card-hours {
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.error-box {
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 14px;
+
+    border-radius: 11px;
+
+    border: 1px solid rgba(255,101,117,.25);
+
+    background: rgba(255,101,117,.06);
+
+    color: #ffabb5;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 30px 0 45px;
+
+    border-top: 1px solid var(--line);
+
+    color: #587084;
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 1000px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .page {
+        width: min(100% - 22px, 1280px);
+    }
+
+    header {
+        height: 70px;
+    }
+
+    .status {
+        display: none;
+    }
+
+    .hero {
+        padding: 55px 0 35px;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+        letter-spacing: -2.5px;
+    }
+
+    .hero-description {
+        font-size: 15px;
+    }
+
+    .form-panel {
+        padding: 21px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .mode-box {
+        grid-template-columns: 1fr;
+    }
+
+    .submit-button {
+        grid-column: auto;
+    }
+
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendation-main {
+        grid-template-columns: 1fr;
+    }
+
+    .game-image {
+        min-height: 190px;
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .loading-card {
+        padding: 27px 20px;
+    }
+}
+
+@media (max-width: 440px) {
+    .back-button {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 37px;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-title {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow">
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+</div>
+
+<div class="page">
+
+<header>
+
+    <div class="logo">
+        <div class="logo-mark">◉</div>
+        <span>STEAM ADVISOR</span>
+    </div>
+
+    <div class="header-right">
+
+        <div class="status">
+            <span class="status-dot"></span>
+            <span id="statusText">Система активна</span>
+        </div>
+
+        <a
+            class="back-button"
+            href="./index.html"
+        >
+            ← STEAM HUB
+        </a>
+
+    </div>
+
+</header>
+
+<section class="hero">
+
+    <div class="hero-label">
+        Персональный игровой подбор
+    </div>
+
+    <h1>
+        Найди игру,
+        <span>в которую</span>
+        хочется играть.
+    </h1>
+
+    <p class="hero-description">
+        Advisor анализирует твой Steam-профиль, игровую историю,
+        количество часов и выбранное настроение, чтобы найти
+        подходящую игру среди твоей библиотеки или всего Steam.
+    </p>
+
+</section>
+
+<main class="main-grid">
+
+<section class="panel form-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title">
+            Настроить поиск
+        </div>
+
+        <div class="panel-subtitle">
+            Расскажи, чего хочется сегодня — система подберёт варианты.
+        </div>
+
+    </div>
+
+<form id="recommendForm">
+
+<div class="form-grid">
+
+<div class="field full">
+
+    <label for="steamProfile">
+        Steam-профиль
+    </label>
+
+    <input
+        id="steamProfile"
+        type="text"
+        placeholder="https://steamcommunity.com/id/username"
+        autocomplete="off"
+        required
+    >
+
+    <div class="field-hint">
+        Можно вставить ссылку на профиль или SteamID64. Профиль должен быть открыт.
+    </div>
+
+</div>
+
+<div class="field full">
+
+    <label>
+        Источник игр
+    </label>
+
+    <div class="mode-box">
+
+        <div class="mode-option">
+
+            <input
+                type="radio"
+                name="mode"
+                id="modeLibrary"
+                value="library"
+            >
+
+            <label
+                class="mode-label"
+                for="modeLibrary"
+            >
+
+                <div class="mode-icon">
+                    🎮
+                </div>
+
+                <div class="mode-text">
+
+                    <strong>
+                        Моя библиотека
+                    </strong>
+
+                    <small>
+                        Выбрать игру из уже купленных
+                    </small>
+
+                </div>
+
+            </label>
+
+        </div>
+
+        <div class="mode-option">
+
+            <input
+                type="radio"
+                name="mode"
+                id="modeGlobal"
+                value="global"
+                checked
+            >
+
+            <label
+                class="mode-label"
+                for="modeGlobal"
+            >
+
+                <div class="mode-icon">
+                    🌐
+                </div>
+
+                <div class="mode-text">
+
+                    <strong>
+                        Весь Steam
+                    </strong>
+
+                    <small>
+                        Найти новую игру вне библиотеки
+                    </small>
+
+                </div>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="field">
+
+    <label for="mood">
+        Настроение
+    </label>
+
+    <div class="select-wrap">
+
+        <select id="mood">
+
+            <option value="расслабиться">
+                😌 Расслабиться
+            </option>
+
+            <option value="подумать">
+                🧠 Подумать
+            </option>
+
+            <option value="побеситься">
+                🔥 Побеситься
+            </option>
+
+            <option value="попугаться">
+                👻 Попугаться
+            </option>
+
+            <option value="посоревноваться">
+                🏆 Посоревноваться
+            </option>
+
+            <option value="погрузиться в историю">
+                📖 Погрузиться в историю
+            </option>
+
+            <option value="исследовать">
+                🗺️ Исследовать мир
+            </option>
+
+            <option value="построить что-нибудь">
+                🏗️ Построить что-нибудь
+            </option>
+
+            <option value="поиграть с друзьями">
+                👥 Поиграть с друзьями
+            </option>
+
+            <option value="почувствовать себя героем">
+                ⚔️ Почувствовать себя героем
+            </option>
+
+            <option value="поиграть недолго">
+                ⏱️ Поиграть недолго
+            </option>
+
+            <option value="что-нибудь необычное">
+                ✨ Что-нибудь необычное
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+<div class="field">
+
+    <label for="length">
+        Длительность
+    </label>
+
+    <div class="select-wrap">
+
+        <select id="length">
+
+            <option value="короткая">
+                ⚡ Короткая
+            </option>
+
+            <option value="средняя" selected>
+                🎮 Средняя
+            </option>
+
+            <option value="длинная">
+                🕐 Длинная
+            </option>
+
+            <option value="очень длинная">
+                📅 Очень длинная
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+<div class="field">
+
+    <label for="genre">
+        Жанр
+    </label>
+
+    <div class="select-wrap">
+
+        <select id="genre">
+
+            <option value="любой">
+                🎲 Любой жанр
+            </option>
+
+            <option value="action">
+                💥 Экшен
+            </option>
+
+            <option value="shooter">
+                🔫 Шутер
+            </option>
+
+            <option value="fps">
+                🎯 FPS
+            </option>
+
+            <option value="rpg">
+                ⚔️ RPG
+            </option>
+
+            <option value="open world">
+                🌎 Открытый мир
+            </option>
+
+            <option value="adventure">
+                🧭 Приключение
+            </option>
+
+            <option value="story">
+                📖 Сюжетные
+            </option>
+
+            <option value="horror">
+                👻 Хоррор
+            </option>
+
+            <option value="survival">
+                🏕️ Выживание
+            </option>
+
+            <option value="strategy">
+                🧠 Стратегия
+            </option>
+
+            <option value="tactical">
+                ♟️ Тактика
+            </option>
+
+            <option value="simulation">
+                🛠️ Симулятор
+            </option>
+
+            <option value="management">
+                📊 Менеджмент
+            </option>
+
+            <option value="city builder">
+                🏙️ Градостроительство
+            </option>
+
+            <option value="building">
+                🧱 Строительство
+            </option>
+
+            <option value="sandbox">
+                🪐 Песочница
+            </option>
+
+            <option value="automation">
+                ⚙️ Автоматизация
+            </option>
+
+            <option value="racing">
+                🏎️ Гонки
+            </option>
+
+            <option value="sports">
+                ⚽ Спорт
+            </option>
+
+            <option value="fighting">
+                🥊 Файтинг
+            </option>
+
+            <option value="platformer">
+                🕹️ Платформер
+            </option>
+
+            <option value="puzzle">
+                🧩 Головоломки
+            </option>
+
+            <option value="roguelike">
+                🎰 Roguelike
+            </option>
+
+            <option value="co-op">
+                🤝 Кооператив
+            </option>
+
+            <option value="multiplayer">
+                🌐 Мультиплеер
+            </option>
+
+            <option value="survival horror">
+                🧟 Survival Horror
+            </option>
+
+            <option value="stealth">
+                🥷 Стелс
+            </option>
+
+            <option value="indie">
+                💎 Инди
+            </option>
+
+            <option value="relaxing">
+                😌 Спокойные
+            </option>
+
+            <option value="exploration">
+                🔭 Исследование
+            </option>
+
+            <option value="flight">
+                ✈️ Полёты
+            </option>
+
+            <option value="driving">
+                🚗 Вождение
+            </option>
+
+            <option value="farming">
+                🌾 Ферма
+            </option>
+
+            <option value="card">
+                🃏 Карточные
+            </option>
+
+            <option value="turn based">
+                🔄 Пошаговые
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+<div class="field">
+
+    <label for="players">
+        Игроки
+    </label>
+
+    <div class="select-wrap">
+
+        <select id="players">
+
+            <option value="не важно">
+                🎮 Не важно
+            </option>
+
+            <option value="один игрок">
+                👤 Один игрок
+            </option>
+
+            <option value="кооператив">
+                🤝 Кооператив
+            </option>
+
+            <option value="мультиплеер">
+                🌐 Мультиплеер
+            </option>
+
+            <option value="с друзьями">
+                👥 С друзьями
+            </option>
+
+            <option value="соревновательная">
+                🏆 Соревновательная
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+<button
+    type="submit"
+    class="submit-button"
+    id="submitButton"
+>
+    Найти мою следующую игру →
+</button>
+
+</div>
+
+</form>
+
+<div
+    class="error-box"
+    id="errorBox"
+></div>
+
+</section>
+
+<aside class="sidebar">
+
+<div class="panel side-card">
+
+    <div class="side-number">
+        01 / ПРОФИЛЬ
+    </div>
+
+    <div class="side-title">
+        Просто вставь Steam-профиль
+    </div>
+
+    <div class="side-text">
+        Подойдёт обычная ссылка Steam Community
+        или прямой SteamID64.
+    </div>
+
+</div>
+
+<div class="panel side-card">
+
+    <div class="side-number">
+        02 / АНАЛИЗ
+    </div>
+
+    <div class="side-title">
+        Система изучает твой игровой вкус
+    </div>
+
+    <div class="side-text">
+        Учитываются игры, игровые часы, выбранное настроение,
+        жанр и формат игры.
+    </div>
+
+</div>
+
+<div class="panel side-card">
+
+    <div class="side-number">
+        03 / ПОИСК
+    </div>
+
+    <div class="side-title">
+        Не только твоя библиотека
+    </div>
+
+    <div class="side-text">
+        В глобальном режиме Advisor может искать кандидатов
+        среди игр Steam, а затем выбирать подходящий вариант.
+    </div>
+
+</div>
+
+<div class="panel side-card">
+
+    <div class="side-title">
+        Состояние системы
+    </div>
+
+    <div class="side-text">
+        Steam → профиль → анализ → кандидаты → AI → рекомендация.
+    </div>
+
+    <div class="system-status">
+        <span></span>
+        Анализатор работает
+    </div>
+
+</div>
+
+</aside>
+
+</main>
+
+<section id="resultSection">
+
+<div class="result-header">
+
+    <div class="result-eyebrow">
+        Результат анализа
+    </div>
+
+    <div class="result-title">
+        Твоя следующая игра
+    </div>
+
+</div>
+
+<div class="panel recommendation">
+
+<div class="recommendation-main">
+
+    <div
+        class="game-image"
+        id="recommendedImage"
+    ></div>
+
+    <div class="recommendation-info">
+
+        <h3 id="recommendedName">
+            —
+        </h3>
+
+        <p id="adviceText">
+            —
+        </p>
+
+        <div class="game-meta">
+
+            <div
+                class="meta"
+                id="recommendedHours"
+            >
+                🎮 Часы: —
+            </div>
+
+            <div
+                class="meta"
+                id="recommendedMode"
+            >
+                🌐 Режим: —
+            </div>
+
+        </div>
+
+        <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="steam-button"
+            id="steamButton"
+        >
+            Открыть в Steam →
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="games-section">
+
+    <h3>
+        Другие подходящие игры
+    </h3>
+
+    <div
+        class="games-grid"
+        id="gamesGrid"
+    ></div>
+
+</div>
+
+</section>
+
+<footer>
+    STEAM ADVISOR · Часть платформы STEAM HUB
+</footer>
+
+</div>
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div
+    class="loading-overlay"
+    id="loadingOverlay"
+>
+
+<div class="loading-card">
+
+    <div class="loading-icon">
+        ◉
+    </div>
+
+    <div class="loading-title">
+        Анализируем Steam
+    </div>
+
+    <div
+        class="loading-text"
+        id="loadingText"
+    >
+        Подключаемся к Steam...
+    </div>
+
+    <div class="loading-bar">
+
+        <div
+            class="loading-progress"
+            id="loadingProgress"
+        ></div>
+
+    </div>
+
+    <div class="loading-steps">
+
+        <div
+            class="loading-step active"
+            id="step1"
+        >
+            <span class="step-dot"></span>
+            Получаем Steam-профиль
+        </div>
+
+        <div
+            class="loading-step"
+            id="step2"
+        >
+            <span class="step-dot"></span>
+            Анализируем библиотеку
+        </div>
+
+        <div
+            class="loading-step"
+            id="step3"
+        >
+            <span class="step-dot"></span>
+            Определяем игровой вкус
+        </div>
+
+        <div
+            class="loading-step"
+            id="step4"
+        >
+            <span class="step-dot"></span>
+            Ищем подходящие игры
+        </div>
+
+        <div
+            class="loading-step"
+            id="step5"
+        >
+            <span class="step-dot"></span>
+            Выбираем лучший вариант
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+const WORKER_URL =
+    "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
+
+const form =
+    document.getElementById("recommendForm");
+
+const submitButton =
+    document.getElementById("submitButton");
+
+const errorBox =
+    document.getElementById("errorBox");
+
+const loadingOverlay =
+    document.getElementById("loadingOverlay");
+
+const loadingText =
+    document.getElementById("loadingText");
+
+const loadingProgress =
+    document.getElementById("loadingProgress");
+
+const resultSection =
+    document.getElementById("resultSection");
+
+let loadingTimer = null;
+
+function setLoadingStage(stage, text, progress) {
+
+    loadingText.textContent = text;
+
+    loadingProgress.style.width =
+        progress + "%";
+
+    for (let i = 1; i <= 5; i++) {
+
+        const step =
+            document.getElementById("step" + i);
+
+        step.classList.remove("active");
+        step.classList.remove("done");
+
+        if (i < stage) {
+            step.classList.add("done");
+        }
+
+        if (i === stage) {
+            step.classList.add("active");
+        }
+    }
+}
+
+function startLoading() {
+
+    loadingOverlay.classList.add("show");
+
+    setLoadingStage(
+        1,
+        "Подключаемся к Steam...",
+        12
+    );
+
+    clearInterval(loadingTimer);
+
+    let stage = 1;
+
+    loadingTimer = setInterval(() => {
+
+        stage++;
+
+        if (stage === 2) {
+
+            setLoadingStage(
+                2,
+                "Получаем игровую библиотеку...",
+                32
+            );
+
+        } else if (stage === 3) {
+
+            setLoadingStage(
+                3,
+                "Определяем игровой вкус...",
+                52
+            );
+
+        } else if (stage === 4) {
+
+            setLoadingStage(
+                4,
+                "Ищем подходящие игры в Steam...",
+                73
+            );
+
+        } else if (stage === 5) {
+
+            setLoadingStage(
+                5,
+                "AI выбирает лучший вариант...",
+                90
+            );
+
+            clearInterval(loadingTimer);
+        }
+
+    }, 1800);
+}
+
+function stopLoading() {
+
+    clearInterval(loadingTimer);
+
+    setLoadingStage(
+        5,
+        "Готово!",
+        100
+    );
+
+    setTimeout(() => {
+
+        loadingOverlay.classList.remove("show");
+
+    }, 450);
+}
+
+function showError(message) {
+
+    errorBox.textContent = message;
+
+    errorBox.style.display = "block";
+
+    resultSection.style.display = "none";
+}
+
+function hideError() {
+
+    errorBox.textContent = "";
+
+    errorBox.style.display = "none";
+}
+
+function getMode() {
+
+    const selected =
+        document.querySelector(
+            'input[name="mode"]:checked'
+        );
+
+    return selected
+        ? selected.value
+        : "global";
+}
+
+function getAppId(game) {
+
+    if (!game) {
+        return null;
+    }
+
+    if (typeof game === "number") {
+        return game;
+    }
+
+    if (typeof game === "string") {
+
+        const match =
+            game.match(/\d{2,}/);
+
+        return match
+            ? match[0]
+            : null;
+    }
+
+    return (
+        game.appid ||
+        game.appId ||
+        game.steam_appid ||
+        null
+    );
+}
+
+function getGameName(game) {
+
+    if (!game) {
+        return "Неизвестная игра";
+    }
+
+    if (typeof game === "string") {
+        return game;
+    }
+
+    return (
+        game.name ||
+        game.title ||
+        "Неизвестная игра"
+    );
+}
+
+function getGameHours(game) {
+
+    if (!game) {
+        return null;
+    }
+
+    if (
+        typeof game.hours === "number" &&
+        game.hours > 0
+    ) {
+        return game.hours;
+    }
+
+    if (
+        typeof game.playtime_hours === "number" &&
+        game.playtime_hours > 0
+    ) {
+        return game.playtime_hours;
+    }
+
+    if (
+        typeof game.playtime_forever === "number" &&
+        game.playtime_forever > 0
+    ) {
+        return Math.round(
+            game.playtime_forever / 60
+        );
+    }
+
+    return null;
+}
+
+function steamHeader(appid) {
+
+    if (!appid) {
+        return "";
+    }
+
+    return (
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/" +
+        appid +
+        "/header.jpg"
+    );
+}
+
+function steamStore(appid) {
+
+    if (!appid) {
+        return "#";
+    }
+
+    return (
+        "https://store.steampowered.com/app/" +
+        appid
+    );
+}
+
+function findSuggestedGame(data) {
+
+    if (!data) {
+        return null;
+    }
+
+    if (data.suggested_game) {
+        return data.suggested_game;
+    }
+
+    if (data.recommended_game) {
+        return data.recommended_game;
+    }
+
+    if (
+        Array.isArray(data.games) &&
+        data.games.length
+    ) {
+        return data.games[0];
+    }
+
+    return null;
+}
+
+function createGameCard(game) {
+
+    const appid =
+        getAppId(game);
+
+    const name =
+        getGameName(game);
+
+    const hours =
+        getGameHours(game);
+
+    const image =
+        steamHeader(appid);
+
+    const url =
+        steamStore(appid);
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "game-card";
+
+    const imageElement =
+        document.createElement("img");
+
+    imageElement.loading =
+        "lazy";
+
+    imageElement.src =
+        image;
+
+    imageElement.alt =
+        name;
+
+    imageElement.onerror =
+        () => {
+
+            imageElement.style.visibility =
+                "hidden";
+        };
+
+    const info =
+        document.createElement("div");
+
+    info.className =
+        "game-card-info";
+
+    const nameElement =
+        document.createElement("div");
+
+    nameElement.className =
+        "game-card-name";
+
+    nameElement.textContent =
+        name;
+
+    const hoursElement =
+        document.createElement("div");
+
+    hoursElement.className =
+        "game-card-hours";
+
+    if (hours !== null) {
+
+        hoursElement.textContent =
+            "🎮 " +
+            hours +
+            " ч. в библиотеке";
+
+    } else {
+
+        hoursElement.textContent =
+            "✨ Не в библиотеке";
+    }
+
+    info.appendChild(nameElement);
+    info.appendChild(hoursElement);
+
+    card.appendChild(imageElement);
+    card.appendChild(info);
+
+    if (url !== "#") {
+
+        card.style.cursor =
+            "pointer";
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                window.open(
+                    url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            }
+        );
+    }
+
+    return card;
+}
+
+function renderRecommendation(data) {
+
+    const suggested =
+        findSuggestedGame(data);
+
+    if (!suggested) {
+
+        throw new Error(
+            "Worker не вернул игру для рекомендации."
+        );
+    }
+
+    const appid =
+        getAppId(suggested);
+
+    const name =
+        getGameName(suggested);
+
+    const hours =
+        getGameHours(suggested);
+
+    const advice =
+        data.advice ||
+        data.reason ||
+        "Эта игра хорошо подходит под выбранные параметры.";
+
+    document.getElementById(
+        "recommendedName"
+    ).textContent = name;
+
+    document.getElementById(
+        "adviceText"
+    ).textContent = advice;
+
+    document.getElementById(
+        "recommendedHours"
+    ).textContent =
+        hours !== null
+            ? "🎮 Часы: " + hours
+            : "✨ Не в библиотеке";
+
+    const mode =
+        getMode();
+
+    document.getElementById(
+        "recommendedMode"
+    ).textContent =
+        mode === "library"
+            ? "🎮 Из библиотеки"
+            : "🌐 Из всего Steam";
+
+    const imageContainer =
+        document.getElementById(
+            "recommendedImage"
+        );
+
+    imageContainer.innerHTML = "";
+
+    if (appid) {
+
+        const image =
+            document.createElement("img");
+
+        image.src =
+            steamHeader(appid);
+
+        image.alt =
+            name;
+
+        image.onerror =
+            () => {
+
+                imageContainer.innerHTML =
+                    "";
+            };
+
+        imageContainer.appendChild(
+            image
+        );
+    }
+
+    const steamButton =
+        document.getElementById(
+            "steamButton"
+        );
+
+    if (appid) {
+
+        steamButton.href =
+            steamStore(appid);
+
+        steamButton.style.display =
+            "inline-flex";
+
+    } else {
+
+        steamButton.style.display =
+            "none";
+    }
+
+    const gamesGrid =
+        document.getElementById(
+            "gamesGrid"
+        );
+
+    gamesGrid.innerHTML = "";
+
+    let games =
+        Array.isArray(data.games)
+            ? [...data.games]
+            : [];
+
+    games =
+        games.filter(game => {
+
+            const gameId =
+                getAppId(game);
+
+            const suggestedId =
+                getAppId(suggested);
+
+            return !(
+                gameId &&
+                suggestedId &&
+                String(gameId) ===
+                String(suggestedId)
+            );
+        });
+
+    games =
+        games.slice(0, 12);
+
+    games.forEach(game => {
+
+        gamesGrid.appendChild(
+            createGameCard(game)
+        );
+
+    });
+
+    resultSection.style.display =
+        "block";
+
+    setTimeout(() => {
+
+        resultSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 100);
+}
+
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        hideError();
+
+        const steamProfile =
+            document
+                .getElementById("steamProfile")
+                .value
+                .trim();
+
+        if (!steamProfile) {
+
+            showError(
+                "Укажи ссылку на Steam-профиль."
+            );
+
+            return;
+        }
+
+        const payload = {
+
+            steam_profile:
+                steamProfile,
+
+            mood:
+                document
+                    .getElementById("mood")
+                    .value,
+
+            length:
+                document
+                    .getElementById("length")
+                    .value,
+
+            genre:
+                document
+                    .getElementById("genre")
+                    .value,
+
+            players:
+                document
+                    .getElementById("players")
+                    .value,
+
+            mode:
+                getMode()
+        };
+
+        submitButton.disabled =
+            true;
+
+        submitButton.textContent =
+            "Анализируем Steam...";
+
+        resultSection.style.display =
+            "none";
+
+        startLoading();
+
+        try {
+
+            const response =
+                await fetch(
+                    WORKER_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(payload)
+                    }
+                );
+
+            const rawText =
+                await response.text();
+
+            let data;
+
+            try {
+
+                data =
+                    JSON.parse(rawText);
+
+            } catch {
+
+                throw new Error(
+                    "Worker вернул некорректный ответ."
+                );
+            }
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Ошибка Worker: HTTP " +
+                    response.status
+                );
+            }
+
+            if (
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Не удалось получить рекомендацию."
+                );
+            }
+
+            renderRecommendation(data);
+
+            stopLoading();
+
+        } catch (error) {
+
+            console.error(
+                "Steam Advisor error:",
+                error
+            );
+
+            stopLoading();
+
+            setTimeout(() => {
+
+                showError(
+                    error.message ||
+                    "Произошла неизвестная ошибка."
+                );
+
+            }, 500);
+
+        } finally {
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "Найти мою следующую игру →";
+        }
+    }
+);
+
+/* Проверка Worker */
+
+fetch(WORKER_URL, {
+    method: "GET"
+})
+.then(response => {
+
+    const statusText =
+        document.getElementById(
+            "statusText"
+        );
+
+    const statusDot =
+        document.querySelector(
+            ".status-dot"
+        );
+
+    if (response.ok) {
+
+        statusText.textContent =
+            "Система активна";
+
+        statusDot.style.background =
+            "var(--green)";
+
+    } else {
+
+        statusText.textContent =
+            "Worker отвечает с ошибкой";
+
+        statusDot.style.background =
+            "var(--red)";
+    }
+
+})
+.catch(() => {
+
+    const statusText =
+        document.getElementById(
+            "statusText"
+        );
+
+    const statusDot =
+        document.querySelector(
+            ".status-dot"
+        );
+
+    statusText.textContent =
+        "Worker недоступен";
+
+    statusDot.style.background =
+        "var(--red)";
+
+    statusDot.style.boxShadow =
+        "0 0 10px rgba(255,101,117,.6)";
+});
+
+</script>
+
+</body>
+</html>
