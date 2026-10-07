@@ -4,30 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Steam Advisor — Во что играть?</title>
+    <title>Steam Hub — всё для твоего Steam</title>
+    <meta name="description" content="Steam Hub — инструменты для Steam: рекомендации игр, профиль, друзья, сравнение, рулетка и многое другое.">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23101419'/%3E%3Cpath d='M28 48a22 22 0 0 1 40-13l10 5a10 10 0 1 1-4 18l-17-8' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='72' cy='49' r='8' fill='%23fff'/%3E%3C/svg%3E">
 
     <style>
+        /* =========================================================
+           STEAM HUB
+           Completely new platform design
+           ========================================================= */
+
+        :root {
+            --bg: #07090d;
+            --bg-2: #0b0e13;
+            --panel: #10141a;
+            --panel-2: #151a21;
+            --panel-3: #1a2028;
+
+            --text: #f3f5f7;
+            --muted: #8d96a3;
+            --muted-2: #626b77;
+
+            --steam: #66c0f4;
+            --steam-2: #1b9fff;
+            --accent: #4aa3df;
+
+            --green: #63d297;
+            --yellow: #f2c866;
+            --red: #ef6875;
+            --purple: #a77bff;
+
+            --border: rgba(255,255,255,.075);
+            --border-hover: rgba(255,255,255,.14);
+
+            --shadow: 0 24px 70px rgba(0,0,0,.42);
+
+            --radius-xl: 28px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-
-        :root {
-            --bg: #080a0f;
-            --bg2: #0d1017;
-            --card: rgba(18, 22, 31, 0.82);
-            --card2: rgba(24, 29, 40, 0.9);
-            --border: rgba(255,255,255,0.08);
-            --border2: rgba(255,255,255,0.13);
-            --text: #f5f7fb;
-            --muted: #9aa3b3;
-            --muted2: #6e7787;
-            --orange: #ff6a00;
-            --orange2: #ff8a2a;
-            --blue: #4d8dff;
-            --green: #48d597;
-            --red: #ff6262;
         }
 
         html {
@@ -36,1253 +57,1262 @@
 
         body {
             min-height: 100vh;
-            font-family: Inter, Arial, Helvetica, sans-serif;
-            color: var(--text);
             background:
-                radial-gradient(circle at 15% 10%, rgba(255,106,0,.12), transparent 30%),
-                radial-gradient(circle at 85% 20%, rgba(77,141,255,.10), transparent 28%),
-                linear-gradient(135deg, #07090d, #0b0e14 55%, #080a0f);
+                radial-gradient(circle at 75% -10%, rgba(43,120,180,.14), transparent 35%),
+                radial-gradient(circle at 10% 30%, rgba(63,92,130,.07), transparent 32%),
+                var(--bg);
+            color: var(--text);
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
             overflow-x: hidden;
         }
-
-        /* =========================================================
-           HALLOWEEN BACKGROUND
-           Только фон — интерфейс Steam Advisor не изменён.
-        ========================================================= */
-
-        .halloween-background {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .halloween-moon {
-            position: absolute;
-            width: 330px;
-            height: 330px;
-            right: 8%;
-            top: 90px;
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle at 35% 32%,
-                    rgba(255,255,255,.10) 0 4px,
-                    transparent 5px
-                ),
-                radial-gradient(
-                    circle at 65% 55%,
-                    rgba(255,255,255,.07) 0 7px,
-                    transparent 8px
-                ),
-                radial-gradient(
-                    circle at 48% 72%,
-                    rgba(255,255,255,.06) 0 5px,
-                    transparent 6px
-                ),
-                radial-gradient(
-                    circle,
-                    rgba(255,255,255,.095),
-                    rgba(255,255,255,.035) 58%,
-                    transparent 72%
-                );
-
-            box-shadow:
-                0 0 70px rgba(255,255,255,.035),
-                0 0 160px rgba(255,106,0,.035);
-
-            opacity: .75;
-        }
-
-        .halloween-moon::after {
-            content: "";
-            position: absolute;
-            width: 330px;
-            height: 330px;
-            border-radius: 50%;
-            left: 32px;
-            top: -12px;
-            background: #080a0f;
-            opacity: .94;
-        }
-
-        .halloween-fog {
-            position: absolute;
-            left: -10%;
-            bottom: 2%;
-            width: 120%;
-            height: 220px;
-
-            background:
-                radial-gradient(
-                    ellipse at center,
-                    rgba(255,255,255,.025),
-                    transparent 65%
-                );
-
-            filter: blur(20px);
-            opacity: .8;
-            animation: fogMove 18s ease-in-out infinite alternate;
-        }
-
-        @keyframes fogMove {
-            from {
-                transform: translateX(-35px);
-            }
-
-            to {
-                transform: translateX(35px);
-            }
-        }
-
-        /* Дальние деревья */
-
-        .halloween-trees {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -5px;
-            height: 260px;
-            opacity: .42;
-        }
-
-        .tree {
-            position: absolute;
-            bottom: 0;
-            width: 0;
-            height: 0;
-
-            border-left: 55px solid transparent;
-            border-right: 55px solid transparent;
-            border-bottom: 150px solid rgba(3,5,8,.9);
-        }
-
-        .tree::before {
-            content: "";
-            position: absolute;
-            left: -43px;
-            top: 45px;
-
-            width: 0;
-            height: 0;
-
-            border-left: 43px solid transparent;
-            border-right: 43px solid transparent;
-            border-bottom: 120px solid rgba(3,5,8,.9);
-        }
-
-        .tree::after {
-            content: "";
-            position: absolute;
-            left: -31px;
-            top: 82px;
-
-            width: 0;
-            height: 0;
-
-            border-left: 31px solid transparent;
-            border-right: 31px solid transparent;
-            border-bottom: 90px solid rgba(3,5,8,.9);
-        }
-
-        .tree-1 {
-            left: 2%;
-            transform: scale(.8);
-        }
-
-        .tree-2 {
-            left: 12%;
-            transform: scale(1.25);
-        }
-
-        .tree-3 {
-            left: 25%;
-            transform: scale(.65);
-        }
-
-        .tree-4 {
-            right: 23%;
-            transform: scale(.9);
-        }
-
-        .tree-5 {
-            right: 10%;
-            transform: scale(1.3);
-        }
-
-        .tree-6 {
-            right: 1%;
-            transform: scale(.75);
-        }
-
-        /* Земля */
-
-        .halloween-ground {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 75px;
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(2,3,5,.82),
-                    transparent
-                );
-        }
-
-        /* Летучие мыши */
-
-        .bat {
-            position: absolute;
-            color: rgba(255,255,255,.17);
-            font-size: 25px;
-            filter: blur(.1px);
-            animation: batFloat 7s ease-in-out infinite;
-        }
-
-        .bat-1 {
-            top: 17%;
-            left: 12%;
-            font-size: 20px;
-            animation-delay: -1s;
-        }
-
-        .bat-2 {
-            top: 12%;
-            left: 42%;
-            font-size: 15px;
-            animation-delay: -3s;
-        }
-
-        .bat-3 {
-            top: 29%;
-            right: 18%;
-            font-size: 24px;
-            animation-delay: -5s;
-        }
-
-        .bat-4 {
-            top: 38%;
-            right: 39%;
-            font-size: 16px;
-            animation-delay: -2s;
-        }
-
-        @keyframes batFloat {
-            0%, 100% {
-                transform: translate(0, 0) rotate(-4deg);
-            }
-
-            50% {
-                transform: translate(18px, -10px) rotate(5deg);
-            }
-        }
-
-        /* Тыквы внизу */
-
-        .pumpkin {
-            position: absolute;
-            bottom: 25px;
-            font-size: 30px;
-            opacity: .55;
-            filter:
-                drop-shadow(0 0 12px rgba(255,106,0,.18));
-            animation: pumpkinGlow 3s ease-in-out infinite;
-        }
-
-        .pumpkin-1 {
-            left: 7%;
-        }
-
-        .pumpkin-2 {
-            left: 18%;
-            font-size: 22px;
-            animation-delay: -1s;
-        }
-
-        .pumpkin-3 {
-            right: 15%;
-            font-size: 25px;
-            animation-delay: -2s;
-        }
-
-        .pumpkin-4 {
-            right: 5%;
-            animation-delay: -1.5s;
-        }
-
-        @keyframes pumpkinGlow {
-            0%, 100% {
-                opacity: .42;
-                filter:
-                    drop-shadow(0 0 8px rgba(255,106,0,.12));
-            }
-
-            50% {
-                opacity: .65;
-                filter:
-                    drop-shadow(0 0 18px rgba(255,106,0,.22));
-            }
-        }
-
-        /* Лёгкая атмосферная дымка сверху */
-
-        .halloween-atmosphere {
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(
-                    ellipse at 50% 100%,
-                    rgba(255,106,0,.035),
-                    transparent 48%
-                ),
-                radial-gradient(
-                    ellipse at 20% 55%,
-                    rgba(77,141,255,.025),
-                    transparent 45%
-                );
-        }
-
-        /* =========================================================
-           ОСНОВНОЙ ФОН САЙТА
-        ========================================================= */
 
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             pointer-events: none;
-            z-index: 1;
+            z-index: -1;
 
             background-image:
-                linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+                linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
 
-            background-size: 42px 42px;
+            background-size: 72px 72px;
 
-            mask-image:
-                linear-gradient(
-                    to bottom,
-                    black,
-                    transparent 85%
-                );
+            mask-image: linear-gradient(
+                to bottom,
+                rgba(0,0,0,.7),
+                transparent 80%
+            );
         }
 
-        button,
-        input,
-        select {
-            font: inherit;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
         button {
-            cursor: pointer;
+            font: inherit;
         }
 
-        .page {
-            width: min(1420px, calc(100% - 40px));
+        /* =========================================================
+           TOP NAV
+           ========================================================= */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+
+            border-bottom: 1px solid rgba(255,255,255,.065);
+
+            background: rgba(7,9,13,.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+
+        .topbar-inner {
+            width: min(1280px, calc(100% - 40px));
             margin: 0 auto;
-            position: relative;
-            z-index: 5;
-        }
 
-        /* HEADER */
-
-        header {
-            height: 82px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-            z-index: 10;
+            gap: 30px;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 13px;
-            font-size: 21px;
+
+            min-width: 190px;
+        }
+
+        .brand-mark {
+            width: 39px;
+            height: 39px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #1e2934,
+                    #10151b
+                );
+
+            border: 1px solid rgba(255,255,255,.09);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.07),
+                0 8px 25px rgba(0,0,0,.25);
+        }
+
+        .brand-mark svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .brand-name {
+            font-size: 15px;
             font-weight: 800;
-            letter-spacing: -.5px;
+            letter-spacing: -.02em;
         }
 
-        .logo-eye {
-            width: 40px;
-            height: 40px;
-            border-radius: 13px;
+        .brand-sub {
+            margin-top: 2px;
+            color: var(--muted-2);
+            font-size: 10px;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+        }
+
+        .nav {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--orange), #ff9a42);
-            box-shadow: 0 0 35px rgba(255,106,0,.25);
-            font-size: 20px;
+            gap: 4px;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        .nav a {
+            padding: 9px 13px;
+            border-radius: 9px;
+
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+
+            transition:
+                color .2s ease,
+                background .2s ease;
         }
 
-        .online {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #a9b3c3;
-            font-size: 14px;
-        }
-
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 12px rgba(72,213,151,.7);
+        .nav a:hover,
+        .nav a.active {
+            color: var(--text);
+            background: rgba(255,255,255,.055);
         }
 
         .github {
-            text-decoration: none;
-            color: white;
-            padding: 10px 15px;
-            border: 1px solid var(--border2);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 10px 14px;
+
+            border: 1px solid var(--border);
             border-radius: 11px;
-            background: rgba(255,255,255,.035);
-            transition: .2s;
-            font-size: 14px;
+
+            color: #d8dde4;
+            background: rgba(255,255,255,.025);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                transform .2s ease;
         }
 
         .github:hover {
-            border-color: rgba(255,255,255,.25);
-            background: rgba(255,255,255,.07);
+            border-color: var(--border-hover);
+            background: rgba(255,255,255,.055);
+            transform: translateY(-1px);
         }
 
-        /* HERO */
+        .github svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* =========================================================
+           MAIN
+           ========================================================= */
+
+        main {
+            width: min(1280px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        /* =========================================================
+           HERO
+           ========================================================= */
 
         .hero {
-            padding: 90px 0 55px;
-            position: relative;
+            min-height: 520px;
+
+            display: grid;
+            grid-template-columns: 1.12fr .88fr;
+            align-items: center;
+            gap: 50px;
+
+            padding: 75px 0 60px;
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.35fr .65fr;
-            gap: 40px;
-            align-items: center;
+        .hero-copy {
+            position: relative;
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            color: var(--orange2);
-            font-size: 14px;
-            font-weight: 700;
+            gap: 8px;
+
+            padding: 7px 11px;
+
+            border: 1px solid rgba(102,192,244,.15);
+            border-radius: 100px;
+
+            background: rgba(102,192,244,.055);
+
+            color: #91ccef;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .12em;
             text-transform: uppercase;
-            letter-spacing: 1.8px;
+        }
+
+        .eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+
+            box-shadow: 0 0 12px rgba(99,210,151,.8);
+        }
+
+        .hero h1 {
+            max-width: 760px;
+
+            margin-top: 23px;
+
+            font-size: clamp(46px, 6vw, 82px);
+            line-height: .95;
+            letter-spacing: -.065em;
+            font-weight: 850;
+        }
+
+        .hero h1 span {
+            color: var(--steam);
+        }
+
+        .hero-text {
+            max-width: 610px;
+
+            margin-top: 25px;
+
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+
+            margin-top: 34px;
+        }
+
+        .primary-button,
+        .secondary-button {
+            min-height: 48px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            padding: 0 20px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                background .2s ease,
+                border-color .2s ease;
+        }
+
+        .primary-button {
+            color: #071018;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8bd5ff,
+                    #4baee8
+                );
+
+            box-shadow:
+                0 12px 35px rgba(45,145,210,.2);
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 17px 42px rgba(45,145,210,.3);
+        }
+
+        .secondary-button {
+            color: #d9dee5;
+
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.035);
+        }
+
+        .secondary-button:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+            background: rgba(255,255,255,.065);
+        }
+
+        /* =========================================================
+           HERO VISUAL
+           ========================================================= */
+
+        .hero-visual {
+            position: relative;
+            min-height: 360px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(102,192,244,.10);
+            border-radius: 50%;
+        }
+
+        .orbit.one {
+            width: 390px;
+            height: 390px;
+        }
+
+        .orbit.two {
+            width: 285px;
+            height: 285px;
+            border-color: rgba(102,192,244,.14);
+        }
+
+        .orbit.three {
+            width: 180px;
+            height: 180px;
+            border-color: rgba(102,192,244,.18);
+        }
+
+        .core {
+            position: relative;
+            width: 165px;
+            height: 165px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 42px;
+
+            background:
+                radial-gradient(
+                    circle at 35% 25%,
+                    rgba(121,209,255,.22),
+                    transparent 50%
+                ),
+                linear-gradient(
+                    145deg,
+                    #18222c,
+                    #0e1319
+                );
+
+            border: 1px solid rgba(255,255,255,.1);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.08),
+                0 30px 80px rgba(0,0,0,.55),
+                0 0 80px rgba(45,150,220,.08);
+        }
+
+        .core svg {
+            width: 75px;
+            height: 75px;
+            opacity: .92;
+        }
+
+        .floating-card {
+            position: absolute;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 11px 13px;
+
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 13px;
+
+            background: rgba(15,19,25,.85);
+            backdrop-filter: blur(16px);
+
+            box-shadow: 0 20px 50px rgba(0,0,0,.35);
+        }
+
+        .floating-card strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .floating-card span {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .floating-icon {
+            width: 30px;
+            height: 30px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 9px;
+
+            background: rgba(102,192,244,.1);
+            color: var(--steam);
+        }
+
+        .floating-icon svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .floating-card.a {
+            top: 23px;
+            right: 15px;
+        }
+
+        .floating-card.b {
+            bottom: 40px;
+            left: 0;
+        }
+
+        .floating-card.c {
+            bottom: 0;
+            right: 70px;
+        }
+
+        /* =========================================================
+           SECTION HEAD
+           ========================================================= */
+
+        .section {
+            padding: 35px 0 65px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+
             margin-bottom: 22px;
         }
 
-        .eyebrow::before {
-            content: "";
-            width: 27px;
-            height: 2px;
-            background: var(--orange);
-            box-shadow: 0 0 12px var(--orange);
+        .section-kicker {
+            color: var(--steam);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
         }
 
-        h1 {
-            max-width: 900px;
-            font-size: clamp(42px, 6vw, 78px);
-            line-height: .98;
-            letter-spacing: -4px;
-            font-weight: 850;
+        .section-title {
+            margin-top: 7px;
+
+            font-size: 28px;
+            line-height: 1.1;
+            letter-spacing: -.035em;
         }
 
-        h1 span {
-            color: var(--orange);
-        }
+        .section-description {
+            max-width: 460px;
 
-        .hero-description {
-            margin-top: 25px;
-            max-width: 720px;
             color: var(--muted);
-            font-size: 19px;
+            font-size: 12px;
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        /* =========================================================
+           FEATURED ADVISOR
+           ========================================================= */
+
+        .featured {
+            position: relative;
+            overflow: hidden;
+
+            min-height: 330px;
+
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+
+            border: 1px solid rgba(102,192,244,.12);
+            border-radius: var(--radius-xl);
+
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(70,160,220,.18),
+                    transparent 34%
+                ),
+                linear-gradient(
+                    135deg,
+                    #111a22,
+                    #0d1117 65%
+                );
+
+            box-shadow: var(--shadow);
+        }
+
+        .featured::before {
+            content: "";
+
+            position: absolute;
+            width: 360px;
+            height: 360px;
+
+            right: -150px;
+            bottom: -190px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(102,192,244,.09);
+            box-shadow:
+                0 0 0 35px rgba(102,192,244,.025),
+                0 0 0 70px rgba(102,192,244,.018);
+        }
+
+        .featured-copy {
+            position: relative;
+            z-index: 2;
+
+            padding: 45px;
+        }
+
+        .featured-label {
+            color: #79c9f5;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .featured h3 {
+            max-width: 560px;
+
+            margin-top: 15px;
+
+            font-size: clamp(31px, 4vw, 49px);
+            line-height: .98;
+            letter-spacing: -.05em;
+        }
+
+        .featured p {
+            max-width: 530px;
+
+            margin-top: 18px;
+
+            color: var(--muted);
+            font-size: 14px;
             line-height: 1.65;
         }
 
-        .hero-orb {
-            width: 280px;
-            height: 280px;
-            margin-left: auto;
-            border-radius: 50%;
-            position: relative;
-            background:
-                radial-gradient(circle at 50% 45%, rgba(255,106,0,.30), transparent 28%),
-                radial-gradient(circle, rgba(77,141,255,.10), transparent 60%);
-            border: 1px solid rgba(255,255,255,.06);
-            box-shadow:
-                inset 0 0 80px rgba(255,106,0,.06),
-                0 0 100px rgba(255,106,0,.08);
+        .featured-action {
+            margin-top: 25px;
         }
 
-        .hero-orb::before {
-            content: "◉";
-            position: absolute;
-            inset: 0;
+        .featured-visual {
+            position: relative;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 92px;
-            color: rgba(255,255,255,.08);
         }
 
-        .hero-orb::after {
+        .game-stack {
+            position: relative;
+
+            width: 250px;
+            height: 230px;
+        }
+
+        .game-cover {
+            position: absolute;
+
+            width: 145px;
+            height: 195px;
+
+            overflow: hidden;
+
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #293a49,
+                    #111820
+                );
+
+            box-shadow: 0 30px 60px rgba(0,0,0,.5);
+        }
+
+        .game-cover::after {
             content: "";
+
             position: absolute;
-            inset: 32px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,106,0,.18);
-            animation: rotateOrb 14s linear infinite;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent 40%,
+                    rgba(0,0,0,.72)
+                );
         }
 
-        @keyframes rotateOrb {
-            to {
-                transform: rotate(360deg);
-            }
+        .cover-one {
+            left: 18px;
+            top: 25px;
+            transform: rotate(-9deg);
+            background:
+                radial-gradient(circle at 50% 30%, #65bde7, transparent 30%),
+                linear-gradient(150deg,#203c4d,#0d1821);
         }
 
-        /* MAIN */
+        .cover-two {
+            left: 73px;
+            top: 10px;
+            transform: rotate(2deg);
+            z-index: 2;
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 360px;
-            gap: 24px;
-            padding-bottom: 80px;
+            background:
+                radial-gradient(circle at 60% 25%, #8a9caa, transparent 27%),
+                linear-gradient(145deg,#364451,#10161d);
         }
 
-        .card {
-            background: linear-gradient(145deg, rgba(20,24,34,.9), rgba(12,15,22,.88));
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            box-shadow: 0 25px 70px rgba(0,0,0,.2);
+        .cover-three {
+            left: 125px;
+            top: 30px;
+            transform: rotate(10deg);
+            z-index: 1;
+
+            background:
+                radial-gradient(circle at 40% 30%, #6d88a0, transparent 30%),
+                linear-gradient(145deg,#263748,#0e141b);
         }
 
-        .form-card {
-            padding: 34px;
-        }
+        .cover-title {
+            position: absolute;
+            z-index: 5;
+            left: 13px;
+            right: 13px;
+            bottom: 12px;
 
-        .card-title {
-            font-size: 25px;
+            color: white;
+            font-size: 12px;
             font-weight: 800;
-            margin-bottom: 7px;
+            line-height: 1.1;
         }
 
-        .card-subtitle {
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-        }
+        /* =========================================================
+           TOOLS GRID
+           ========================================================= */
 
-        .form-grid {
+        .tools-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
         }
 
-        .field {
+        .tool-card {
             position: relative;
+            overflow: hidden;
+
+            min-height: 205px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.018)
+                );
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                background .25s ease,
+                box-shadow .25s ease;
         }
 
-        .field.full {
-            grid-column: 1 / -1;
+        .tool-card:hover {
+            transform: translateY(-4px);
+
+            border-color: var(--border-hover);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.065),
+                    rgba(255,255,255,.025)
+                );
+
+            box-shadow: 0 25px 55px rgba(0,0,0,.28);
         }
 
-        label {
-            display: block;
-            color: #dce1ea;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .tool-card.large {
+            grid-column: span 6;
         }
 
-        .field-hint {
-            color: var(--muted2);
-            font-size: 13px;
-            margin-top: 7px;
+        .tool-card.medium {
+            grid-column: span 3;
         }
 
-        input,
-        select {
-            width: 100%;
-            height: 58px;
-            border: 1px solid var(--border2);
-            border-radius: 15px;
-            background: rgba(255,255,255,.045);
-            color: white;
-            outline: none;
-            padding: 0 17px;
-            font-size: 17px;
-            transition: .2s;
+        .tool-card.small {
+            grid-column: span 3;
+            min-height: 180px;
         }
 
-        input::placeholder {
-            color: #737c8b;
-        }
-
-        input:focus,
-        select:focus {
-            border-color: rgba(255,106,0,.65);
-            box-shadow: 0 0 0 4px rgba(255,106,0,.08);
-            background: rgba(255,255,255,.065);
-        }
-
-        /* BEAUTIFUL SELECTS */
-
-        .select-wrap {
-            position: relative;
-        }
-
-        .select-wrap::after {
-            content: "⌄";
-            position: absolute;
-            right: 17px;
-            top: 50%;
-            transform: translateY(-55%);
-            color: #b8c0ce;
-            font-size: 23px;
-            pointer-events: none;
-        }
-
-        select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            padding-right: 48px;
-            cursor: pointer;
-        }
-
-        select option {
-            background: #151922;
-            color: white;
-            font-size: 16px;
-            padding: 10px;
-        }
-
-        .mode-box {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .tool-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
             gap: 12px;
         }
 
-        .mode-option {
-            position: relative;
+        .tool-icon {
+            width: 43px;
+            height: 43px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.045);
+            border: 1px solid rgba(255,255,255,.06);
+
+            color: var(--steam);
         }
 
-        .mode-option input {
+        .tool-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .status {
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            background: rgba(255,255,255,.04);
+
+            color: var(--muted-2);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .status.ready {
+            color: var(--green);
+            background: rgba(99,210,151,.07);
+        }
+
+        .tool-card h3 {
+            margin-top: 22px;
+
+            font-size: 19px;
+            letter-spacing: -.025em;
+        }
+
+        .tool-card p {
+            max-width: 370px;
+
+            margin-top: 8px;
+
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .tool-arrow {
             position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
+            right: 22px;
+            bottom: 21px;
 
-        .mode-label {
-            min-height: 82px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 16px 18px;
-            border: 1px solid var(--border2);
-            border-radius: 16px;
+            width: 30px;
+            height: 30px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 9px;
+
             background: rgba(255,255,255,.035);
-            cursor: pointer;
-            transition: .2s;
+
+            color: var(--muted);
+
+            transition:
+                transform .2s ease,
+                color .2s ease,
+                background .2s ease;
         }
 
-        .mode-label:hover {
-            background: rgba(255,255,255,.065);
-            border-color: rgba(255,255,255,.2);
+        .tool-card:hover .tool-arrow {
+            transform: translateX(3px);
+            color: var(--text);
+            background: rgba(255,255,255,.07);
         }
 
-        .mode-option input:checked + .mode-label {
-            border-color: rgba(255,106,0,.7);
-            background: linear-gradient(135deg, rgba(255,106,0,.13), rgba(255,106,0,.04));
-            box-shadow: 0 0 25px rgba(255,106,0,.08);
+        /* Individual accents */
+
+        .tool-card[data-accent="purple"] .tool-icon {
+            color: var(--purple);
+            background: rgba(167,123,255,.08);
         }
 
-        .mode-icon {
-            width: 45px;
-            height: 45px;
-            flex: 0 0 45px;
-            display: flex;
+        .tool-card[data-accent="green"] .tool-icon {
+            color: var(--green);
+            background: rgba(99,210,151,.08);
+        }
+
+        .tool-card[data-accent="yellow"] .tool-icon {
+            color: var(--yellow);
+            background: rgba(242,200,102,.08);
+        }
+
+        .tool-card[data-accent="red"] .tool-icon {
+            color: var(--red);
+            background: rgba(239,104,117,.08);
+        }
+
+        /* =========================================================
+           PROFILE STRIP
+           ========================================================= */
+
+        .profile-strip {
+            position: relative;
+            overflow: hidden;
+
+            display: grid;
+            grid-template-columns: 1fr auto;
+
+            align-items: center;
+            gap: 25px;
+
+            padding: 28px 30px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+
+            background:
+                linear-gradient(
+                    105deg,
+                    rgba(102,192,244,.07),
+                    rgba(255,255,255,.025)
+                );
+        }
+
+        .profile-strip::after {
+            content: "";
+
+            position: absolute;
+            width: 250px;
+            height: 250px;
+
+            right: -80px;
+            top: -140px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(102,192,244,.08);
+        }
+
+        .profile-copy {
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-copy h3 {
+            font-size: 20px;
+            letter-spacing: -.03em;
+        }
+
+        .profile-copy p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .profile-button {
+            position: relative;
+            z-index: 3;
+
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 13px;
-            background: rgba(255,255,255,.07);
-            font-size: 22px;
+
+            min-height: 42px;
+            padding: 0 17px;
+
+            border: 1px solid rgba(102,192,244,.18);
+            border-radius: 10px;
+
+            background: rgba(102,192,244,.07);
+
+            color: #9edcff;
+            font-size: 12px;
+            font-weight: 800;
+
+            transition: .2s ease;
         }
 
-        .mode-text strong {
-            display: block;
-            font-size: 17px;
-            margin-bottom: 5px;
+        .profile-button:hover {
+            background: rgba(102,192,244,.13);
+            border-color: rgba(102,192,244,.3);
         }
 
-        .mode-text small {
-            color: var(--muted);
+        /* =========================================================
+           FUTURE FEATURES
+           ========================================================= */
+
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .future-card {
+            min-height: 125px;
+
+            padding: 20px;
+
+            border: 1px dashed rgba(255,255,255,.09);
+            border-radius: 15px;
+
+            background: rgba(255,255,255,.014);
+
+            transition:
+                border-color .2s ease,
+                background .2s ease;
+        }
+
+        .future-card:hover {
+            border-color: rgba(255,255,255,.16);
+            background: rgba(255,255,255,.025);
+        }
+
+        .future-number {
+            color: var(--muted-2);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .future-card h4 {
+            margin-top: 12px;
             font-size: 13px;
         }
 
-        .submit-button {
-            grid-column: 1 / -1;
-            height: 62px;
-            border: 0;
-            border-radius: 16px;
-            color: white;
-            font-size: 18px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff6200, #ff8a2b);
-            box-shadow: 0 12px 35px rgba(255,106,0,.2);
-            transition: .2s;
-            margin-top: 3px;
+        .future-card p {
+            margin-top: 5px;
+            color: var(--muted-2);
+            font-size: 10px;
+            line-height: 1.45;
         }
 
-        .submit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 17px 40px rgba(255,106,0,.3);
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        footer {
+            margin-top: 30px;
+            padding: 35px 0 45px;
+
+            border-top: 1px solid rgba(255,255,255,.055);
         }
 
-        .submit-button:disabled {
-            opacity: .65;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* SIDEBAR */
-
-        .sidebar {
+        .footer-inner {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: #cbd1d8;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .footer-brand span {
+            color: var(--muted-2);
+            font-weight: 500;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
             gap: 18px;
         }
 
-        .side-card {
-            padding: 24px;
+        .footer-links a {
+            color: var(--muted-2);
+            font-size: 11px;
+            transition: color .2s ease;
         }
 
-        .side-title {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 10px;
+        .footer-links a:hover {
+            color: var(--text);
         }
 
-        .side-text {
-            color: var(--muted);
-            line-height: 1.6;
-            font-size: 15px;
+        /* =========================================================
+           SCROLL REVEAL
+           ========================================================= */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+
+            transition:
+                opacity .65s ease,
+                transform .65s ease;
         }
 
-        .side-number {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,106,0,.12);
-            color: var(--orange2);
-            font-weight: 800;
-            margin-bottom: 14px;
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(72,213,151,.06);
-            color: #b8dccc;
-            font-size: 14px;
-        }
-
-        .system-status span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 10px rgba(72,213,151,.7);
-        }
-
-        /* LOADING */
-
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 25px;
-            background: rgba(4,6,10,.86);
-            backdrop-filter: blur(18px);
-        }
-
-        .loading-overlay.show {
-            display: flex;
-        }
-
-        .loading-card {
-            width: min(520px, 100%);
-            padding: 38px;
-            border-radius: 26px;
-            border: 1px solid rgba(255,255,255,.1);
-            background:
-                radial-gradient(circle at 50% 0%, rgba(255,106,0,.12), transparent 45%),
-                #10141c;
-            box-shadow: 0 30px 100px rgba(0,0,0,.55);
-            text-align: center;
-        }
-
-        .loading-eye {
-            width: 86px;
-            height: 86px;
-            margin: 0 auto 25px;
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,106,0,.12);
-            border: 1px solid rgba(255,106,0,.22);
-            font-size: 42px;
-            animation: pulseEye 1.3s ease-in-out infinite;
-        }
-
-        @keyframes pulseEye {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 rgba(255,106,0,0);
-            }
-            50% {
-                transform: scale(1.06);
-                box-shadow: 0 0 45px rgba(255,106,0,.16);
-            }
-        }
-
-        .loading-title {
-            font-size: 26px;
-            font-weight: 850;
-            margin-bottom: 10px;
-        }
-
-        .loading-text {
-            min-height: 25px;
-            color: var(--muted);
-            font-size: 16px;
-            margin-bottom: 25px;
-        }
-
-        .loading-bar {
-            width: 100%;
-            height: 7px;
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(255,255,255,.07);
-        }
-
-        .loading-progress {
-            width: 12%;
-            height: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, var(--orange), #ffad62);
-            box-shadow: 0 0 18px rgba(255,106,0,.45);
-            transition: width .5s ease;
-        }
-
-        .loading-steps {
-            display: grid;
-            gap: 9px;
-            margin-top: 22px;
-            text-align: left;
-        }
-
-        .loading-step {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #626b7b;
-            font-size: 14px;
-            transition: .2s;
-        }
-
-        .loading-step.active {
-            color: #e5e8ee;
-        }
-
-        .loading-step.done {
-            color: #73d9aa;
-        }
-
-        .step-dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #3a404c;
-            flex: 0 0 9px;
-        }
-
-        .loading-step.active .step-dot {
-            background: var(--orange);
-            box-shadow: 0 0 12px rgba(255,106,0,.7);
-        }
-
-        .loading-step.done .step-dot {
-            background: var(--green);
-        }
-
-        /* RESULT */
-
-        #resultSection {
-            display: none;
-            padding-bottom: 90px;
-        }
-
-        .result-header {
-            margin-bottom: 20px;
-        }
-
-        .result-eyebrow {
-            color: var(--orange2);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 7px;
-        }
-
-        .result-title {
-            font-size: 34px;
-            font-weight: 850;
-        }
-
-        .recommendation {
-            overflow: hidden;
-        }
-
-        .recommendation-main {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            min-height: 230px;
-        }
-
-        .game-image {
-            min-height: 230px;
-            background: #151922;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .game-image::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent 60%, rgba(13,16,23,.7));
-            pointer-events: none;
-        }
-
-        .recommendation-info {
-            padding: 29px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .recommendation-info h3 {
-            font-size: 29px;
-            margin-bottom: 11px;
-        }
-
-        .recommendation-info p {
-            color: #b6bfce;
-            line-height: 1.7;
-            font-size: 16px;
-            white-space: pre-line;
-        }
-
-        .game-meta {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: auto;
-            padding-top: 20px;
-        }
-
-        .meta {
-            padding: 8px 11px;
-            border-radius: 9px;
-            background: rgba(255,255,255,.055);
-            color: #aeb7c6;
-            font-size: 13px;
-        }
-
-        .steam-button {
-            display: inline-flex;
-            width: fit-content;
-            margin-top: 18px;
-            padding: 12px 17px;
-            border-radius: 11px;
-            background: rgba(255,106,0,.12);
-            border: 1px solid rgba(255,106,0,.28);
-            color: #ffb77e;
-            text-decoration: none;
-            font-weight: 700;
-            transition: .2s;
-        }
-
-        .steam-button:hover {
-            background: rgba(255,106,0,.2);
-            border-color: rgba(255,106,0,.45);
-        }
-
-        .games-section {
-            margin-top: 30px;
-        }
-
-        .games-section h3 {
-            font-size: 22px;
-            margin-bottom: 16px;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .game-card {
-            overflow: hidden;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            background: #11151d;
-            transition: .2s;
-        }
-
-        .game-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255,255,255,.18);
-        }
-
-        .game-card img {
-            width: 100%;
-            aspect-ratio: 460 / 215;
-            object-fit: cover;
-            display: block;
-            background: #181c25;
-        }
-
-        .game-card-info {
-            padding: 13px;
-        }
-
-        .game-card-name {
-            font-size: 15px;
-            font-weight: 750;
-            line-height: 1.35;
-            min-height: 40px;
-        }
-
-        .game-card-hours {
-            margin-top: 8px;
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .error-box {
-            display: none;
-            margin-top: 18px;
-            padding: 16px;
-            border-radius: 13px;
-            border: 1px solid rgba(255,98,98,.25);
-            background: rgba(255,98,98,.06);
-            color: #ffabab;
-            line-height: 1.5;
-        }
-
-        footer {
-            padding: 35px 0 50px;
-            color: #687180;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            font-size: 14px;
-        }
-
-        /* MOBILE */
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
 
         @media (max-width: 1050px) {
-            .hero-grid {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 55px;
+            }
+
+            .hero-visual {
+                min-height: 300px;
+            }
+
+            .featured {
                 grid-template-columns: 1fr;
             }
 
-            .hero-orb {
+            .featured-visual {
                 display: none;
             }
 
-            .main-grid {
-                grid-template-columns: 1fr;
+            .tool-card.large {
+                grid-column: span 6;
             }
 
-            .sidebar {
-                display: grid;
+            .tool-card.medium,
+            .tool-card.small {
+                grid-column: span 6;
+            }
+
+            .future-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .games-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .halloween-moon {
-                width: 250px;
-                height: 250px;
-                right: -40px;
-                top: 100px;
-            }
-
-            .halloween-moon::after {
-                width: 250px;
-                height: 250px;
+            .nav {
+                display: none;
             }
         }
 
-        @media (max-width: 720px) {
-            .page {
-                width: min(100% - 24px, 1420px);
+        @media (max-width: 700px) {
+            .topbar {
+                height: 68px;
             }
 
-            header {
-                height: 70px;
+            .topbar-inner,
+            main {
+                width: min(100% - 24px, 1280px);
             }
 
-            .online {
+            .brand {
+                min-width: auto;
+            }
+
+            .brand-sub {
                 display: none;
+            }
+
+            .github span {
+                display: none;
+            }
+
+            .github {
+                width: 38px;
+                height: 38px;
+                padding: 0;
+                justify-content: center;
             }
 
             .hero {
-                padding: 55px 0 35px;
+                min-height: auto;
+                padding: 48px 0 45px;
             }
 
-            h1 {
-                font-size: 43px;
-                letter-spacing: -2.5px;
+            .hero h1 {
+                font-size: clamp(42px, 13vw, 65px);
             }
 
-            .hero-description {
-                font-size: 16px;
+            .hero-text {
+                font-size: 14px;
             }
 
-            .form-card {
-                padding: 22px;
+            .hero-actions {
+                flex-direction: column;
             }
 
-            .form-grid {
+            .primary-button,
+            .secondary-button {
+                width: 100%;
+            }
+
+            .hero-visual {
+                min-height: 255px;
+                transform: scale(.82);
+                margin: -20px 0;
+            }
+
+            .orbit.one {
+                width: 320px;
+                height: 320px;
+            }
+
+            .orbit.two {
+                width: 235px;
+                height: 235px;
+            }
+
+            .orbit.three {
+                width: 145px;
+                height: 145px;
+            }
+
+            .section {
+                padding: 28px 0 45px;
+            }
+
+            .section-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-description {
+                text-align: left;
+            }
+
+            .featured-copy {
+                padding: 30px;
+            }
+
+            .featured h3 {
+                font-size: 35px;
+            }
+
+            .tool-card.large,
+            .tool-card.medium,
+            .tool-card.small {
+                grid-column: span 12;
+            }
+
+            .tool-card {
+                min-height: 185px;
+            }
+
+            .profile-strip {
                 grid-template-columns: 1fr;
+                padding: 24px;
             }
 
-            .field.full {
-                grid-column: auto;
+            .profile-button {
+                width: 100%;
             }
 
-            .mode-box {
-                grid-column: auto;
-                grid-template-columns: 1fr;
+            .future-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
-            .submit-button {
-                grid-column: auto;
-            }
-
-            .sidebar {
-                grid-template-columns: 1fr;
-            }
-
-            .recommendation-main {
-                grid-template-columns: 1fr;
-            }
-
-            .game-image {
-                min-height: 190px;
-            }
-
-            .games-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .loading-card {
-                padding: 27px 20px;
-            }
-
-            .halloween-moon {
-                width: 190px;
-                height: 190px;
-                right: -65px;
-                top: 105px;
-            }
-
-            .halloween-moon::after {
-                width: 190px;
-                height: 190px;
-            }
-
-            .tree {
-                transform: scale(.55);
-            }
-
-            .tree-2,
-            .tree-5 {
-                transform: scale(.75);
-            }
-
-            .pumpkin {
-                font-size: 23px;
-            }
-
-            .bat {
-                opacity: .6;
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
 
-        @media (max-width: 460px) {
-            .games-grid {
+        @media (max-width: 430px) {
+            .future-grid {
                 grid-template-columns: 1fr;
             }
 
-            .header-right .github {
-                display: none;
+            .floating-card.a {
+                right: -5px;
             }
 
-            h1 {
-                font-size: 38px;
+            .floating-card.b {
+                left: -15px;
             }
 
-            .card-title {
-                font-size: 22px;
+            .floating-card.c {
+                right: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
             }
 
-            .halloween-moon {
-                opacity: .5;
-            }
-
-            .halloween-trees {
-                opacity: .25;
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                animation: none !important;
             }
         }
     </style>
@@ -1290,1413 +1320,1087 @@
 
 <body>
 
-<!-- =========================================================
-     HALLOWEEN BACKGROUND
-========================================================= -->
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
 
-<div class="halloween-background">
+    <header class="topbar">
+        <div class="topbar-inner">
 
-    <div class="halloween-atmosphere"></div>
+            <a class="brand" href="./">
+                <div class="brand-mark">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M5 12.2C6.5 7.8 10 5.5 13.9 6.1C16.5 6.5 18.2 8 19.2 9.7"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        />
+                        <path
+                            d="M5 12.2C6.5 16.6 10 18.5 13.8 17.9C16.5 17.5 18.3 15.9 19.2 14.2"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="2.7"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                        />
+                    </svg>
+                </div>
 
-    <div class="halloween-moon"></div>
+                <div>
+                    <div class="brand-name">STEAM HUB</div>
+                    <div class="brand-sub">Gaming utilities</div>
+                </div>
+            </a>
 
-    <div class="bat bat-1">🦇</div>
-    <div class="bat bat-2">🦇</div>
-    <div class="bat bat-3">🦇</div>
-    <div class="bat bat-4">🦇</div>
-
-    <div class="halloween-trees">
-
-        <div class="tree tree-1"></div>
-        <div class="tree tree-2"></div>
-        <div class="tree tree-3"></div>
-        <div class="tree tree-4"></div>
-        <div class="tree tree-5"></div>
-        <div class="tree tree-6"></div>
-
-    </div>
-
-    <div class="pumpkin pumpkin-1">🎃</div>
-    <div class="pumpkin pumpkin-2">🎃</div>
-    <div class="pumpkin pumpkin-3">🎃</div>
-    <div class="pumpkin pumpkin-4">🎃</div>
-
-    <div class="halloween-fog"></div>
-    <div class="halloween-ground"></div>
-
-</div>
-
-
-<div class="page">
-
-    <header>
-        <div class="logo">
-            <div class="logo-eye">◉</div>
-            <span>Steam Advisor</span>
-        </div>
-
-        <div class="header-right">
-            <div class="online">
-                <span class="online-dot"></span>
-                Система активна
-            </div>
+            <nav class="nav">
+                <a href="#tools" class="active">Инструменты</a>
+                <a href="#profile">Профиль</a>
+                <a href="#future">Скоро</a>
+            </nav>
 
             <a
                 class="github"
                 href="https://github.com/shadyf315/steam-advisor"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
             >
-                GitHub
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .5A11.5 11.5 0 0 0 8.36 22.91c.58.1.79-.25.79-.56v-2.17c-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.57-.29-5.27-1.29-5.27-5.74 0-1.27.46-2.3 1.2-3.11-.12-.29-.52-1.47.11-3.06 0 0 .98-.31 3.16 1.19A10.9 10.9 0 0 1 12 5.8c.99 0 1.98.13 2.91.38 2.18-1.5 3.16-1.19 3.16-1.19.63 1.59.23 2.77.11 3.06.75.81 1.2 1.84 1.2 3.11 0 4.46-2.71 5.45-5.29 5.73.42.36.78 1.08.78 2.18v3.23c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/>
+                </svg>
+                <span>GitHub</span>
             </a>
+
         </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-grid">
 
-            <div>
-                <div class="eyebrow">Steam Game Intelligence</div>
+    <main>
+
+        <!-- =====================================================
+             HERO
+             ===================================================== -->
+
+        <section class="hero">
+
+            <div class="hero-copy reveal">
+
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Steam utilities
+                </div>
 
                 <h1>
-                    Мы смотрим на игры,<br>
-                    чтобы ты играл в <span>лучшее.</span>
+                    Всё для твоего<br>
+                    <span>Steam.</span>
                 </h1>
 
-                <p class="hero-description">
-                    Steam Advisor анализирует твою библиотеку, часы игры,
-                    любимые жанры и настроение, а затем подбирает игру,
-                    которая действительно может тебе понравиться.
+                <p class="hero-text">
+                    Один набор инструментов для игр, библиотеки,
+                    друзей и профиля. Находи игры, которые хочется
+                    запустить прямо сейчас, разбирай библиотеку
+                    и открывай что-то новое.
                 </p>
-            </div>
 
-            <div class="hero-orb"></div>
+                <div class="hero-actions">
 
-        </div>
-    </section>
+                    <a class="primary-button" href="./advisor/">
+                        Открыть Steam Advisor
+                        <span>→</span>
+                    </a>
 
-    <main class="main-grid">
-
-        <section class="card form-card">
-
-            <div class="card-title">
-                Найти игру
-            </div>
-
-            <div class="card-subtitle">
-                Заполни несколько параметров — остальное сделает система.
-            </div>
-
-            <form id="recommendForm">
-
-                <div class="form-grid">
-
-                    <div class="field full">
-                        <label for="steamProfile">
-                            Steam-профиль
-                        </label>
-
-                        <input
-                            id="steamProfile"
-                            type="text"
-                            placeholder="https://steamcommunity.com/id/username"
-                            autocomplete="off"
-                            required
-                        >
-
-                        <div class="field-hint">
-                            Профиль должен быть открытым.
-                        </div>
-                    </div>
-
-                    <div class="field full">
-                        <label>
-                            Откуда искать игру?
-                        </label>
-
-                        <div class="mode-box">
-
-                            <div class="mode-option">
-                                <input
-                                    type="radio"
-                                    name="mode"
-                                    id="modeLibrary"
-                                    value="library"
-                                >
-
-                                <label
-                                    class="mode-label"
-                                    for="modeLibrary"
-                                >
-                                    <div class="mode-icon">🎮</div>
-
-                                    <div class="mode-text">
-                                        <strong>Из моей библиотеки</strong>
-                                        <small>
-                                            Выбрать то, во что ты ещё почти не играл
-                                        </small>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div class="mode-option">
-                                <input
-                                    type="radio"
-                                    name="mode"
-                                    id="modeGlobal"
-                                    value="global"
-                                    checked
-                                >
-
-                                <label
-                                    class="mode-label"
-                                    for="modeGlobal"
-                                >
-                                    <div class="mode-icon">🌎</div>
-
-                                    <div class="mode-text">
-                                        <strong>Из всего Steam</strong>
-                                        <small>
-                                            Найти новую игру вне твоей библиотеки
-                                        </small>
-                                    </div>
-                                </label>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label for="mood">
-                            Настроение
-                        </label>
-
-                        <div class="select-wrap">
-                            <select id="mood">
-                                <option value="расслабиться">😌 Расслабиться</option>
-                                <option value="подумать">🧠 Подумать</option>
-                                <option value="побеситься">🔥 Побеситься</option>
-                                <option value="попугаться">👻 Попугаться</option>
-                                <option value="посоревноваться">🏆 Посоревноваться</option>
-                                <option value="погрузиться в историю">📖 Погрузиться в историю</option>
-                                <option value="исследовать">🗺️ Исследовать мир</option>
-                                <option value="построить что-нибудь">🏗️ Построить что-нибудь</option>
-                                <option value="поиграть с друзьями">👥 Поиграть с друзьями</option>
-                                <option value="почувствовать себя героем">⚔️ Почувствовать себя героем</option>
-                                <option value="поиграть недолго">⏱️ Поиграть недолго</option>
-                                <option value="что-нибудь необычное">✨ Что-нибудь необычное</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label for="length">
-                            Сколько времени?
-                        </label>
-
-                        <div class="select-wrap">
-                            <select id="length">
-                                <option value="короткая">⚡ Короткая</option>
-                                <option value="средняя" selected>🎮 Средняя</option>
-                                <option value="длинная">🕐 Длинная</option>
-                                <option value="очень длинная">📅 Очень длинная</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label for="genre">
-                            Жанр
-                        </label>
-
-                        <div class="select-wrap">
-                            <select id="genre">
-
-                                <option value="любой">
-                                    🎲 Любой жанр
-                                </option>
-
-                                <option value="action">
-                                    💥 Экшен
-                                </option>
-
-                                <option value="shooter">
-                                    🔫 Шутер
-                                </option>
-
-                                <option value="fps">
-                                    🎯 FPS
-                                </option>
-
-                                <option value="rpg">
-                                    ⚔️ RPG
-                                </option>
-
-                                <option value="open world">
-                                    🌎 Открытый мир
-                                </option>
-
-                                <option value="adventure">
-                                    🧭 Приключение
-                                </option>
-
-                                <option value="story">
-                                    📖 Сюжетные
-                                </option>
-
-                                <option value="horror">
-                                    👻 Хоррор
-                                </option>
-
-                                <option value="survival">
-                                    🏕️ Выживание
-                                </option>
-
-                                <option value="strategy">
-                                    🧠 Стратегия
-                                </option>
-
-                                <option value="tactical">
-                                    ♟️ Тактика
-                                </option>
-
-                                <option value="simulation">
-                                    🛠️ Симулятор
-                                </option>
-
-                                <option value="management">
-                                    📊 Менеджмент
-                                </option>
-
-                                <option value="city builder">
-                                    🏙️ Градостроительство
-                                </option>
-
-                                <option value="building">
-                                    🧱 Строительство
-                                </option>
-
-                                <option value="sandbox">
-                                    🪐 Песочница
-                                </option>
-
-                                <option value="automation">
-                                    ⚙️ Автоматизация
-                                </option>
-
-                                <option value="racing">
-                                    🏎️ Гонки
-                                </option>
-
-                                <option value="sports">
-                                    ⚽ Спорт
-                                </option>
-
-                                <option value="fighting">
-                                    🥊 Файтинг
-                                </option>
-
-                                <option value="platformer">
-                                    🕹️ Платформер
-                                </option>
-
-                                <option value="puzzle">
-                                    🧩 Головоломки
-                                </option>
-
-                                <option value="roguelike">
-                                    🎰 Roguelike
-                                </option>
-
-                                <option value="co-op">
-                                    🤝 Кооператив
-                                </option>
-
-                                <option value="multiplayer">
-                                    🌐 Мультиплеер
-                                </option>
-
-                                <option value="survival horror">
-                                    🧟 Survival Horror
-                                </option>
-
-                                <option value="stealth">
-                                    🥷 Стелс
-                                </option>
-
-                                <option value="indie">
-                                    💎 Инди
-                                </option>
-
-                                <option value="relaxing">
-                                    😌 Спокойные
-                                </option>
-
-                                <option value="exploration">
-                                    🔭 Исследование
-                                </option>
-
-                                <option value="flight">
-                                    ✈️ Полёты
-                                </option>
-
-                                <option value="driving">
-                                    🚗 Вождение
-                                </option>
-
-                                <option value="farming">
-                                    🌾 Ферма
-                                </option>
-
-                                <option value="card">
-                                    🃏 Карточные
-                                </option>
-
-                                <option value="turn based">
-                                    🔄 Пошаговые
-                                </option>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label for="players">
-                            Игроки
-                        </label>
-
-                        <div class="select-wrap">
-                            <select id="players">
-                                <option value="не важно">🎮 Не важно</option>
-                                <option value="один игрок">👤 Один игрок</option>
-                                <option value="кооператив">🤝 Кооператив</option>
-                                <option value="мультиплеер">🌐 Мультиплеер</option>
-                                <option value="с друзьями">👥 С друзьями</option>
-                                <option value="соревновательная">🏆 Соревновательная</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="submit-button"
-                        id="submitButton"
-                    >
-                        ✨ Найти мою следующую игру
-                    </button>
-
-                </div>
-
-            </form>
-
-            <div
-                class="error-box"
-                id="errorBox"
-            ></div>
-
-        </section>
-
-        <aside class="sidebar">
-
-            <div class="card side-card">
-                <div class="side-number">01</div>
-
-                <div class="side-title">
-                    Просто вставь ссылку
-                </div>
-
-                <div class="side-text">
-                    Можно использовать обычную ссылку на Steam-профиль
-                    или прямой SteamID64.
-                </div>
-            </div>
-
-            <div class="card side-card">
-                <div class="side-number">02</div>
-
-                <div class="side-title">
-                    Профиль должен быть открыт
-                </div>
-
-                <div class="side-text">
-                    Steam Advisor должен иметь возможность увидеть
-                    твою библиотеку и игровую статистику.
-                </div>
-            </div>
-
-            <div class="card side-card">
-                <div class="side-number">03</div>
-
-                <div class="side-title">
-                    Чем больше играешь — тем лучше
-                </div>
-
-                <div class="side-text">
-                    Система использует игровые часы и названия игр,
-                    чтобы понять твои предпочтения.
-                </div>
-            </div>
-
-            <div class="card side-card">
-
-                <div class="side-title">
-                    Система анализа
-                </div>
-
-                <div class="side-text">
-                    Steam → библиотека → вкусы → поиск кандидатов →
-                    AI-анализ → рекомендация.
-                </div>
-
-                <div class="system-status">
-                    <span></span>
-                    Анализатор работает
-                </div>
-
-            </div>
-
-        </aside>
-
-    </main>
-
-    <section id="resultSection">
-
-        <div class="result-header">
-            <div class="result-eyebrow">
-                Recommendation
-            </div>
-
-            <div class="result-title">
-                Твоя следующая игра
-            </div>
-        </div>
-
-        <div class="card recommendation">
-
-            <div class="recommendation-main">
-
-                <div
-                    class="game-image"
-                    id="recommendedImage"
-                ></div>
-
-                <div class="recommendation-info">
-
-                    <h3 id="recommendedName">
-                        —
-                    </h3>
-
-                    <p id="adviceText">
-                        —
-                    </p>
-
-                    <div class="game-meta">
-
-                        <div
-                            class="meta"
-                            id="recommendedHours"
-                        >
-                            🎮 Часы: —
-                        </div>
-
-                        <div
-                            class="meta"
-                            id="recommendedMode"
-                        >
-                            🌎 Режим: —
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="steam-button"
-                        id="steamButton"
-                    >
-                        Открыть в Steam →
+                    <a class="secondary-button" href="#tools">
+                        Посмотреть инструменты
+                        <span>↓</span>
                     </a>
 
                 </div>
 
             </div>
 
-        </div>
 
-        <div class="games-section">
+            <div class="hero-visual reveal">
 
-            <h3>
-                Другие подходящие игры
-            </h3>
+                <div class="orbit one"></div>
+                <div class="orbit two"></div>
+                <div class="orbit three"></div>
 
-            <div
-                class="games-grid"
-                id="gamesGrid"
-            ></div>
+                <div class="core">
 
-        </div>
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <circle
+                            cx="50"
+                            cy="50"
+                            r="35"
+                            stroke="#66c0f4"
+                            stroke-width="2"
+                            opacity=".8"
+                        />
 
-    </section>
+                        <path
+                            d="M30 51c8-17 32-23 47-7"
+                            stroke="#fff"
+                            stroke-width="4"
+                            stroke-linecap="round"
+                        />
+
+                        <path
+                            d="M30 51c8 17 32 23 47 7"
+                            stroke="#fff"
+                            stroke-width="4"
+                            stroke-linecap="round"
+                        />
+
+                        <circle
+                            cx="50"
+                            cy="50"
+                            r="10"
+                            fill="#66c0f4"
+                        />
+
+                        <circle
+                            cx="50"
+                            cy="50"
+                            r="4"
+                            fill="#071018"
+                        />
+                    </svg>
+
+                </div>
+
+
+                <div class="floating-card a">
+
+                    <div class="floating-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M4 16.5 9 11l4 4 7-8"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <strong>Профиль</strong>
+                        <span>Анализ библиотеки</span>
+                    </div>
+
+                </div>
+
+
+                <div class="floating-card b">
+
+                    <div class="floating-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 3v18M3 12h18"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <strong>Новые игры</strong>
+                        <span>Открывай больше</span>
+                    </div>
+
+                </div>
+
+
+                <div class="floating-card c">
+
+                    <div class="floating-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            />
+                            <path
+                                d="M12 8v4l3 2"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <strong>Играй</strong>
+                        <span>Меньше поиска</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FEATURED ADVISOR
+             ===================================================== -->
+
+        <section class="section reveal">
+
+            <div class="section-head">
+
+                <div>
+                    <div class="section-kicker">Главный инструмент</div>
+                    <h2 class="section-title">Начни с того, что уже работает</h2>
+                </div>
+
+                <p class="section-description">
+                    Steam Advisor — первый модуль платформы.
+                    Остальные инструменты будут постепенно
+                    появляться здесь.
+                </p>
+
+            </div>
+
+
+            <div class="featured">
+
+                <div class="featured-copy">
+
+                    <div class="featured-label">
+                        Steam Advisor
+                    </div>
+
+                    <h3>
+                        Не знаешь,<br>
+                        во что играть?
+                    </h3>
+
+                    <p>
+                        Укажи свой Steam-профиль и настроение.
+                        Advisor посмотрит на библиотеку, часы,
+                        предпочтения и подберёт игру, которая
+                        подходит именно тебе.
+                    </p>
+
+                    <a
+                        class="primary-button featured-action"
+                        href="./advisor/"
+                    >
+                        Запустить Advisor
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+
+                <div class="featured-visual">
+
+                    <div class="game-stack">
+
+                        <div class="game-cover cover-one">
+                            <div class="cover-title">
+                                Твоя библиотека
+                            </div>
+                        </div>
+
+                        <div class="game-cover cover-two">
+                            <div class="cover-title">
+                                Следующая игра
+                            </div>
+                        </div>
+
+                        <div class="game-cover cover-three">
+                            <div class="cover-title">
+                                Новые открытия
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             TOOLS
+             ===================================================== -->
+
+        <section class="section reveal" id="tools">
+
+            <div class="section-head">
+
+                <div>
+                    <div class="section-kicker">Платформа</div>
+                    <h2 class="section-title">Инструменты</h2>
+                </div>
+
+                <p class="section-description">
+                    Не просто рекомендации. Всё, что может
+                    пригодиться игроку в Steam.
+                </p>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+                <!-- Advisor -->
+
+                <a
+                    class="tool-card large"
+                    href="./advisor/"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="8"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M8 12c2.7-4.2 5.3-4.2 8 0-2.7 4.2-5.3 4.2-8 0Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="2"
+                                    fill="currentColor"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status ready">Готово</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Steam Advisor</h3>
+                        <p>
+                            Персональные рекомендации на основе
+                            твоего Steam-профиля, библиотеки,
+                            часов и настроения.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Roulette -->
+
+                <a
+                    class="tool-card medium"
+                    href="#future"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="8"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <circle
+                                    cx="9"
+                                    cy="9"
+                                    r="1.2"
+                                    fill="currentColor"
+                                />
+
+                                <circle
+                                    cx="15"
+                                    cy="12"
+                                    r="1.2"
+                                    fill="currentColor"
+                                />
+
+                                <circle
+                                    cx="10"
+                                    cy="15"
+                                    r="1.2"
+                                    fill="currentColor"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Steam Roulette</h3>
+                        <p>
+                            Не можешь выбрать игру?
+                            Пусть библиотека решит за тебя.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Profile -->
+
+                <a
+                    class="tool-card medium"
+                    href="#profile"
+                    data-accent="purple"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Анализ профиля</h3>
+                        <p>
+                            Посмотри, какие игры, жанры
+                            и привычки определяют твой Steam.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Friends -->
+
+                <a
+                    class="tool-card medium"
+                    href="#future"
+                    data-accent="green"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle
+                                    cx="9"
+                                    cy="9"
+                                    r="3"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <circle
+                                    cx="17"
+                                    cy="10"
+                                    r="2.4"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                />
+
+                                <path
+                                    d="M3.5 19c.7-3.5 2.5-5.2 5.5-5.2s4.8 1.7 5.5 5.2"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M15 15c2.5-.1 4.1 1.2 5 4"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Играть вместе</h3>
+                        <p>
+                            Найди подходящую игру
+                            для компании друзей.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Backlog -->
+
+                <a
+                    class="tool-card medium"
+                    href="#future"
+                    data-accent="yellow"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M6 5h12M6 10h12M6 15h7"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="m16 17 2 2 3-4"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Backlog Killer</h3>
+                        <p>
+                            Разбери огромную библиотеку
+                            и наконец выбери, что пройти.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Compare -->
+
+                <a
+                    class="tool-card medium"
+                    href="#future"
+                    data-accent="red"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M5 18V6M19 18V6"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M5 9h8M11 15h8"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Сравнение игр</h3>
+                        <p>
+                            Сравни игры по жанру, отзывам,
+                            цене, времени и другим параметрам.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Search -->
+
+                <a
+                    class="tool-card small"
+                    href="#future"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle
+                                    cx="10.5"
+                                    cy="10.5"
+                                    r="5.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="m15 15 5 5"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Game Detective</h3>
+                        <p>
+                            Найди игру по описанию.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Deals -->
+
+                <a
+                    class="tool-card small"
+                    href="#future"
+                    data-accent="green"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M5 7h14v12H5z"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linejoin="round"
+                                />
+
+                                <path
+                                    d="M8 7V5h8v2"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M8 12h8"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Скидки</h3>
+                        <p>
+                            Интересные предложения Steam.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- DNA -->
+
+                <a
+                    class="tool-card small"
+                    href="#future"
+                    data-accent="purple"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M7 4c7 3 10 6 10 16M17 4C10 7 7 10 7 20"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M9 7h6M7.5 11h9M7 15h10"
+                                    stroke="currentColor"
+                                    stroke-width="1.3"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Steam DNA</h3>
+                        <p>
+                            Твой игровой профиль.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+
+                <!-- Hidden Gems -->
+
+                <a
+                    class="tool-card small"
+                    href="#future"
+                    data-accent="yellow"
+                >
+
+                    <div class="tool-top">
+
+                        <div class="tool-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="m12 3 2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <span class="status">Скоро</span>
+
+                    </div>
+
+                    <div>
+                        <h3>Hidden Gems</h3>
+                        <p>
+                            Игры, которые могли пройти мимо тебя.
+                        </p>
+                    </div>
+
+                    <div class="tool-arrow">→</div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PROFILE
+             ===================================================== -->
+
+        <section
+            class="section reveal"
+            id="profile"
+        >
+
+            <div class="profile-strip">
+
+                <div class="profile-copy">
+
+                    <h3>
+                        Начни со своего Steam-профиля
+                    </h3>
+
+                    <p>
+                        В дальнейшем один профиль будет использоваться
+                        всеми инструментами платформы.
+                    </p>
+
+                </div>
+
+                <a
+                    class="profile-button"
+                    href="./advisor/"
+                >
+                    Открыть Steam Advisor →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FUTURE
+             ===================================================== -->
+
+        <section
+            class="section reveal"
+            id="future"
+        >
+
+            <div class="section-head">
+
+                <div>
+                    <div class="section-kicker">Roadmap</div>
+                    <h2 class="section-title">Что появится дальше</h2>
+                </div>
+
+                <p class="section-description">
+                    Платформа будет расширяться постепенно.
+                    Здесь не будет функций ради количества —
+                    только полезные вещи.
+                </p>
+
+            </div>
+
+
+            <div class="future-grid">
+
+                <div class="future-card">
+                    <div class="future-number">01</div>
+                    <h4>Steam Wrapped</h4>
+                    <p>Большой итог игрового года.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">02</div>
+                    <h4>Steam Trends</h4>
+                    <p>Что сейчас происходит в Steam.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">03</div>
+                    <h4>Достижения</h4>
+                    <p>Анализ и цели по достижениям.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">04</div>
+                    <h4>Игровой поиск</h4>
+                    <p>Умный поиск по огромной базе игр.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">05</div>
+                    <h4>Friends Finder</h4>
+                    <p>Подбор игр для компании.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">06</div>
+                    <h4>Game Compare</h4>
+                    <p>Сравнение двух или нескольких игр.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">07</div>
+                    <h4>Backlog Killer</h4>
+                    <p>Наведи порядок в своей библиотеке.</p>
+                </div>
+
+                <div class="future-card">
+                    <div class="future-number">08</div>
+                    <h4>Hidden Gems</h4>
+                    <p>Находи хорошие игры до того, как их заметят все.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
 
     <footer>
-        Steam Advisor · Анализ игровой библиотеки
+
+        <div class="topbar-inner footer-inner">
+
+            <div class="footer-brand">
+                STEAM HUB
+                <span>— gaming utilities</span>
+            </div>
+
+            <div class="footer-links">
+
+                <a href="./">
+                    Главная
+                </a>
+
+                <a href="./advisor/">
+                    Steam Advisor
+                </a>
+
+                <a
+                    href="https://github.com/shadyf315/steam-advisor"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub
+                </a>
+
+            </div>
+
+        </div>
+
     </footer>
 
-</div>
 
+    <script>
+        /* =========================================================
+           Simple reveal animation
+           ========================================================= */
 
-<!-- LOADING OVERLAY -->
+        const revealElements =
+            document.querySelectorAll(".reveal");
 
-<div
-    class="loading-overlay"
-    id="loadingOverlay"
->
+        if ("IntersectionObserver" in window) {
 
-    <div class="loading-card">
+            const observer =
+                new IntersectionObserver(
+                    entries => {
 
-        <div class="loading-eye">
-            ◉
-        </div>
+                        entries.forEach(entry => {
 
-        <div class="loading-title">
-            Анализируем Steam
-        </div>
+                            if (entry.isIntersecting) {
 
-        <div
-            class="loading-text"
-            id="loadingText"
-        >
-            Подключаемся к Steam...
-        </div>
+                                entry.target.classList.add("visible");
 
-        <div class="loading-bar">
-            <div
-                class="loading-progress"
-                id="loadingProgress"
-            ></div>
-        </div>
+                                observer.unobserve(entry.target);
 
-        <div class="loading-steps">
+                            }
 
-            <div
-                class="loading-step active"
-                id="step1"
-            >
-                <span class="step-dot"></span>
-                Получаем Steam-профиль
-            </div>
+                        });
 
-            <div
-                class="loading-step"
-                id="step2"
-            >
-                <span class="step-dot"></span>
-                Анализируем библиотеку
-            </div>
-
-            <div
-                class="loading-step"
-                id="step3"
-            >
-                <span class="step-dot"></span>
-                Определяем игровой вкус
-            </div>
-
-            <div
-                class="loading-step"
-                id="step4"
-            >
-                <span class="step-dot"></span>
-                Ищем подходящие игры
-            </div>
-
-            <div
-                class="loading-step"
-                id="step5"
-            >
-                <span class="step-dot"></span>
-                Выбираем лучший вариант
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<script>
-
-const WORKER_URL =
-    "https://steam-advisor.kgrechushnikov.workers.dev/recommend";
-
-
-const form = document.getElementById("recommendForm");
-const submitButton = document.getElementById("submitButton");
-const errorBox = document.getElementById("errorBox");
-
-const loadingOverlay =
-    document.getElementById("loadingOverlay");
-
-const loadingText =
-    document.getElementById("loadingText");
-
-const loadingProgress =
-    document.getElementById("loadingProgress");
-
-const resultSection =
-    document.getElementById("resultSection");
-
-
-let loadingTimer = null;
-let loadingStage = 0;
-
-
-function setLoadingStage(stage, text, progress) {
-
-    loadingStage = stage;
-
-    loadingText.textContent = text;
-    loadingProgress.style.width = progress + "%";
-
-    for (let i = 1; i <= 5; i++) {
-
-        const step =
-            document.getElementById("step" + i);
-
-        step.classList.remove("active");
-        step.classList.remove("done");
-
-        if (i < stage) {
-            step.classList.add("done");
-        }
-
-        if (i === stage) {
-            step.classList.add("active");
-        }
-    }
-}
-
-
-function startLoading() {
-
-    loadingOverlay.classList.add("show");
-
-    setLoadingStage(
-        1,
-        "Подключаемся к Steam...",
-        12
-    );
-
-    clearInterval(loadingTimer);
-
-    let stage = 1;
-
-    loadingTimer = setInterval(() => {
-
-        stage++;
-
-        if (stage === 2) {
-
-            setLoadingStage(
-                2,
-                "Получаем игровую библиотеку...",
-                32
-            );
-
-        } else if (stage === 3) {
-
-            setLoadingStage(
-                3,
-                "Определяем, какие игры тебе нравятся...",
-                52
-            );
-
-        } else if (stage === 4) {
-
-            setLoadingStage(
-                4,
-                "Ищем подходящие игры в Steam...",
-                73
-            );
-
-        } else if (stage === 5) {
-
-            setLoadingStage(
-                5,
-                "AI выбирает лучший вариант...",
-                90
-            );
-
-            clearInterval(loadingTimer);
-        }
-
-    }, 1800);
-}
-
-
-function stopLoading() {
-
-    clearInterval(loadingTimer);
-
-    setLoadingStage(
-        5,
-        "Готово!",
-        100
-    );
-
-    setTimeout(() => {
-        loadingOverlay.classList.remove("show");
-    }, 450);
-}
-
-
-function showError(message) {
-
-    errorBox.textContent = message;
-    errorBox.style.display = "block";
-
-    resultSection.style.display = "none";
-}
-
-
-function hideError() {
-
-    errorBox.textContent = "";
-    errorBox.style.display = "none";
-}
-
-
-function getMode() {
-
-    const selected =
-        document.querySelector(
-            'input[name="mode"]:checked'
-        );
-
-    return selected
-        ? selected.value
-        : "global";
-}
-
-
-function escapeHTML(value) {
-
-    if (value === null || value === undefined) {
-        return "";
-    }
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-function getAppId(game) {
-
-    if (!game) {
-        return null;
-    }
-
-    if (typeof game === "number") {
-        return game;
-    }
-
-    if (typeof game === "string") {
-
-        const match =
-            game.match(/\d{2,}/);
-
-        return match
-            ? match[0]
-            : null;
-    }
-
-    return (
-        game.appid ||
-        game.appId ||
-        game.steam_appid ||
-        null
-    );
-}
-
-
-function getGameName(game) {
-
-    if (!game) {
-        return "Неизвестная игра";
-    }
-
-    if (typeof game === "string") {
-        return game;
-    }
-
-    return (
-        game.name ||
-        game.title ||
-        "Неизвестная игра"
-    );
-}
-
-
-function getGameHours(game) {
-
-    if (!game) {
-        return null;
-    }
-
-    if (
-        typeof game.hours === "number" &&
-        game.hours > 0
-    ) {
-        return game.hours;
-    }
-
-    if (
-        typeof game.playtime_hours === "number" &&
-        game.playtime_hours > 0
-    ) {
-        return game.playtime_hours;
-    }
-
-    if (
-        typeof game.playtime_forever === "number" &&
-        game.playtime_forever > 0
-    ) {
-        return Math.round(
-            game.playtime_forever / 60
-        );
-    }
-
-    return null;
-}
-
-
-function steamHeader(appid) {
-
-    if (!appid) {
-        return "";
-    }
-
-    return (
-        "https://cdn.cloudflare.steamstatic.com/steam/apps/" +
-        appid +
-        "/header.jpg"
-    );
-}
-
-
-function steamStore(appid) {
-
-    if (!appid) {
-        return "#";
-    }
-
-    return (
-        "https://store.steampowered.com/app/" +
-        appid
-    );
-}
-
-
-function findSuggestedGame(data) {
-
-    if (!data) {
-        return null;
-    }
-
-    if (data.suggested_game) {
-        return data.suggested_game;
-    }
-
-    if (data.recommended_game) {
-        return data.recommended_game;
-    }
-
-    if (data.games && data.games.length) {
-        return data.games[0];
-    }
-
-    return null;
-}
-
-
-function createGameCard(game) {
-
-    const appid =
-        getAppId(game);
-
-    const name =
-        getGameName(game);
-
-    const hours =
-        getGameHours(game);
-
-    const image =
-        steamHeader(appid);
-
-    const url =
-        steamStore(appid);
-
-    const card =
-        document.createElement("div");
-
-    card.className = "game-card";
-
-    const imageElement =
-        document.createElement("img");
-
-    imageElement.loading = "lazy";
-
-    imageElement.src =
-        image ||
-        "";
-
-    imageElement.alt =
-        name;
-
-    imageElement.onerror = () => {
-        imageElement.style.visibility =
-            "hidden";
-    };
-
-    const info =
-        document.createElement("div");
-
-    info.className =
-        "game-card-info";
-
-    const nameElement =
-        document.createElement("div");
-
-    nameElement.className =
-        "game-card-name";
-
-    nameElement.textContent =
-        name;
-
-    const hoursElement =
-        document.createElement("div");
-
-    hoursElement.className =
-        "game-card-hours";
-
-    if (hours !== null) {
-
-        hoursElement.textContent =
-            "🎮 " + hours + " ч. в библиотеке";
-
-    } else {
-
-        hoursElement.textContent =
-            "✨ Не в библиотеке";
-
-    }
-
-    info.appendChild(nameElement);
-    info.appendChild(hoursElement);
-
-    card.appendChild(imageElement);
-    card.appendChild(info);
-
-    card.addEventListener(
-        "click",
-        () => {
-
-            if (url !== "#") {
-
-                window.open(
-                    url,
-                    "_blank",
-                    "noopener,noreferrer"
-                );
-
-            }
-
-        }
-    );
-
-    card.style.cursor =
-        url !== "#"
-            ? "pointer"
-            : "default";
-
-    return card;
-}
-
-
-function renderRecommendation(data) {
-
-    const suggested =
-        findSuggestedGame(data);
-
-    if (!suggested) {
-
-        throw new Error(
-            "Worker не вернул игру для рекомендации."
-        );
-    }
-
-    const appid =
-        getAppId(suggested);
-
-    const name =
-        getGameName(suggested);
-
-    const hours =
-        getGameHours(suggested);
-
-    const advice =
-        data.advice ||
-        data.reason ||
-        "Эта игра хорошо подходит под выбранные параметры.";
-
-    document.getElementById(
-        "recommendedName"
-    ).textContent = name;
-
-    document.getElementById(
-        "adviceText"
-    ).textContent = advice;
-
-    document.getElementById(
-        "recommendedHours"
-    ).textContent =
-        hours !== null
-            ? "🎮 Часы: " + hours
-            : "✨ Не в библиотеке";
-
-    const mode =
-        getMode();
-
-    document.getElementById(
-        "recommendedMode"
-    ).textContent =
-        mode === "library"
-            ? "🎮 Из библиотеки"
-            : "🌎 Из всего Steam";
-
-    const imageContainer =
-        document.getElementById(
-            "recommendedImage"
-        );
-
-    imageContainer.innerHTML = "";
-
-    if (appid) {
-
-        const image =
-            document.createElement("img");
-
-        image.src =
-            steamHeader(appid);
-
-        image.alt =
-            name;
-
-        image.onerror = () => {
-            imageContainer.innerHTML = "";
-        };
-
-        imageContainer.appendChild(
-            image
-        );
-    }
-
-    const steamButton =
-        document.getElementById(
-            "steamButton"
-        );
-
-    if (appid) {
-
-        steamButton.href =
-            steamStore(appid);
-
-        steamButton.style.display =
-            "inline-flex";
-
-    } else {
-
-        steamButton.style.display =
-            "none";
-    }
-
-
-    const gamesGrid =
-        document.getElementById(
-            "gamesGrid"
-        );
-
-    gamesGrid.innerHTML = "";
-
-    let games =
-        Array.isArray(data.games)
-            ? [...data.games]
-            : [];
-
-    games = games.filter(game => {
-
-        const gameId =
-            getAppId(game);
-
-        const suggestedId =
-            getAppId(suggested);
-
-        return !(
-            gameId &&
-            suggestedId &&
-            String(gameId) === String(suggestedId)
-        );
-
-    });
-
-    games =
-        games.slice(0, 12);
-
-    games.forEach(game => {
-
-        gamesGrid.appendChild(
-            createGameCard(game)
-        );
-
-    });
-
-    resultSection.style.display =
-        "block";
-
-    setTimeout(() => {
-
-        resultSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    }, 100);
-}
-
-
-form.addEventListener(
-    "submit",
-    async (event) => {
-
-        event.preventDefault();
-
-        hideError();
-
-        const steamProfile =
-            document
-                .getElementById("steamProfile")
-                .value
-                .trim();
-
-        if (!steamProfile) {
-
-            showError(
-                "Укажи ссылку на Steam-профиль."
-            );
-
-            return;
-        }
-
-
-        const mood =
-            document
-                .getElementById("mood")
-                .value;
-
-        const length =
-            document
-                .getElementById("length")
-                .value;
-
-        const genre =
-            document
-                .getElementById("genre")
-                .value;
-
-        const players =
-            document
-                .getElementById("players")
-                .value;
-
-        const mode =
-            getMode();
-
-
-        const payload = {
-
-            steam_profile:
-                steamProfile,
-
-            mood:
-                mood,
-
-            length:
-                length,
-
-            genre:
-                genre,
-
-            players:
-                players,
-
-            mode:
-                mode
-
-        };
-
-
-        submitButton.disabled =
-            true;
-
-        submitButton.textContent =
-            "Анализируем Steam...";
-
-        resultSection.style.display =
-            "none";
-
-        startLoading();
-
-
-        try {
-
-            const response =
-                await fetch(
-                    WORKER_URL,
+                    },
                     {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(payload)
+                        threshold: 0.08
                     }
                 );
 
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
 
-            const rawText =
-                await response.text();
+        } else {
 
-            let data;
-
-            try {
-
-                data =
-                    JSON.parse(rawText);
-
-            } catch {
-
-                throw new Error(
-                    "Worker вернул некорректный ответ."
-                );
-
-            }
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.error ||
-                    data.message ||
-                    "Ошибка Worker: HTTP " +
-                    response.status
-                );
-
-            }
-
-
-            if (
-                data.success === false
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    data.message ||
-                    "Не удалось получить рекомендацию."
-                );
-
-            }
-
-
-            renderRecommendation(
-                data
-            );
-
-
-            stopLoading();
-
-
-        } catch (error) {
-
-            console.error(
-                "Steam Advisor error:",
-                error
-            );
-
-            stopLoading();
-
-            setTimeout(() => {
-
-                showError(
-                    error.message ||
-                    "Произошла неизвестная ошибка."
-                );
-
-            }, 500);
-
-        } finally {
-
-            submitButton.disabled =
-                false;
-
-            submitButton.textContent =
-                "✨ Найти мою следующую игру";
+            revealElements.forEach(element => {
+                element.classList.add("visible");
+            });
 
         }
 
-    }
-);
 
+        /* =========================================================
+           Smooth navigation fallback
+           ========================================================= */
 
-/* Проверка Worker при открытии */
+        document
+            .querySelectorAll('a[href^="#"]')
+            .forEach(link => {
 
-fetch(
-    WORKER_URL,
-    {
-        method: "GET"
-    }
-)
-.then(response => {
+                link.addEventListener("click", event => {
 
-    if (response.ok) {
+                    const targetId =
+                        link.getAttribute("href");
 
-        document.querySelector(
-            ".online"
-        ).innerHTML =
-            '<span class="online-dot"></span> Система активна';
+                    if (!targetId || targetId === "#") {
+                        return;
+                    }
 
-    }
+                    const target =
+                        document.querySelector(targetId);
 
-})
-.catch(() => {
+                    if (!target) {
+                        return;
+                    }
 
-    document.querySelector(
-        ".online"
-    ).innerHTML =
-        '<span class="online-dot" style="background:#ff6262;box-shadow:0 0 10px rgba(255,98,98,.6)"></span> Worker недоступен';
+                    event.preventDefault();
 
-});
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
 
+                });
 
-</script>
+            });
+    </script>
 
 </body>
 </html>
